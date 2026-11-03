@@ -1,0 +1,151 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --turf-green: #22c55e;
+    --turf-dark: #070d09;
+    --turf-card: #0c1610;
+    --turf-card-hover: #122218;
+    --turf-border: #1a3322;
+    --floodlight-gold: #fbbf24;
+  }
+
+  body {
+    background-color: #070d09;
+    color: #f3f4f6;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* High contrast accessible focus styles */
+  input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px #070d09, 0 0 0 4px #22c55e;
+  }
+}
+
+/* Stadium Floodlight & Turf Field Ambience */
+.turf-stadium-bg {
+  background-color: #070d09;
+  background-image: 
+    radial-gradient(ellipse 90% 55% at 50% -15%, rgba(34, 197, 94, 0.22), transparent 70%),
+    radial-gradient(circle at 15% 15%, rgba(251, 191, 36, 0.09), transparent 35%),
+    radial-gradient(circle at 85% 20%, rgba(34, 197, 94, 0.12), transparent 45%),
+    radial-gradient(circle at 50% 80%, rgba(16, 185, 129, 0.05), transparent 60%);
+}
+
+/* Subtle Turf Grid Mesh */
+.turf-grid-mesh {
+  background-size: 28px 28px;
+  background-image: 
+    linear-gradient(to right, rgba(34, 197, 94, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(34, 197, 94, 0.04) 1px, transparent 1px);
+}
+
+/* Authentic Grass Pitch Striping Pattern with vibrant lush depth */
+.pitch-stripes {
+  background: repeating-linear-gradient(
+    90deg,
+    #0c2114 0px,
+    #0c2114 44px,
+    #0e2718 44px,
+    #0e2718 88px
+  );
+  box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.6);
+}
+
+/* Perforated Match Pass Ticket Notches */
+.ticket-notch-left {
+  position: absolute;
+  top: 50%;
+  left: -12px;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  border-radius: 9999px;
+  background-color: #070d09;
+  box-shadow: inset -2px 0 3px rgba(0, 0, 0, 0.4);
+}
+
+.ticket-notch-right {
+  position: absolute;
+  top: 50%;
+  right: -12px;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  border-radius: 9999px;
+  background-color: #070d09;
+  box-shadow: inset 2px 0 3px rgba(0, 0, 0, 0.4);
+}
+
+/* Scanner laser sweep animation */
+@keyframes scannerSweep {
+  0% {
+    top: 5%;
+    opacity: 0.3;
+  }
+  50% {
+    top: 85%;
+    opacity: 1;
+  }
+  100% {
+    top: 5%;
+    opacity: 0.3;
+  }
+}
+
+.animate-laser-sweep {
+  animation: scannerSweep 2s ease-in-out infinite;
+}
+
+/* Custom Sports Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #080f0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1b3523;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2b5738;
+}
+
+/* Smooth Horizontal Date Strip Scroll */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Print Ticket Styles */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printable-ticket, #printable-ticket * {
+    visibility: visible;
+  }
+  #printable-ticket {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    color: #000;
+    background: #fff;
+    padding: 24px;
+    border-radius: 0;
+  }
+}
