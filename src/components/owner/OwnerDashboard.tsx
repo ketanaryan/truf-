@@ -14,7 +14,8 @@ import {
   Flame,
   PhoneCall,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  Image as ImageIcon
 } from 'lucide-react';
 import { Pitch, Booking, OwnerSettings } from '../../types';
 import { BlockedSlotRecord } from '../../data/storage';
@@ -26,6 +27,7 @@ import { RevenueAnalytics } from './RevenueAnalytics';
 import { QuickBookingModal } from './QuickBookingModal';
 import { SlotBlockerModal } from './SlotBlockerModal';
 import { QrScannerModal } from './QrScannerModal';
+import { PaymentScreenshotModal } from '../common/PaymentScreenshotModal';
 
 interface OwnerDashboardProps {
   pitches: Pitch[];
@@ -70,6 +72,7 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({
   const [targetBlockTime, setTargetBlockTime] = useState('15:00');
 
   const [qrScannerOpen, setQrScannerOpen] = useState(false);
+  const [inspectScreenshotBooking, setInspectScreenshotBooking] = useState<Booking | null>(null);
 
   const todayStr = getTodayString();
   const todayBookings = bookings.filter(b => b.date === todayStr && b.status !== 'cancelled');
@@ -160,14 +163,14 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({
               <div>
                 <div className="flex items-center gap-2 flex-wrap">
                   <h3 className="text-base font-black text-amber-300 uppercase tracking-wide">
-                    {pendingUpiBookings.length} Direct UPI Payment{pendingUpiBookings.length > 1 ? 's' : ''} Awaiting Owner UTR Verification
+                    {pendingUpiBookings.length} Direct UPI Payment{pendingUpiBookings.length > 1 ? 's' : ''} Awaiting Photo Proof Approval
                   </h3>
                   <span className="px-2 py-0.5 rounded-full bg-amber-400/20 border border-amber-400/40 text-[10px] font-extrabold text-amber-300 font-mono">
                     0% Gateway Fees
                   </span>
                 </div>
                 <p className="text-xs text-zinc-300 font-mono mt-0.5">
-                  Customers paid directly to <strong className="text-white">{settings.upiId}</strong> via GPay/PhonePe/Paytm. Match the UTR number with your bank/UPI notification and approve in 1 click.
+                  Customers paid directly to <strong className="text-white">{settings.upiId}</strong> and attached their payment receipt screenshot. View the receipt and approve in 1 click.
                 </p>
               </div>
             </div>
@@ -187,7 +190,7 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({
                 key={b.id}
                 className="p-4 rounded-2xl bg-[#141108] border border-amber-500/30 space-y-3 font-mono text-xs flex flex-col justify-between"
               >
-                <div className="space-y-1.5">
+                <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="font-extrabold text-amber-400 text-sm">#{b.bookingRef}</span>
                     <span className="font-bold text-emerald-400 text-sm">₹{b.totalAmount}</span>
@@ -195,12 +198,43 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({
                   <div className="text-white font-bold">{b.captainName}</div>
                   <div className="text-[11px] text-zinc-400">{b.pitchName} • {b.date} • {b.timeRange}</div>
                   
-                  <div className="p-2.5 rounded-xl bg-[#211a0c] border border-amber-500/40 text-[11px] space-y-0.5">
-                    <span className="text-[10px] uppercase font-bold text-amber-400 block tracking-wider">Customer UTR Ref:</span>
-                    <span className="text-amber-200 font-mono font-black text-sm tracking-widest block select-all">
-                      {b.upiUtr || 'Pending Submission'}
-                    </span>
-                  </div>
+                  {/* Photo Screenshot Preview Card */}
+                  {b.paymentScreenshot ? (
+                    <div 
+                      onClick={() => setInspectScreenshotBooking(b)}
+                      className="p-2 rounded-xl bg-[#211a0c] border border-amber-500/40 hover:border-amber-400 cursor-pointer flex items-center gap-2.5 transition-all group"
+                      title="Click to view full payment photo"
+                    >
+                      <img 
+                        src={b.paymentScreenshot} 
+                        alt="Receipt Proof" 
+                        className="w-12 h-12 rounded-lg object-cover border border-amber-400/60 shrink-0 group-hover:scale-105 transition-transform"
+                      />
+                      <div className="overflow-hidden">
+                        <span className="text-amber-300 font-bold text-xs flex items-center gap-1 group-hover:text-amber-200">
+                          <ImageIcon className="w-3.5 h-3.5 text-amber-400" />
+                          <span>View Payment Photo</span>
+                        </span>
+                        <span className="text-[10px] text-zinc-400 block mt-0.5">
+                          Click to inspect receipt 🔍
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="p-2.5 rounded-xl bg-[#211a0c] border border-amber-500/40 text-[11px] space-y-0.5">
+                      <span className="text-[10px] uppercase font-bold text-amber-400 block tracking-wider">Customer UTR Ref:</span>
+                      <span className="text-amber-200 font-mono font-black text-sm tracking-widest block select-all">
+                        {b.upiUtr || 'Pending Submission'}
+                      </span>
+                    </div>
+                  )}
+
+                  {b.paymentScreenshot && b.upiUtr && (
+                    <div className="text-[10px] text-zinc-400 flex justify-between px-1">
+                      <span>UTR:</span>
+                      <strong className="text-amber-200 font-mono">{b.upiUtr}</strong>
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex items-center gap-2 pt-2 border-t border-[#29200f]">
@@ -211,6 +245,17 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({
                     <CheckCircle2 className="w-3.5 h-3.5 stroke-[3]" />
                     <span>Approve ₹{b.totalAmount}</span>
                   </button>
+
+                  {b.paymentScreenshot && (
+                    <button
+                      onClick={() => setInspectScreenshotBooking(b)}
+                      className="py-2 px-2.5 rounded-xl bg-[#261d0d] hover:bg-[#382b13] border border-amber-500/40 text-amber-300 text-xs font-bold"
+                      title="Inspect Screenshot"
+                    >
+                      <ImageIcon className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+
                   <button
                     onClick={() => onSelectBookingForPass(b)}
                     className="py-2 px-2.5 rounded-xl bg-[#1e170a] hover:bg-[#2b210e] border border-amber-500/30 text-amber-300 text-xs font-bold"
@@ -341,6 +386,7 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({
           onCheckInBooking={onCheckIn}
           onCollectBalance={onCollectBalance}
           onApproveUpi={onApproveUpi}
+          onInspectScreenshot={(b) => setInspectScreenshotBooking(b)}
           settings={settings}
         />
       )}
@@ -353,6 +399,7 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({
           onCollectBalance={onCollectBalance}
           onCancelBooking={onCancelBooking}
           onApproveUpi={onApproveUpi}
+          onInspectScreenshot={(b) => setInspectScreenshotBooking(b)}
         />
       )}
 
@@ -401,6 +448,13 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({
         bookings={bookings}
         onCheckIn={onCheckIn}
         onCollectBalance={onCollectBalance}
+      />
+
+      <PaymentScreenshotModal
+        isOpen={Boolean(inspectScreenshotBooking)}
+        onClose={() => setInspectScreenshotBooking(null)}
+        booking={inspectScreenshotBooking}
+        onApprove={onApproveUpi}
       />
 
     </div>

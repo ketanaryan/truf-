@@ -11,11 +11,15 @@ import {
   Copy,
   Check,
   Trophy,
-  AlertCircle
+  AlertCircle,
+  Camera,
+  UploadCloud,
+  Trash2,
+  Image as ImageIcon
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { Pitch, Slot, SportType, Booking, OwnerSettings, PaymentMethod, PaymentStatus } from '../../types';
-import { isWeekend } from '../../data/storage';
+import { isWeekend, compressImageFile } from '../../data/storage';
 
 interface CheckoutDrawerProps {
   isOpen: boolean;
@@ -47,6 +51,10 @@ export const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({
   const [teamName, setTeamName] = useState('');
   const [notes, setNotes] = useState('');
   const [upiUtr, setUpiUtr] = useState('');
+  const [paymentScreenshot, setPaymentScreenshot] = useState<string | null>(null);
+  const [screenshotFileName, setScreenshotFileName] = useState('');
+  const [isCompressingImage, setIsCompressingImage] = useState(false);
+  const [showOptionalUtr, setShowOptionalUtr] = useState(false);
   const [copiedUpi, setCopiedUpi] = useState(false);
   const [isFullDayUpgrade, setIsFullDayUpgrade] = useState(false);
   const [paymentPlan, setPaymentPlan] = useState<'upi_direct' | 'advance_token' | 'pay_at_venue'>('upi_direct');
@@ -90,6 +98,32 @@ export const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({
     setTimeout(() => setCopiedUpi(false), 2500);
   };
 
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setIsCompressingImage(true);
+      setScreenshotFileName(file.name);
+      const compressedDataUrl = await compressImageFile(file);
+      setPaymentScreenshot(compressedDataUrl);
+      setErrors(prev => {
+        const next = { ...prev };
+        delete next.paymentProof;
+        return next;
+      });
+    } catch (err) {
+      console.error('Failed to compress receipt image', err);
+    } finally {
+      setIsCompressingImage(false);
+    }
+  };
+
+  const handleRemoveScreenshot = () => {
+    setPaymentScreenshot(null);
+    setScreenshotFileName('');
+  };
+
   const validate = () => {
     const err: { [key: string]: string } = {};
     if (!captainName.trim()) err.captainName = 'Captain name is required';
@@ -100,10 +134,8 @@ export const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({
     }
 
     if (paymentPlan === 'upi_direct' || paymentPlan === 'advance_token') {
-      if (!upiUtr.trim()) {
-        err.upiUtr = 'Enter 12-digit UPI Transaction / UTR Number from your GPay/PhonePe receipt';
-      } else if (upiUtr.trim().length < 8) {
-        err.upiUtr = 'Please enter a valid UPI Reference / UTR Number';
+      if (!paymentScreenshot && !upiUtr.trim()) {
+        err.paymentProof = 'Please upload a photo of your payment screenshot (or enter UTR number)';
       }
     }
 
@@ -151,6 +183,7 @@ export const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({
         paymentStatus: statusPayment,
         paymentMethod: paymentPlan === 'pay_at_venue' ? 'cash' : 'upi',
         upiUtr: upiUtr.trim() || undefined,
+        paymentScreenshot: paymentScreenshot || undefined,
         isUpiVerified: false,
         source: 'online',
         selectedAddons: [],
@@ -478,35 +511,131 @@ export const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({
                   </div>
                 </div>
 
-                {/* 12-Digit UTR Input */}
-                <div className="space-y-1">
+                {/* Photo Upload for Payment Screenshot */}
+                <div className="space-y-2.5 pt-1">
                   <div className="flex items-center justify-between">
-                    <label className="text-white font-bold text-xs">
-                      Enter 12-Digit UPI UTR / Ref No *
+                    <label className="text-white font-bold text-xs flex items-center gap-1.5">
+                      <Camera className="w-4 h-4 text-emerald-400" />
+                      <span>Upload Payment Screenshot / Receipt Photo *</span>
                     </label>
-                    <span className="text-[10px] text-zinc-400 font-mono">From GPay/PhonePe receipt</span>
+                    <span className="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-full font-bold">
+                      Simple 1-Step Proof
+                    </span>
                   </div>
 
                   <input
-                    type="text"
-                    required
-                    maxLength={16}
-                    placeholder="e.g. 430982716352"
-                    value={upiUtr}
-                    onChange={e => {
-                      setUpiUtr(e.target.value);
-                      if (errors.upiUtr) setErrors({ ...errors, upiUtr: '' });
-                    }}
-                    className={`w-full px-3 py-2.5 rounded-xl bg-[#070f09] border text-white font-mono text-sm tracking-wider placeholder-zinc-600 focus:outline-none focus:border-emerald-400 ${
-                      errors.upiUtr ? 'border-red-500' : 'border-[#1f3d28]'
-                    }`}
+                    type="file"
+                    id="payment-screenshot-upload"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="hidden"
                   />
-                  {errors.upiUtr && (
-                    <span className="text-[10px] text-red-400 mt-1 block">{errors.upiUtr}</span>
+
+                  {!paymentScreenshot ? (
+                    <label
+                      htmlFor="payment-screenshot-upload"
+                      className={`p-4 rounded-2xl border-2 border-dashed flex flex-col items-center justify-center gap-2 cursor-pointer transition-all ${
+                        errors.paymentProof 
+                          ? 'border-red-500 bg-red-950/20' 
+                          : 'border-[#245233] bg-[#07120a] hover:border-emerald-400 hover:bg-[#0c2214]'
+                      }`}
+                    >
+                      <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+                        {isCompressingImage ? (
+                          <div className="w-6 h-6 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin" />
+                        ) : (
+                          <UploadCloud className="w-6 h-6 stroke-[2]" />
+                        )}
+                      </div>
+                      <div className="text-center">
+                        <span className="text-white text-xs font-bold block">
+                          {isCompressingImage ? 'Processing receipt photo...' : 'Tap to Upload Payment Screenshot'}
+                        </span>
+                        <span className="text-[11px] text-zinc-400 block mt-0.5">
+                          Attach receipt from Google Pay, PhonePe, Paytm, or BHIM
+                        </span>
+                      </div>
+                    </label>
+                  ) : (
+                    <div className="p-3 rounded-2xl bg-[#0e2216] border-2 border-emerald-400/80 flex items-center justify-between gap-3 shadow-md">
+                      <div className="flex items-center gap-3 overflow-hidden">
+                        <img
+                          src={paymentScreenshot}
+                          alt="Payment Proof Preview"
+                          className="w-14 h-14 rounded-xl object-cover border border-emerald-400 shrink-0 shadow-sm"
+                        />
+                        <div className="overflow-hidden">
+                          <div className="flex items-center gap-1.5 text-emerald-300 font-bold text-xs">
+                            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                            <span>Screenshot Attached ✓</span>
+                          </div>
+                          <span className="text-[11px] text-zinc-400 truncate block mt-0.5">
+                            {screenshotFileName || 'Payment receipt ready'}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <label
+                          htmlFor="payment-screenshot-upload"
+                          className="px-2.5 py-1.5 rounded-xl bg-[#14301f] hover:bg-[#1a3d28] text-zinc-200 text-[11px] font-bold cursor-pointer border border-[#235332]"
+                        >
+                          Change
+                        </label>
+                        <button
+                          type="button"
+                          onClick={handleRemoveScreenshot}
+                          className="p-1.5 rounded-xl bg-[#281515] hover:bg-red-900/40 text-red-400 border border-red-700/40"
+                          title="Remove screenshot"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
                   )}
 
+                  {errors.paymentProof && (
+                    <span className="text-[10px] text-red-400 font-bold block mt-1">{errors.paymentProof}</span>
+                  )}
+
+                  {/* Optional UTR / Note Input Toggle */}
+                  <div className="pt-1">
+                    {!showOptionalUtr ? (
+                      <button
+                        type="button"
+                        onClick={() => setShowOptionalUtr(true)}
+                        className="text-[11px] text-zinc-400 hover:text-emerald-400 font-mono underline decoration-dotted transition-colors"
+                      >
+                        + Add 12-digit UTR or Transaction Note (Optional)
+                      </button>
+                    ) : (
+                      <div className="space-y-1 pt-1 animate-in fade-in">
+                        <div className="flex items-center justify-between">
+                          <label className="text-zinc-300 text-[11px] font-bold">
+                            UTR / Transaction Note (Optional)
+                          </label>
+                          <button
+                            type="button"
+                            onClick={() => setShowOptionalUtr(false)}
+                            className="text-[10px] text-zinc-500 hover:text-zinc-300"
+                          >
+                            Hide
+                          </button>
+                        </div>
+                        <input
+                          type="text"
+                          maxLength={24}
+                          placeholder="e.g. 430982716352 or GPay reference"
+                          value={upiUtr}
+                          onChange={e => setUpiUtr(e.target.value)}
+                          className="w-full px-3 py-2 rounded-xl bg-[#070f09] border border-[#1f3d28] text-white font-mono text-xs focus:outline-none focus:border-emerald-400"
+                        />
+                      </div>
+                    )}
+                  </div>
+
                   <p className="text-[10px] text-zinc-400 pt-1 leading-relaxed">
-                    💡 <strong>Owner Verification:</strong> Once you submit, the owner directly matches this UTR number with their PhonePe/GPay bank notification. No gateway fee deducted!
+                    💡 <strong>Owner Verification:</strong> Once submitted, the owner views your payment receipt photo directly in their dashboard and confirms your slot. 0% payment gateway fee!
                   </p>
                 </div>
 

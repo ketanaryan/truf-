@@ -250,7 +250,7 @@ export const ArenaSettings: React.FC<ArenaSettingsProps> = ({
           <div className="space-y-0.5">
             <span className="text-white font-bold block text-[11px]">How Direct UPI Works without Payment Gateway Cuts:</span>
             <p className="text-[10px] leading-relaxed text-zinc-400">
-              When a player books a slot online, they scan your arena's UPI QR code and enter their 12-digit UPI UTR transaction reference number from their payment receipt. You'll receive a push alert on your Owner Desk to cross-check the UTR with your bank app SMS / PhonePe Business notification and approve it in 1 click. No Razorpay 2.36% fee deducted!
+              When a player books a slot online, they scan your arena's UPI QR code and attach a photo/screenshot of their payment receipt from Google Pay, PhonePe, or Paytm. You can inspect the payment proof image directly in your dashboard and approve it in 1 click. Zero payment gateway commission deducted!
             </p>
           </div>
         </div>

@@ -10,7 +10,8 @@ import {
   PhoneCall, 
   CheckCircle2, 
   Sparkles,
-  ShieldAlert
+  ShieldAlert,
+  Image as ImageIcon
 } from 'lucide-react';
 import { Pitch, Booking, OwnerSettings } from '../../types';
 import { BlockedSlotRecord } from '../../data/storage';
@@ -29,6 +30,7 @@ interface MasterScheduleGridProps {
   onCheckInBooking: (bookingId: string) => void;
   onCollectBalance: (bookingId: string) => void;
   onApproveUpi?: (bookingId: string) => void;
+  onInspectScreenshot?: (booking: Booking) => void;
   settings: OwnerSettings;
 }
 
@@ -44,6 +46,7 @@ export const MasterScheduleGrid: React.FC<MasterScheduleGridProps> = ({
   onCheckInBooking,
   onCollectBalance,
   onApproveUpi,
+  onInspectScreenshot,
   settings
 }) => {
   const dateBookings = bookings.filter(b => b.date === selectedDate && b.status !== 'cancelled');
@@ -212,10 +215,23 @@ export const MasterScheduleGrid: React.FC<MasterScheduleGridProps> = ({
                           )}
 
                           {p1Booking.paymentStatus === 'upi_pending' ? (
-                            <div className="flex items-center gap-1.5">
+                            <div className="flex items-center gap-1.5 flex-wrap">
                               <span className="text-amber-300 font-extrabold text-[10px] bg-amber-400/20 px-1.5 py-0.5 rounded border border-amber-400/40">
-                                🟡 UPI UTR: {p1Booking.upiUtr || 'Pending'}
+                                🟡 UPI {p1Booking.paymentScreenshot ? 'Receipt' : 'Pending'}
                               </span>
+                              {p1Booking.paymentScreenshot && onInspectScreenshot && (
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    onInspectScreenshot(p1Booking);
+                                  }}
+                                  className="p-1 rounded bg-[#2a1e0c] hover:bg-[#3c2a11] text-amber-300 border border-amber-500/40 text-[10px] font-bold"
+                                  title="View Receipt Photo"
+                                >
+                                  <ImageIcon className="w-3 h-3 text-amber-400" />
+                                </button>
+                              )}
                               {onApproveUpi && (
                                 <button
                                   onClick={(e) => {
@@ -324,10 +340,23 @@ export const MasterScheduleGrid: React.FC<MasterScheduleGridProps> = ({
                           )}
 
                           {p2Booking.paymentStatus === 'upi_pending' ? (
-                            <div className="flex items-center gap-1.5">
+                            <div className="flex items-center gap-1.5 flex-wrap">
                               <span className="text-amber-300 font-extrabold text-[10px] bg-amber-400/20 px-1.5 py-0.5 rounded border border-amber-400/40">
-                                🟡 UPI UTR: {p2Booking.upiUtr || 'Pending'}
+                                🟡 UPI {p2Booking.paymentScreenshot ? 'Receipt' : 'Pending'}
                               </span>
+                              {p2Booking.paymentScreenshot && onInspectScreenshot && (
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    onInspectScreenshot(p2Booking);
+                                  }}
+                                  className="p-1 rounded bg-[#2a1e0c] hover:bg-[#3c2a11] text-amber-300 border border-amber-500/40 text-[10px] font-bold"
+                                  title="View Receipt Photo"
+                                >
+                                  <ImageIcon className="w-3 h-3 text-amber-400" />
+                                </button>
+                              )}
                               {onApproveUpi && (
                                 <button
                                   onClick={(e) => {

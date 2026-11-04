@@ -87,6 +87,8 @@ export const getOffsetDateString = (offsetDays: number) => {
   return `${year}-${month}-${day}`;
 };
 
+export const SAMPLE_RECEIPT_IMAGE = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="600" viewBox="0 0 400 600" fill="%230b130e"><rect width="400" height="600" rx="24" fill="%230f1b13" stroke="%231f452b" stroke-width="3"/><circle cx="200" cy="100" r="40" fill="%2310b981"/><path d="M185 100l10 10 20-20" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><text x="200" y="170" fill="white" font-size="22" font-family="sans-serif" font-weight="bold" text-anchor="middle">Payment Successful</text><text x="200" y="200" fill="%239ca3af" font-size="13" font-family="sans-serif" text-anchor="middle">Google Pay • UPI Transfer</text><text x="200" y="270" fill="%2334d399" font-size="44" font-family="sans-serif" font-weight="900" text-anchor="middle">₹1,400</text><rect x="30" y="320" width="340" height="220" rx="16" fill="%2308110b" stroke="%23193623"/><text x="50" y="360" fill="%239ca3af" font-size="12" font-family="sans-serif">Paid To</text><text x="50" y="385" fill="white" font-size="16" font-family="sans-serif" font-weight="bold">Battlegrounds Arena</text><text x="50" y="405" fill="%236ee7b7" font-size="12" font-family="monospace">battlegroundsturf@icici</text><line x1="50" y1="425" x2="350" y2="425" stroke="%231f3d28"/><text x="50" y="455" fill="%239ca3af" font-size="12" font-family="sans-serif">UPI Transaction ID / UTR</text><text x="50" y="480" fill="%23fbbf24" font-size="14" font-family="monospace" font-weight="bold">431289012345</text><text x="50" y="515" fill="%239ca3af" font-size="11" font-family="sans-serif">Date: Today • Time: 05:22 PM</text></svg>`;
+
 export const SEED_BOOKINGS: Booking[] = [
   {
     id: 'BG-9102',
@@ -167,6 +169,7 @@ export const SEED_BOOKINGS: Booking[] = [
     paymentStatus: 'upi_pending',
     paymentMethod: 'upi',
     upiUtr: '431289012345',
+    paymentScreenshot: SAMPLE_RECEIPT_IMAGE,
     isUpiVerified: false,
     source: 'online',
     createdAt: new Date(Date.now() - 3600000 * 2).toISOString(),

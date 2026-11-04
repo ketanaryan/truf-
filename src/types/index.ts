@@ -82,6 +82,7 @@ export interface Booking {
 
   // Direct 0% UPI Verification (Zero Gateway Fees)
   upiUtr?: string;
+  paymentScreenshot?: string;
   isUpiVerified?: boolean;
   
   // Selected Addons (preserved for type safety)

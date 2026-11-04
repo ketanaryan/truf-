@@ -133,19 +133,34 @@ export const TicketPassModal: React.FC<TicketPassModalProps> = ({
               </span>
             </div>
 
-            {/* UPI UTR Verification Box if paid via UPI */}
-            {isUpiPending && booking.upiUtr && (
-              <div className="p-3 rounded-2xl bg-[#1f190e] border border-amber-500/40 text-xs font-mono space-y-1">
+            {/* UPI Payment Proof Box if paid via UPI */}
+            {isUpiPending && (
+              <div className="p-3 rounded-2xl bg-[#1f190e] border border-amber-500/40 text-xs font-mono space-y-1.5">
                 <div className="flex items-center justify-between text-amber-300 font-bold text-[11px]">
-                  <span>Direct UPI Payment Reference</span>
+                  <span>Payment Proof Attached</span>
                   <span className="text-[10px] bg-amber-400/20 px-1.5 py-0.5 rounded">0% Gateway Fee</span>
                 </div>
-                <div className="text-zinc-200 text-xs flex justify-between">
-                  <span>UTR / Ref No:</span>
-                  <strong className="text-white font-mono">{booking.upiUtr}</strong>
-                </div>
+                {booking.paymentScreenshot && (
+                  <div className="flex items-center gap-2.5 p-2 rounded-xl bg-black/40 border border-amber-500/30">
+                    <img 
+                      src={booking.paymentScreenshot} 
+                      alt="Receipt" 
+                      className="w-10 h-10 rounded-lg object-cover border border-amber-400/50 shrink-0" 
+                    />
+                    <div className="overflow-hidden">
+                      <span className="text-white text-[11px] font-bold block truncate">Receipt Screenshot Attached ✓</span>
+                      <span className="text-zinc-400 text-[10px] block">Awaiting Owner 1-click verification</span>
+                    </div>
+                  </div>
+                )}
+                {booking.upiUtr && (
+                  <div className="text-zinc-300 text-xs flex justify-between">
+                    <span>UTR / Ref No:</span>
+                    <strong className="text-amber-200 font-mono">{booking.upiUtr}</strong>
+                  </div>
+                )}
                 <p className="text-[10px] text-zinc-400 pt-0.5">
-                  ✓ Desk owner will verify with bank SMS/PhonePe statement at entry.
+                  ✓ Slot reserved. Turf owner will review the photo receipt and approve entry.
                 </p>
               </div>
             )}
