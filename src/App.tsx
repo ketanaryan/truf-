@@ -12,12 +12,13 @@ import { OwnerDashboard } from './components/owner/OwnerDashboard';
 import { ToastProvider, useToast } from './components/common/ToastContext';
 
 import { Pitch, Booking, OwnerSettings, SportType, CommunityLobbyPost } from './types';
-import { PITCHES, ADDONS, getTodayString } from './data/mockTurfData';
+import { PITCHES, getTodayString } from './data/mockTurfData';
 import { 
   getStoredBookings, 
   saveBookings, 
   addBooking, 
   updateBooking,
+  approveUpiBooking,
   getStoredSettings, 
   saveSettings, 
   getStoredBlockedSlots, 
@@ -146,6 +147,19 @@ const TurfAppContent: React.FC = () => {
       title: 'Payment Cleared',
       message: `Collected ₹${collectedAmount} at reception counter. Account settled.`,
       type: 'success'
+    });
+  };
+
+  const handleApproveUpi = (bookingId: string) => {
+    const updated = approveUpiBooking(bookingId);
+    setBookings(updated);
+    const target = updated.find(b => b.id === bookingId);
+
+    showToast({
+      title: 'UPI Payment Approved! ✅',
+      message: `Booking #${target?.bookingRef} marked fully paid (0% gateway commission).`,
+      type: 'success',
+      duration: 4000
     });
   };
 
@@ -424,6 +438,7 @@ const TurfAppContent: React.FC = () => {
               setActiveTicketBooking(b);
               setTicketModalOpen(true);
             }}
+            onApproveUpi={handleApproveUpi}
           />
         )}
       </main>
@@ -438,14 +453,17 @@ const TurfAppContent: React.FC = () => {
         selectedDate={selectedDate}
         selectedSlotIds={selectedSlotIds}
         slots={slots}
-        addons={ADDONS}
         settings={settings}
         onBookingConfirmed={handleBookingConfirmed}
       />
 
       <TicketPassModal
+        isOpen={ticketModalOpen}
         booking={activeTicketBooking}
-        onClose={() => setTicketModalOpen(false)}
+        onClose={() => {
+          setTicketModalOpen(false);
+          setActiveTicketBooking(null);
+        }}
         settings={settings}
       />
 

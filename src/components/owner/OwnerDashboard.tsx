@@ -12,7 +12,9 @@ import {
   ArrowRight,
   ShieldCheck,
   Flame,
-  PhoneCall
+  PhoneCall,
+  CheckCircle2,
+  AlertCircle
 } from 'lucide-react';
 import { Pitch, Booking, OwnerSettings } from '../../types';
 import { BlockedSlotRecord } from '../../data/storage';
@@ -38,6 +40,7 @@ interface OwnerDashboardProps {
   onSaveSettings: (settings: OwnerSettings) => void;
   onUpdatePitchPricing: (pitchId: string, updates: Partial<Pitch>) => void;
   onSelectBookingForPass: (booking: Booking) => void;
+  onApproveUpi?: (bookingId: string) => void;
 }
 
 export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({
@@ -52,7 +55,8 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({
   onToggleBlockSlot,
   onSaveSettings,
   onUpdatePitchPricing,
-  onSelectBookingForPass
+  onSelectBookingForPass,
+  onApproveUpi
 }) => {
   const [activeTab, setActiveTab] = useState<'schedule' | 'ledger' | 'settings' | 'analytics'>('schedule');
   const [selectedDate, setSelectedDate] = useState<string>(getTodayString());
@@ -74,6 +78,8 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({
   const todayCollected = todayBookings.reduce((sum, b) => sum + b.advancePaid, 0);
   const todayPendingDue = todayBookings.reduce((sum, b) => sum + b.balanceDue, 0);
   const occupancyPercent = Math.min(100, Math.round((todayBookings.length / 38) * 100));
+
+  const pendingUpiBookings = bookings.filter(b => b.paymentStatus === 'upi_pending' && b.status !== 'cancelled');
 
   const handleOpenQuickFromGrid = (pitchId: string, time: string) => {
     setTargetQuickPitch(pitchId);
@@ -142,6 +148,82 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({
           </button>
         </div>
       </div>
+
+      {/* 0% Direct UPI Pending Verification Banner */}
+      {pendingUpiBookings.length > 0 && (
+        <div className="p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-[#1c1808] via-[#221c0b] to-[#161206] border-2 border-amber-500/60 shadow-[0_0_35px_rgba(245,158,11,0.18)] space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-amber-400 shrink-0">
+                <AlertCircle className="w-5 h-5 animate-pulse" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h3 className="text-base font-black text-amber-300 uppercase tracking-wide">
+                    {pendingUpiBookings.length} Direct UPI Payment{pendingUpiBookings.length > 1 ? 's' : ''} Awaiting Owner UTR Verification
+                  </h3>
+                  <span className="px-2 py-0.5 rounded-full bg-amber-400/20 border border-amber-400/40 text-[10px] font-extrabold text-amber-300 font-mono">
+                    0% Gateway Fees
+                  </span>
+                </div>
+                <p className="text-xs text-zinc-300 font-mono mt-0.5">
+                  Customers paid directly to <strong className="text-white">{settings.upiId}</strong> via GPay/PhonePe/Paytm. Match the UTR number with your bank/UPI notification and approve in 1 click.
+                </p>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setActiveTab('ledger')}
+              className="px-4 py-2 rounded-xl bg-[#2a220f] hover:bg-[#382d14] border border-amber-500/40 text-amber-300 font-mono font-bold text-xs uppercase transition-colors shrink-0"
+            >
+              View in CRM ({pendingUpiBookings.length}) →
+            </button>
+          </div>
+
+          {/* Pending UPI Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 pt-2">
+            {pendingUpiBookings.map(b => (
+              <div 
+                key={b.id}
+                className="p-4 rounded-2xl bg-[#141108] border border-amber-500/30 space-y-3 font-mono text-xs flex flex-col justify-between"
+              >
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <span className="font-extrabold text-amber-400 text-sm">#{b.bookingRef}</span>
+                    <span className="font-bold text-emerald-400 text-sm">₹{b.totalAmount}</span>
+                  </div>
+                  <div className="text-white font-bold">{b.captainName}</div>
+                  <div className="text-[11px] text-zinc-400">{b.pitchName} • {b.date} • {b.timeRange}</div>
+                  
+                  <div className="p-2.5 rounded-xl bg-[#211a0c] border border-amber-500/40 text-[11px] space-y-0.5">
+                    <span className="text-[10px] uppercase font-bold text-amber-400 block tracking-wider">Customer UTR Ref:</span>
+                    <span className="text-amber-200 font-mono font-black text-sm tracking-widest block select-all">
+                      {b.upiUtr || 'Pending Submission'}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 pt-2 border-t border-[#29200f]">
+                  <button
+                    onClick={() => onApproveUpi?.(b.id)}
+                    className="flex-1 py-2 px-3 rounded-xl bg-gradient-to-r from-emerald-400 to-green-500 hover:from-emerald-300 hover:to-green-400 text-black font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all"
+                  >
+                    <CheckCircle2 className="w-3.5 h-3.5 stroke-[3]" />
+                    <span>Approve ₹{b.totalAmount}</span>
+                  </button>
+                  <button
+                    onClick={() => onSelectBookingForPass(b)}
+                    className="py-2 px-2.5 rounded-xl bg-[#1e170a] hover:bg-[#2b210e] border border-amber-500/30 text-amber-300 text-xs font-bold"
+                    title="View Pass"
+                  >
+                    Pass
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* KPI Telemetry Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-xs font-mono">
@@ -258,6 +340,7 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({
           onSelectBooking={onSelectBookingForPass}
           onCheckInBooking={onCheckIn}
           onCollectBalance={onCollectBalance}
+          onApproveUpi={onApproveUpi}
           settings={settings}
         />
       )}
@@ -269,6 +352,7 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({
           onCheckIn={onCheckIn}
           onCollectBalance={onCollectBalance}
           onCancelBooking={onCancelBooking}
+          onApproveUpi={onApproveUpi}
         />
       )}
 

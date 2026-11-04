@@ -21,6 +21,7 @@ interface BookingsLedgerProps {
   onCheckIn: (bookingId: string) => void;
   onCollectBalance: (bookingId: string) => void;
   onCancelBooking: (bookingId: string) => void;
+  onApproveUpi?: (bookingId: string) => void;
 }
 
 export const BookingsLedger: React.FC<BookingsLedgerProps> = ({
@@ -28,15 +29,17 @@ export const BookingsLedger: React.FC<BookingsLedgerProps> = ({
   onSelectBooking,
   onCheckIn,
   onCollectBalance,
-  onCancelBooking
+  onCancelBooking,
+  onApproveUpi
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<'all' | 'today' | 'pending_balance' | 'checked_in'>('all');
+  const [statusFilter, setStatusFilter] = useState<'all' | 'today' | 'pending_balance' | 'upi_pending' | 'checked_in'>('all');
   const todayStr = getTodayString();
 
   const filtered = bookings.filter(b => {
     if (statusFilter === 'today' && b.date !== todayStr) return false;
     if (statusFilter === 'pending_balance' && b.balanceDue <= 0) return false;
+    if (statusFilter === 'upi_pending' && b.paymentStatus !== 'upi_pending') return false;
     if (statusFilter === 'checked_in' && !b.isCheckedIn) return false;
 
     if (!searchTerm.trim()) return true;
@@ -45,6 +48,7 @@ export const BookingsLedger: React.FC<BookingsLedgerProps> = ({
       b.captainName.toLowerCase().includes(term) ||
       b.captainPhone.includes(term) ||
       b.bookingRef.toLowerCase().includes(term) ||
+      (b.upiUtr && b.upiUtr.toLowerCase().includes(term)) ||
       (b.teamName && b.teamName.toLowerCase().includes(term)) ||
       b.pitchName.toLowerCase().includes(term)
     );
@@ -56,6 +60,7 @@ export const BookingsLedger: React.FC<BookingsLedgerProps> = ({
 
   const todayCount = bookings.filter(b => b.date === todayStr).length;
   const balanceDueCount = bookings.filter(b => b.balanceDue > 0 && b.status !== 'cancelled').length;
+  const upiPendingCount = bookings.filter(b => b.paymentStatus === 'upi_pending' && b.status !== 'cancelled').length;
   const checkedInCount = bookings.filter(b => b.isCheckedIn).length;
 
   return (
@@ -109,6 +114,19 @@ export const BookingsLedger: React.FC<BookingsLedgerProps> = ({
             }`}
           >
             Balance Due ({balanceDueCount})
+          </button>
+
+          <button
+            onClick={() => setStatusFilter('upi_pending')}
+            className={`px-3 py-1.5 rounded-xl transition-all font-bold ${
+              statusFilter === 'upi_pending'
+                ? 'bg-amber-400 text-black shadow-md'
+                : upiPendingCount > 0
+                ? 'bg-[#2b1f09] text-amber-300 hover:text-white border border-amber-500/60 animate-pulse'
+                : 'bg-[#122417] text-zinc-300 hover:text-white border border-[#21422a]'
+            }`}
+          >
+            UPI Pending ({upiPendingCount})
           </button>
 
           <button
@@ -215,7 +233,18 @@ export const BookingsLedger: React.FC<BookingsLedgerProps> = ({
                         <div className="text-zinc-400 text-[11px]">
                           Paid: ₹{booking.advancePaid}
                         </div>
-                        {booking.balanceDue > 0 ? (
+                        {booking.paymentStatus === 'upi_pending' ? (
+                          <div className="mt-1 space-y-0.5">
+                            <span className="inline-block px-2 py-0.5 rounded-md bg-amber-400/20 border border-amber-400/40 text-amber-300 font-extrabold text-[10px]">
+                              🟡 UPI Pending Verification
+                            </span>
+                            {booking.upiUtr && (
+                              <span className="block text-[10px] text-zinc-400 font-mono">
+                                UTR: <strong className="text-amber-200">{booking.upiUtr}</strong>
+                              </span>
+                            )}
+                          </div>
+                        ) : booking.balanceDue > 0 ? (
                           <span className="inline-block mt-1 px-2 py-0.5 rounded-md bg-amber-400/20 border border-amber-400/30 text-amber-300 font-extrabold text-[11px]">
                             Counter Due: ₹{booking.balanceDue}
                           </span>
@@ -249,7 +278,17 @@ export const BookingsLedger: React.FC<BookingsLedgerProps> = ({
 
                       {/* Actions */}
                       <td className="p-4 text-right space-x-2">
-                        {booking.balanceDue > 0 && !isCancelled && (
+                        {booking.paymentStatus === 'upi_pending' && !isCancelled && (
+                          <button
+                            onClick={() => onApproveUpi?.(booking.id)}
+                            className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-400 to-green-500 hover:from-emerald-300 hover:to-green-400 text-black font-extrabold text-[11px] shadow-sm active:scale-95 inline-flex items-center gap-1"
+                          >
+                            <CheckCircle2 className="w-3.5 h-3.5 stroke-[3]" />
+                            <span>Approve UPI</span>
+                          </button>
+                        )}
+
+                        {booking.balanceDue > 0 && booking.paymentStatus !== 'upi_pending' && !isCancelled && (
                           <button
                             onClick={() => onCollectBalance(booking.id)}
                             className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-black font-extrabold text-[11px] shadow-sm active:scale-95"

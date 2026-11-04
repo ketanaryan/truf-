@@ -28,6 +28,7 @@ interface MasterScheduleGridProps {
   onSelectBooking: (booking: Booking) => void;
   onCheckInBooking: (bookingId: string) => void;
   onCollectBalance: (bookingId: string) => void;
+  onApproveUpi?: (bookingId: string) => void;
   settings: OwnerSettings;
 }
 
@@ -42,6 +43,7 @@ export const MasterScheduleGrid: React.FC<MasterScheduleGridProps> = ({
   onSelectBooking,
   onCheckInBooking,
   onCollectBalance,
+  onApproveUpi,
   settings
 }) => {
   const dateBookings = bookings.filter(b => b.date === selectedDate && b.status !== 'cancelled');
@@ -209,7 +211,24 @@ export const MasterScheduleGrid: React.FC<MasterScheduleGridProps> = ({
                             </button>
                           )}
 
-                          {p1Booking.balanceDue > 0 ? (
+                          {p1Booking.paymentStatus === 'upi_pending' ? (
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-amber-300 font-extrabold text-[10px] bg-amber-400/20 px-1.5 py-0.5 rounded border border-amber-400/40">
+                                🟡 UPI UTR: {p1Booking.upiUtr || 'Pending'}
+                              </span>
+                              {onApproveUpi && (
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    onApproveUpi(p1Booking.id);
+                                  }}
+                                  className="px-2 py-0.5 rounded bg-amber-400 text-black font-black text-[10px] hover:bg-amber-300 transition-colors"
+                                >
+                                  Approve
+                                </button>
+                              )}
+                            </div>
+                          ) : p1Booking.balanceDue > 0 ? (
                             <span className="text-amber-400 font-black text-[10px] bg-amber-400/15 px-1.5 py-0.5 rounded">
                               Due: ₹{p1Booking.balanceDue}
                             </span>
@@ -304,7 +323,24 @@ export const MasterScheduleGrid: React.FC<MasterScheduleGridProps> = ({
                             </button>
                           )}
 
-                          {p2Booking.balanceDue > 0 ? (
+                          {p2Booking.paymentStatus === 'upi_pending' ? (
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-amber-300 font-extrabold text-[10px] bg-amber-400/20 px-1.5 py-0.5 rounded border border-amber-400/40">
+                                🟡 UPI UTR: {p2Booking.upiUtr || 'Pending'}
+                              </span>
+                              {onApproveUpi && (
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    onApproveUpi(p2Booking.id);
+                                  }}
+                                  className="px-2 py-0.5 rounded bg-amber-400 text-black font-black text-[10px] hover:bg-amber-300 transition-colors"
+                                >
+                                  Approve
+                                </button>
+                              )}
+                            </div>
+                          ) : p2Booking.balanceDue > 0 ? (
                             <span className="text-amber-400 font-black text-[10px] bg-amber-400/15 px-1.5 py-0.5 rounded">
                               Due: ₹{p2Booking.balanceDue}
                             </span>

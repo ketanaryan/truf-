@@ -9,7 +9,8 @@ import {
   ArrowRight,
   Sparkles,
   Layers,
-  ChevronRight
+  ChevronRight,
+  Trophy
 } from 'lucide-react';
 import { Pitch, Slot, SportType, OwnerSettings } from '../../types';
 import { getOffsetDateString } from '../../data/mockTurfData';
@@ -79,9 +80,32 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
     return slots.filter(s => selectedSlotIds.includes(s.id));
   }, [slots, selectedSlotIds]);
 
+  const isFullDaySelected = selectedSlotIds.length >= 18;
+  const weekend = isWeekend(selectedDate);
+  const fullDayPrice = weekend 
+    ? (currentPitch.fullDayWeekendPrice || 20000) 
+    : (currentPitch.fullDayWeekdayPrice || 15000);
+
   const totalBasePrice = useMemo(() => {
+    if (isFullDaySelected) {
+      return fullDayPrice;
+    }
     return selectedSlots.reduce((acc, s) => acc + s.price, 0);
-  }, [selectedSlots]);
+  }, [selectedSlots, isFullDaySelected, fullDayPrice]);
+
+  const handleToggleFullDay = () => {
+    if (isFullDaySelected) {
+      onClearSelectedSlots();
+    } else {
+      const availableIds = slots
+        .filter(s => s.status === 'available')
+        .map(s => s.id);
+      
+      onClearSelectedSlots();
+      // Select all slots
+      availableIds.forEach(id => onToggleSlot(id));
+    }
+  };
 
   return (
     <div id="booking-matrix-section" className="space-y-6 scroll-mt-24">
@@ -106,7 +130,6 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
           {pitches.map(pitch => {
             const isSelected = pitch.id === selectedPitchId;
-            const weekend = isWeekend(selectedDate);
             const baseRate = weekend ? pitch.baseWeekendPrice : pitch.baseWeekdayPrice;
             const peakRate = weekend ? pitch.peakHourWeekendPrice : pitch.peakHourWeekdayPrice;
 
@@ -133,7 +156,7 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
 
                 <div>
                   <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold block mb-1">
-                    {pitch.id === 'pitch-1' ? 'MAIN TOURNAMENT ARENA' : 'PRO DERBY COURT'}
+                    {pitch.id === 'pitch-1' ? '7v7 FOOTBALL & CRICKET' : '5v5 FOOTBALL & PICKLEBALL'}
                   </span>
                   <h4 className="text-base font-black text-white">{pitch.name}</h4>
                   <p className="text-xs text-zinc-400 mb-2">{pitch.subtitle}</p>
@@ -167,6 +190,7 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
             return (
               <button
                 key={sport}
+                type="button"
                 onClick={() => onSportChange(sport)}
                 className={`px-3.5 py-1.5 rounded-xl font-bold transition-all border active:scale-95 ${
                   isSelected
@@ -193,7 +217,7 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
             </h3>
           </div>
           <span className="text-xs font-mono text-zinc-400">
-            {isWeekend(selectedDate) ? '🔥 Weekend Prime Pricing Active' : '⚡ Regular Weekday Pricing'}
+            {weekend ? '🔥 Weekend Prime Pricing Active' : '⚡ Regular Weekday Pricing'}
           </span>
         </div>
 
@@ -204,6 +228,7 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
             return (
               <button
                 key={item.dateStr}
+                type="button"
                 onClick={() => onDateChange(item.dateStr)}
                 className={`flex-shrink-0 flex flex-col items-center justify-center min-w-[76px] py-3 px-2 rounded-2xl transition-all border-2 text-center relative active:scale-95 ${
                   isSelected
@@ -233,13 +258,62 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
 
       {/* Step 3: Choose Time Slot */}
       <div className="p-5 sm:p-6 rounded-3xl bg-[#0c1810] border-2 border-[#1f3d28] shadow-2xl space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#1b3623] pb-3">
+        
+        {/* Full Day Booking Option Card */}
+        <div className={`p-4 rounded-2xl border-2 transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 ${
+          isFullDaySelected
+            ? 'bg-gradient-to-r from-emerald-500/20 via-emerald-600/15 to-[#09140d] border-emerald-400 shadow-lg'
+            : 'bg-[#09140d] border-[#1f3d28] hover:border-emerald-500/50'
+        }`}>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-amber-400/20 text-amber-300 border border-amber-400/30 flex items-center justify-center font-bold text-lg">
+              🏆
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-extrabold text-white text-sm">Full Day Turf Booking</span>
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-amber-400 text-black">
+                  Tournament / Corporate Day
+                </span>
+              </div>
+              <p className="text-xs text-zinc-300 font-mono">
+                Book entire {currentPitch.name} for all 19 operating hours (06:00 AM – 01:00 AM) at flat package rate
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 self-end sm:self-center">
+            <div className="text-right font-mono">
+              <span className="text-[10px] text-zinc-400 block line-through">
+                ₹{slots.reduce((sum, s) => sum + s.price, 0)}
+              </span>
+              <span className="text-base font-black text-emerald-400">
+                ₹{fullDayPrice}
+              </span>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleToggleFullDay}
+              className={`px-4 py-2 rounded-xl font-bold text-xs font-mono uppercase tracking-wider transition-all active:scale-95 ${
+                isFullDaySelected
+                  ? 'bg-emerald-500 text-black font-extrabold shadow-md'
+                  : 'bg-[#122619] hover:bg-emerald-500 hover:text-black text-emerald-300 border border-[#214b2d]'
+              }`}
+            >
+              {isFullDaySelected ? '✓ Full Day Locked' : 'Select Full Day'}
+            </button>
+          </div>
+        </div>
+
+        {/* Regular Slots Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#1b3623] pb-3 pt-2">
           <div className="flex items-center gap-2">
             <span className="w-6 h-6 rounded-full bg-emerald-500 text-black font-extrabold flex items-center justify-center text-xs font-mono">
               3
             </span>
             <h3 className="text-sm sm:text-base font-extrabold uppercase text-white font-mono tracking-wider">
-              Pick Your Time Slot(s)
+              Or Pick Hourly Slot(s)
             </h3>
           </div>
 
@@ -253,6 +327,7 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
             ].map(f => (
               <button
                 key={f.id}
+                type="button"
                 onClick={() => setTimeFilter(f.id as any)}
                 className={`px-3 py-1.5 rounded-xl transition-all font-bold whitespace-nowrap ${
                   timeFilter === f.id
@@ -378,12 +453,12 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
         <div className="sticky bottom-5 z-40 p-4 sm:p-5 rounded-3xl bg-[#0c1810]/98 border-2 border-emerald-400 shadow-[0_20px_50px_rgba(0,0,0,0.9)] backdrop-blur-xl flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-bottom-4">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-400 to-green-500 text-black flex items-center justify-center font-black text-xl shadow-lg">
-              {selectedSlotIds.length}
+              {isFullDaySelected ? '19h' : selectedSlotIds.length}
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-xs uppercase font-mono tracking-wider text-emerald-400 font-extrabold">
-                  {selectedSlotIds.length} {selectedSlotIds.length === 1 ? 'Hour Selected' : 'Hours Selected'}
+                  {isFullDaySelected ? 'Full Day Turf Pass' : `${selectedSlotIds.length} ${selectedSlotIds.length === 1 ? 'Hour Selected' : 'Hours Selected'}`}
                 </span>
                 <span className="text-zinc-500">•</span>
                 <span className="text-xs font-bold text-white">
@@ -398,12 +473,14 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
 
           <div className="flex items-center gap-3 w-full sm:w-auto">
             <button
+              type="button"
               onClick={onClearSelectedSlots}
               className="px-4 py-3 rounded-xl bg-[#122417] border border-[#21422a] text-zinc-300 text-xs font-mono font-bold uppercase hover:text-white transition-colors"
             >
               Clear
             </button>
             <button
+              type="button"
               onClick={onProceedToCheckout}
               className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-7 py-3 rounded-xl bg-gradient-to-r from-emerald-400 to-green-500 hover:from-emerald-300 hover:to-green-400 text-black font-extrabold text-xs uppercase tracking-wider font-mono shadow-xl transition-all active:scale-95"
             >

@@ -2,7 +2,7 @@ export type SportType = 'Football 7v7' | 'Football 5v5' | 'Box Cricket' | 'Pickl
 
 export type SlotStatus = 'available' | 'booked' | 'blocked' | 'selected' | 'past';
 
-export type PaymentStatus = 'paid_full' | 'advance_deposit' | 'pay_at_venue' | 'refunded';
+export type PaymentStatus = 'paid_full' | 'advance_deposit' | 'pay_at_venue' | 'refunded' | 'upi_pending';
 
 export type PaymentMethod = 'upi' | 'card' | 'cash' | 'split';
 
@@ -20,6 +20,8 @@ export interface Pitch {
   baseWeekendPrice: number;
   peakHourWeekdayPrice: number;
   peakHourWeekendPrice: number;
+  fullDayWeekdayPrice: number;
+  fullDayWeekendPrice: number;
   features: string[];
   image: string;
 }
@@ -58,6 +60,9 @@ export interface Booking {
   durationHours: number;
   sport: SportType;
   
+  // Full Day Booking Flag
+  isFullDayBooking?: boolean;
+
   // Customer info
   captainName: string;
   captainPhone: string;
@@ -74,9 +79,13 @@ export interface Booking {
   paymentStatus: PaymentStatus;
   paymentMethod: PaymentMethod;
   source: BookingSource;
+
+  // Direct 0% UPI Verification (Zero Gateway Fees)
+  upiUtr?: string;
+  isUpiVerified?: boolean;
   
-  // Selected Addons
-  selectedAddons: {
+  // Selected Addons (preserved for type safety)
+  selectedAddons?: {
     id: string;
     name: string;
     price: number;
@@ -97,6 +106,7 @@ export interface OwnerSettings {
   phone: string;
   whatsapp: string;
   upiId: string;
+  upiPayeeName: string;
   openTime: string; // "06:00"
   closeTime: string; // "01:00" (next day)
   slotDurationMinutes: number; // 60

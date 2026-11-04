@@ -150,7 +150,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                 <div className="flex items-start justify-between">
                   <div>
                     <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold block">
-                      {currentPitch.id === 'pitch-1' ? 'MAIN STADIUM ARENA' : 'PRO REBOUND COURT'}
+                      {currentPitch.id === 'pitch-1' ? 'PITCH A • 7v7 & CRICKET' : 'PITCH B • 5v5 & PICKLEBALL'}
                     </span>
                     <h3 className="text-xl font-extrabold text-white mt-0.5">{currentPitch.name}</h3>
                     <p className="text-xs text-zinc-400 mt-0.5">{currentPitch.subtitle}</p>

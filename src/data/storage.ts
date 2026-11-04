@@ -16,7 +16,17 @@ export const getStoredBookings = (): Booking[] => {
       localStorage.setItem(STORAGE_KEYS.BOOKINGS, JSON.stringify(SEED_BOOKINGS));
       return SEED_BOOKINGS;
     }
-    return JSON.parse(data);
+    const parsed: Booking[] = JSON.parse(data);
+    return parsed.map(b => ({
+      ...b,
+      pitchName: b.pitchName
+        ? b.pitchName
+            .replace('The Colosseum (Pitch A)', 'Pitch A')
+            .replace('The Thunder Cage (Pitch B)', 'Pitch B')
+            .replace('The Colosseum', 'Pitch A')
+            .replace('The Thunder Cage', 'Pitch B')
+        : (b.pitchId === 'pitch-2' ? 'Pitch B' : 'Pitch A')
+    }));
   } catch (e) {
     console.error('Failed to load bookings from storage', e);
     return SEED_BOOKINGS;
@@ -41,6 +51,24 @@ export const addBooking = (booking: Booking): Booking[] => {
 export const updateBooking = (bookingId: string, updates: Partial<Booking>): Booking[] => {
   const current = getStoredBookings();
   const updated = current.map(b => (b.id === bookingId ? { ...b, ...updates } : b));
+  saveBookings(updated);
+  return updated;
+};
+
+export const approveUpiBooking = (bookingId: string): Booking[] => {
+  const current = getStoredBookings();
+  const updated = current.map(b => {
+    if (b.id === bookingId) {
+      return {
+        ...b,
+        isUpiVerified: true,
+        paymentStatus: 'paid_full' as const,
+        advancePaid: b.totalAmount,
+        balanceDue: 0
+      };
+    }
+    return b;
+  });
   saveBookings(updated);
   return updated;
 };

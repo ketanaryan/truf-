@@ -31,7 +31,7 @@ export const MatchFinderBoard: React.FC<MatchFinderBoardProps> = ({
   const [sport, setSport] = useState<SportType>('Football 7v7');
   const [date, setDate] = useState(getTodayString());
   const [timeSlot, setTimeSlot] = useState('08:00 PM - 09:00 PM');
-  const [pitchName, setPitchName] = useState('The Colosseum (Pitch A)');
+  const [pitchName, setPitchName] = useState('Pitch A');
   const [playersNeeded, setPlayersNeeded] = useState(2);
   const [costPerPerson, setCostPerPerson] = useState(150);
   const [skillLevel, setSkillLevel] = useState<'Beginner' | 'Intermediate' | 'Competitive' | 'Casual'>('Intermediate');
@@ -276,8 +276,8 @@ export const MatchFinderBoard: React.FC<MatchFinderBoardProps> = ({
                     onChange={e => setPitchName(e.target.value)}
                     className="w-full px-3 py-2.5 rounded-xl bg-[#09130d] border border-[#204029] text-white focus:outline-none focus:border-emerald-400"
                   >
-                    <option value="The Colosseum (Pitch A)">The Colosseum (Pitch A)</option>
-                    <option value="The Thunder Cage (Pitch B)">The Thunder Cage (Pitch B)</option>
+                    <option value="Pitch A">Pitch A (7v7 & Cricket)</option>
+                    <option value="Pitch B">Pitch B (5v5 & Pickleball)</option>
                   </select>
                 </div>
               </div>
