@@ -667,7 +667,7 @@ export const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({
               type="button"
               disabled={isProcessing}
               onClick={handleSubmitBooking}
-              className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-7 py-3 rounded-xl bg-gradient-to-r from-emerald-400 to-green-500 hover:from-emerald-300 hover:to-green-400 text-black font-extrabold text-xs uppercase tracking-wider shadow-lg active:scale-95 transition-all"
+              className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-[#FF6A00] hover:bg-[#E65F00] text-white font-extrabold text-xs uppercase tracking-wider shadow-xl shadow-orange-950/40 active:scale-95 transition-all"
             >
               <span>{isProcessing ? 'Confirming...' : 'Confirm Booking & Get Pass'}</span>
               <ArrowRight className="w-4 h-4 stroke-[3]" />

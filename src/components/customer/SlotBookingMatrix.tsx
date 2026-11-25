@@ -6,11 +6,11 @@ import {
   Lock, 
   Flame, 
   Info, 
-  ArrowRight,
-  Sparkles,
-  Layers,
-  ChevronRight,
-  Trophy
+  ArrowRight, 
+  Sparkles, 
+  Layers, 
+  ChevronRight, 
+  Trophy 
 } from 'lucide-react';
 import { Pitch, Slot, SportType, OwnerSettings } from '../../types';
 import { getOffsetDateString } from '../../data/mockTurfData';
@@ -100,37 +100,34 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
     if (isFullDaySelected) {
       onClearSelectedSlots();
     } else {
-      const availableIds = availableSlots.map(s => s.id);
+      const availIds = availableSlots.map(s => s.id);
       if (onSelectBatchSlots) {
-        onSelectBatchSlots(availableIds);
-      } else {
-        onClearSelectedSlots();
-        availableIds.forEach(id => onToggleSlot(id));
+        onSelectBatchSlots(availIds);
       }
     }
   };
 
   return (
-    <div id="booking-matrix-section" className="space-y-6 scroll-mt-24">
+    <div id="booking-matrix-section" className="space-y-6 scroll-mt-28 font-sans">
       
       {/* Step 1: Choose Pitch & Sport */}
-      <div className="p-5 sm:p-6 rounded-3xl bg-[#0c1810] border-2 border-[#1f3d28] shadow-2xl space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#1b3623] pb-3">
-          <div className="flex items-center gap-2">
-            <span className="w-6 h-6 rounded-full bg-emerald-500 text-black font-extrabold flex items-center justify-center text-xs font-mono">
+      <div className="p-5 sm:p-7 rounded-3xl bg-white border border-slate-200/90 shadow-xl space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
+          <div className="flex items-center gap-2.5">
+            <span className="w-7 h-7 rounded-full bg-[#FF6A00] text-white font-black flex items-center justify-center text-xs shadow-sm">
               1
             </span>
-            <h3 className="text-sm sm:text-base font-extrabold uppercase text-white font-mono tracking-wider">
+            <h3 className="text-base sm:text-lg font-display font-black uppercase text-[#111827] tracking-wide">
               Choose Pitch & Sport Format
             </h3>
           </div>
-          <span className="text-xs font-mono text-emerald-400">
+          <span className="text-xs font-semibold text-[#0D6EFD]">
             {currentPitch.name} • {selectedSport}
           </span>
         </div>
 
         {/* Pitch Selection Cards (Side-by-side) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {pitches.map(pitch => {
             const isSelected = pitch.id === selectedPitchId;
             const baseRate = weekend ? pitch.baseWeekendPrice : pitch.baseWeekdayPrice;
@@ -145,39 +142,39 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
                     onSportChange(pitch.sports[0]);
                   }
                 }}
-                className={`p-4 rounded-2xl cursor-pointer transition-all border-2 relative flex flex-col justify-between select-none active:scale-[0.99] ${
+                className={`p-5 rounded-2xl cursor-pointer transition-all border-2 relative flex flex-col justify-between select-none active:scale-[0.99] ${
                   isSelected
-                    ? 'bg-[#102416] border-emerald-400 shadow-xl'
-                    : 'bg-[#09140d] border-[#1c3824] hover:border-emerald-500/40 hover:bg-[#0d1d13]'
+                    ? 'bg-orange-50/50 border-[#FF6A00] shadow-md ring-2 ring-[#FF6A00]/20'
+                    : 'bg-slate-50/60 border-slate-200 hover:border-slate-300 hover:bg-slate-100/70'
                 }`}
               >
                 {isSelected && (
-                  <div className="absolute top-3.5 right-3.5 w-6 h-6 rounded-full bg-emerald-400 text-black flex items-center justify-center font-black text-xs shadow-md">
+                  <div className="absolute top-4 right-4 w-6 h-6 rounded-full bg-[#FF6A00] text-white flex items-center justify-center font-black text-xs shadow-md">
                     <Check className="w-4 h-4 stroke-[3]" />
                   </div>
                 )}
 
                 <div>
-                  <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold block mb-1">
+                  <span className="text-[11px] uppercase tracking-wider text-[#FF6A00] font-bold block mb-1">
                     {pitch.id === 'pitch-1' ? '7v7 FOOTBALL & CRICKET' : '5v5 FOOTBALL & PICKLEBALL'}
                   </span>
-                  <h4 className="text-base font-black text-white">{pitch.name}</h4>
-                  <p className="text-xs text-zinc-400 mb-2">{pitch.subtitle}</p>
+                  <h4 className="text-lg font-black text-[#111827]">{pitch.name}</h4>
+                  <p className="text-xs text-slate-500 mb-2">{pitch.subtitle}</p>
 
-                  <div className="flex flex-wrap gap-2 text-[11px] font-mono text-zinc-300 mb-3">
-                    <span className="px-2 py-0.5 rounded-md bg-[#13281a] border border-[#20442b]">
+                  <div className="flex flex-wrap gap-2 text-xs text-slate-600 mb-3">
+                    <span className="px-2.5 py-1 rounded-lg bg-white border border-slate-200 font-medium">
                       📐 {pitch.dimensions}
                     </span>
-                    <span className="px-2 py-0.5 rounded-md bg-[#13281a] border border-[#20442b]">
+                    <span className="px-2.5 py-1 rounded-lg bg-white border border-slate-200 font-medium">
                       🌱 {pitch.surface.split('(')[0]}
                     </span>
                   </div>
                 </div>
 
-                <div className="pt-2.5 border-t border-[#1a3824] flex items-center justify-between text-xs font-mono">
-                  <span className="text-zinc-400">Hourly Rate:</span>
-                  <span className="text-emerald-400 font-black text-sm">
-                    ₹{baseRate} – ₹{peakRate} <span className="text-zinc-500 text-xs font-normal">/ hr</span>
+                <div className="pt-3 border-t border-slate-200 flex items-center justify-between text-xs">
+                  <span className="text-slate-500 font-medium">Hourly Rate:</span>
+                  <span className="text-[#0D6EFD] font-black text-base">
+                    ₹{baseRate} – ₹{peakRate} <span className="text-slate-500 text-xs font-normal">/ hr</span>
                   </span>
                 </div>
               </div>
@@ -186,8 +183,8 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
         </div>
 
         {/* Sport Format Pills */}
-        <div className="pt-2 flex flex-wrap items-center gap-2 text-xs font-mono">
-          <span className="text-zinc-400 font-semibold mr-1">Select Sport:</span>
+        <div className="pt-2 flex flex-wrap items-center gap-2 text-xs">
+          <span className="text-slate-600 font-bold mr-1">Select Sport:</span>
           {currentPitch.sports.map(sport => {
             const isSelected = sport === selectedSport;
             return (
@@ -195,10 +192,10 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
                 key={sport}
                 type="button"
                 onClick={() => onSportChange(sport)}
-                className={`px-3.5 py-1.5 rounded-xl font-bold transition-all border active:scale-95 ${
+                className={`px-4 py-2 rounded-xl font-bold transition-all border active:scale-95 ${
                   isSelected
-                    ? 'bg-emerald-500 text-black border-emerald-400 shadow-md font-extrabold'
-                    : 'bg-[#09140d] text-zinc-300 hover:text-white border-[#1d3a25] hover:bg-[#122619]'
+                    ? 'bg-[#FF6A00] text-white border-[#E65F00] shadow-md font-extrabold'
+                    : 'bg-slate-100 text-slate-700 hover:text-black border-slate-200 hover:bg-slate-200'
                 }`}
               >
                 {sport}
@@ -209,23 +206,23 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
       </div>
 
       {/* Step 2: Choose Date */}
-      <div className="p-5 sm:p-6 rounded-3xl bg-[#0c1810] border-2 border-[#1f3d28] shadow-2xl space-y-3.5">
-        <div className="flex items-center justify-between border-b border-[#1b3623] pb-3">
-          <div className="flex items-center gap-2">
-            <span className="w-6 h-6 rounded-full bg-emerald-500 text-black font-extrabold flex items-center justify-center text-xs font-mono">
+      <div className="p-5 sm:p-7 rounded-3xl bg-white border border-slate-200/90 shadow-xl space-y-4">
+        <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+          <div className="flex items-center gap-2.5">
+            <span className="w-7 h-7 rounded-full bg-[#FF6A00] text-white font-black flex items-center justify-center text-xs shadow-sm">
               2
             </span>
-            <h3 className="text-sm sm:text-base font-extrabold uppercase text-white font-mono tracking-wider">
+            <h3 className="text-base sm:text-lg font-display font-black uppercase text-[#111827] tracking-wide">
               Select Match Date
             </h3>
           </div>
-          <span className="text-xs font-mono text-zinc-400">
+          <span className="text-xs font-semibold text-slate-500">
             {weekend ? '🔥 Weekend Prime Pricing Active' : '⚡ Regular Weekday Pricing'}
           </span>
         </div>
 
         {/* Date Carousel Strip */}
-        <div className="flex items-center gap-2.5 overflow-x-auto pb-2 scrollbar-thin">
+        <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-thin">
           {dateOptions.map(item => {
             const isSelected = item.dateStr === selectedDate;
             return (
@@ -233,24 +230,24 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
                 key={item.dateStr}
                 type="button"
                 onClick={() => onDateChange(item.dateStr)}
-                className={`flex-shrink-0 flex flex-col items-center justify-center min-w-[76px] py-3 px-2 rounded-2xl transition-all border-2 text-center relative active:scale-95 ${
+                className={`flex-shrink-0 flex flex-col items-center justify-center min-w-[78px] py-3.5 px-2 rounded-2xl transition-all border-2 text-center relative active:scale-95 ${
                   isSelected
-                    ? 'bg-gradient-to-b from-emerald-400 to-green-500 text-black border-emerald-300 shadow-lg font-bold'
-                    : 'bg-[#09140d] border-[#1b3823] text-zinc-300 hover:border-emerald-500/50 hover:bg-[#102216]'
+                    ? 'bg-[#FF6A00] text-white border-[#E65F00] shadow-lg font-bold scale-105'
+                    : 'bg-slate-50 border-slate-200 text-slate-700 hover:border-[#FF6A00] hover:bg-white'
                 }`}
               >
                 {item.weekend && !isSelected && (
-                  <span className="absolute -top-2 px-1.5 py-0.2 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[9px] font-mono font-bold">
+                  <span className="absolute -top-2 px-1.5 py-0.2 rounded-full bg-amber-100 text-amber-800 border border-amber-300 text-[9px] font-bold">
                     Weekend
                   </span>
                 )}
-                <span className={`text-[11px] uppercase tracking-wider font-semibold ${isSelected ? 'text-black font-extrabold' : 'text-zinc-400'}`}>
+                <span className={`text-[11px] uppercase tracking-wider font-bold ${isSelected ? 'text-white' : 'text-slate-500'}`}>
                   {item.dayName}
                 </span>
-                <span className={`text-xl font-black font-mono leading-none my-1 ${isSelected ? 'text-black' : 'text-white'}`}>
+                <span className={`text-xl font-black leading-none my-1 font-mono ${isSelected ? 'text-white' : 'text-[#111827]'}`}>
                   {item.dayNumber}
                 </span>
-                <span className={`text-[10px] uppercase font-mono ${isSelected ? 'text-emerald-950 font-bold' : 'text-zinc-500'}`}>
+                <span className={`text-[10px] uppercase font-bold ${isSelected ? 'text-orange-100' : 'text-slate-400'}`}>
                   {item.monthName}
                 </span>
               </button>
@@ -260,37 +257,37 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
       </div>
 
       {/* Step 3: Choose Time Slot */}
-      <div className="p-5 sm:p-6 rounded-3xl bg-[#0c1810] border-2 border-[#1f3d28] shadow-2xl space-y-4">
+      <div className="p-5 sm:p-7 rounded-3xl bg-white border border-slate-200/90 shadow-xl space-y-4">
         
-        {/* Full Day Booking Option Card */}
-        <div className={`p-4 rounded-2xl border-2 transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 ${
+        {/* Full Day Booking Option Card (Hatrick Grounds Style Mint-Teal Tint) */}
+        <div className={`p-5 rounded-2xl border-2 transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${
           isFullDaySelected
-            ? 'bg-gradient-to-r from-emerald-500/20 via-emerald-600/15 to-[#09140d] border-emerald-400 shadow-lg'
-            : 'bg-[#09140d] border-[#1f3d28] hover:border-emerald-500/50'
+            ? 'bg-orange-50 border-[#FF6A00] shadow-md'
+            : 'bg-gradient-to-r from-teal-50/70 to-emerald-50/50 border-teal-200 hover:border-teal-300'
         }`}>
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-400/20 text-amber-300 border border-amber-400/30 flex items-center justify-center font-bold text-lg">
+          <div className="flex items-center gap-3.5">
+            <div className="w-12 h-12 rounded-2xl bg-[#00B6C8]/15 text-[#00B6C8] border border-[#00B6C8]/30 flex items-center justify-center font-bold text-2xl">
               🏆
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-extrabold text-white text-sm">Full Day Turf Booking</span>
-                <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-amber-400 text-black">
-                  Tournament / Corporate Day
+                <span className="font-extrabold text-[#111827] text-base">Full Day Turf Booking</span>
+                <span className="px-2.5 py-0.5 rounded text-[10px] font-black uppercase bg-[#0B1D2D] text-amber-300">
+                  Tournament Package
                 </span>
               </div>
-              <p className="text-xs text-zinc-300 font-mono">
-                Book entire {currentPitch.name} for all 19 operating hours (06:00 AM – 01:00 AM) at flat package rate
+              <p className="text-xs text-slate-600 mt-0.5">
+                Reserve entire {currentPitch.name} for all operating hours (06:00 AM – 01:00 AM) at flat package rate
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-3 self-end sm:self-center">
-            <div className="text-right font-mono">
-              <span className="text-[10px] text-zinc-400 block line-through">
+            <div className="text-right">
+              <span className="text-xs text-slate-400 block line-through">
                 ₹{slots.reduce((sum, s) => sum + s.price, 0)}
               </span>
-              <span className="text-base font-black text-emerald-400">
+              <span className="text-lg font-black text-[#0D6EFD]">
                 ₹{fullDayPrice}
               </span>
             </div>
@@ -298,30 +295,30 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
             <button
               type="button"
               onClick={handleToggleFullDay}
-              className={`px-4 py-2 rounded-xl font-bold text-xs font-mono uppercase tracking-wider transition-all active:scale-95 ${
+              className={`px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all active:scale-95 shadow-sm ${
                 isFullDaySelected
-                  ? 'bg-emerald-500 text-black font-extrabold shadow-md'
-                  : 'bg-[#122619] hover:bg-emerald-500 hover:text-black text-emerald-300 border border-[#214b2d]'
+                  ? 'bg-[#FF6A00] text-white font-extrabold shadow-md'
+                  : 'bg-[#0B1D2D] hover:bg-slate-800 text-white'
               }`}
             >
-              {isFullDaySelected ? '✓ Full Day Locked' : 'Select Full Day'}
+              {isFullDaySelected ? '✓ Full Day Reserved' : 'Reserve Full Day'}
             </button>
           </div>
         </div>
 
         {/* Regular Slots Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#1b3623] pb-3 pt-2">
-          <div className="flex items-center gap-2">
-            <span className="w-6 h-6 rounded-full bg-emerald-500 text-black font-extrabold flex items-center justify-center text-xs font-mono">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-3 pt-2">
+          <div className="flex items-center gap-2.5">
+            <span className="w-7 h-7 rounded-full bg-[#FF6A00] text-white font-black flex items-center justify-center text-xs shadow-sm">
               3
             </span>
-            <h3 className="text-sm sm:text-base font-extrabold uppercase text-white font-mono tracking-wider">
+            <h3 className="text-base sm:text-lg font-display font-black uppercase text-[#111827] tracking-wide">
               Or Pick Hourly Slot(s)
             </h3>
           </div>
 
           {/* Quick Time Period Filters */}
-          <div className="flex items-center gap-1.5 text-xs font-mono overflow-x-auto pb-1">
+          <div className="flex items-center gap-1.5 text-xs overflow-x-auto pb-1">
             {[
               { id: 'all', label: 'All Slots' },
               { id: 'morning', label: 'Morning (6-12)' },
@@ -332,10 +329,10 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
                 key={f.id}
                 type="button"
                 onClick={() => setTimeFilter(f.id as any)}
-                className={`px-3 py-1.5 rounded-xl transition-all font-bold whitespace-nowrap ${
+                className={`px-3.5 py-1.5 rounded-xl transition-all font-bold whitespace-nowrap ${
                   timeFilter === f.id
-                    ? 'bg-emerald-500 text-black shadow-md'
-                    : 'bg-[#09140d] text-zinc-400 hover:text-white border border-[#1b3823]'
+                    ? 'bg-[#0B1D2D] text-white shadow-md'
+                    : 'bg-slate-100 text-slate-600 hover:text-black hover:bg-slate-200'
                 }`}
               >
                 {f.label}
@@ -345,18 +342,18 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
         </div>
 
         {/* Legend */}
-        <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-zinc-400 pt-1">
+        <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-600 pt-1">
           <div className="flex items-center gap-2">
-            <span className="w-3.5 h-3.5 rounded-md bg-[#0e2216] border border-emerald-400 inline-block"></span>
+            <span className="w-3.5 h-3.5 rounded-md bg-white border-2 border-slate-300 inline-block"></span>
             <span>Available</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="w-3.5 h-3.5 rounded-md bg-emerald-400 inline-block"></span>
-            <span className="text-emerald-400 font-bold">Selected</span>
+            <span className="w-3.5 h-3.5 rounded-md bg-[#FF6A00] inline-block"></span>
+            <span className="text-[#FF6A00] font-bold">Selected</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="w-3.5 h-3.5 rounded-md bg-[#1f1212] border border-red-500/40 inline-block"></span>
-            <span className="text-red-300">Booked / Locked</span>
+            <span className="w-3.5 h-3.5 rounded-md bg-slate-200 inline-block"></span>
+            <span className="text-slate-400">Booked / Locked</span>
           </div>
         </div>
 
@@ -381,65 +378,63 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
                 disabled={isBooked || isBlocked || isPast}
                 className={`p-3.5 rounded-2xl border-2 transition-all text-left flex flex-col justify-between select-none active:scale-[0.98] ${
                   isSelected
-                    ? 'bg-gradient-to-br from-emerald-400 to-green-500 border-emerald-300 text-black font-bold shadow-lg transform -translate-y-0.5 cursor-pointer'
+                    ? 'bg-[#FF6A00] border-[#E65F00] text-white font-bold shadow-lg transform -translate-y-0.5 cursor-pointer'
                     : isBooked
-                    ? 'bg-[#181111] border-red-900/40 opacity-70 cursor-not-allowed text-zinc-500'
+                    ? 'bg-slate-100 border-slate-200 opacity-70 cursor-not-allowed text-slate-400'
                     : isBlocked
-                    ? 'bg-[#181111] border-amber-900/40 opacity-70 cursor-not-allowed text-zinc-500'
+                    ? 'bg-slate-100 border-slate-200 opacity-70 cursor-not-allowed text-slate-400'
                     : isPast
-                    ? 'bg-[#0a120c] border-transparent opacity-30 cursor-not-allowed text-zinc-600'
-                    : 'bg-[#09140d] border-[#1c3824] hover:border-emerald-400 hover:bg-[#0f2416] cursor-pointer text-zinc-200'
+                    ? 'bg-slate-50 border-slate-100 opacity-40 cursor-not-allowed text-slate-400'
+                    : 'bg-white border-slate-200 hover:border-[#FF6A00] hover:shadow-md cursor-pointer text-slate-900'
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className={`text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-md ${
+                  <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md ${
                     isSelected
-                      ? 'bg-black/20 text-black'
+                      ? 'bg-black/20 text-white'
                       : slot.isPeak
-                      ? 'bg-amber-400/20 text-amber-300 border border-amber-400/40'
-                      : 'bg-[#122417] text-zinc-400'
+                      ? 'bg-amber-100 text-amber-800'
+                      : 'bg-slate-100 text-slate-600'
                   }`}>
                     {slot.isPeak ? '⚡ PRIME LIGHTS' : 'STANDARD'}
                   </span>
 
                   {isSelected && (
-                    <span className="w-5 h-5 rounded-full bg-black text-emerald-400 flex items-center justify-center font-black text-xs shadow-sm">
+                    <span className="w-5 h-5 rounded-full bg-white text-[#FF6A00] flex items-center justify-center font-black text-xs shadow-sm">
                       ✓
                     </span>
                   )}
                   {isBooked && (
-                    <Lock className="w-3.5 h-3.5 text-red-400" />
+                    <Lock className="w-3.5 h-3.5 text-slate-400" />
                   )}
                 </div>
 
                 <div className="my-1">
                   <div className={`text-sm font-black font-mono tracking-tight leading-snug ${
-                    isSelected ? 'text-black' : isBooked ? 'text-zinc-500 line-through' : 'text-white'
+                    isSelected ? 'text-white' : isBooked ? 'text-slate-400 line-through' : 'text-[#111827]'
                   }`}>
                     {slot.displayTime}
                   </div>
-                  <span className={`text-[10px] font-mono block mt-0.5 ${isSelected ? 'text-emerald-950 font-bold' : 'text-zinc-400'}`}>
+                  <span className={`text-[11px] block mt-0.5 font-medium ${isSelected ? 'text-orange-100' : 'text-slate-500'}`}>
                     60 mins match
                   </span>
                 </div>
 
-                <div className={`pt-2 mt-2 border-t flex items-center justify-between text-xs font-mono ${
-                  isSelected ? 'border-black/20' : 'border-[#172c1c]'
+                <div className={`pt-2 mt-2 border-t flex items-center justify-between text-xs ${
+                  isSelected ? 'border-white/20' : 'border-slate-100'
                 }`}>
                   {isBooked ? (
-                    <span className="text-red-400 font-bold text-[11px]">BOOKED</span>
+                    <span className="text-slate-400 font-bold text-[11px]">BOOKED</span>
                   ) : isBlocked ? (
-                    <span className="text-amber-400 font-bold text-[11px] truncate">
-                      LOCKED
-                    </span>
+                    <span className="text-slate-400 font-bold text-[11px] truncate">LOCKED</span>
                   ) : isPast ? (
-                    <span className="text-zinc-500 text-[11px]">ENDED</span>
+                    <span className="text-slate-400 text-[11px]">ENDED</span>
                   ) : (
                     <>
-                      <span className={`text-xs ${isSelected ? 'text-black font-bold' : 'text-zinc-400'}`}>
+                      <span className={`text-xs ${isSelected ? 'text-white' : 'text-slate-500'}`}>
                         Fee:
                       </span>
-                      <span className={`font-black text-sm ${isSelected ? 'text-black' : 'text-emerald-400'}`}>
+                      <span className={`font-black text-sm ${isSelected ? 'text-white' : 'text-[#0D6EFD]'}`}>
                         ₹{slot.price}
                       </span>
                     </>
@@ -451,25 +446,25 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
         </div>
       </div>
 
-      {/* Floating Bottom Drawer when slots are selected */}
+      {/* Floating Bottom Drawer when slots are selected (Hatrick Grounds Deep Navy + Orange) */}
       {selectedSlotIds.length > 0 && (
-        <div className="sticky bottom-5 z-40 p-4 sm:p-5 rounded-3xl bg-[#0c1810]/98 border-2 border-emerald-400 shadow-[0_20px_50px_rgba(0,0,0,0.9)] backdrop-blur-xl flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-bottom-4">
+        <div className="sticky bottom-5 z-40 p-4 sm:p-5 rounded-3xl bg-[#0B1D2D] border-2 border-[#FF6A00] shadow-2xl backdrop-blur-xl flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-bottom-4">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-400 to-green-500 text-black flex items-center justify-center font-black text-xl shadow-lg">
+            <div className="w-12 h-12 rounded-2xl bg-[#FF6A00] text-white flex items-center justify-center font-black text-xl shadow-lg">
               {isFullDaySelected ? '19h' : selectedSlotIds.length}
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xs uppercase font-mono tracking-wider text-emerald-400 font-extrabold">
+                <span className="text-xs uppercase tracking-wider text-[#FF6A00] font-black">
                   {isFullDaySelected ? 'Full Day Turf Pass' : `${selectedSlotIds.length} ${selectedSlotIds.length === 1 ? 'Hour Selected' : 'Hours Selected'}`}
                 </span>
-                <span className="text-zinc-500">•</span>
+                <span className="text-slate-400">•</span>
                 <span className="text-xs font-bold text-white">
                   {currentPitch.name} ({selectedSport})
                 </span>
               </div>
-              <p className="text-xs text-zinc-300 font-mono mt-0.5">
-                Date: <strong className="text-white">{selectedDate}</strong> | Total: <strong className="text-emerald-400 text-base font-black">₹{totalBasePrice}</strong>
+              <p className="text-xs text-slate-300 mt-0.5">
+                Date: <strong className="text-white">{selectedDate}</strong> | Total: <strong className="text-white text-base font-black">₹{totalBasePrice}</strong>
               </p>
             </div>
           </div>
@@ -478,14 +473,14 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
             <button
               type="button"
               onClick={onClearSelectedSlots}
-              className="px-4 py-3 rounded-xl bg-[#122417] border border-[#21422a] text-zinc-300 text-xs font-mono font-bold uppercase hover:text-white transition-colors"
+              className="px-4 py-3 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-slate-200 text-xs font-bold uppercase transition-colors"
             >
               Clear
             </button>
             <button
               type="button"
               onClick={onProceedToCheckout}
-              className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-7 py-3 rounded-xl bg-gradient-to-r from-emerald-400 to-green-500 hover:from-emerald-300 hover:to-green-400 text-black font-extrabold text-xs uppercase tracking-wider font-mono shadow-xl transition-all active:scale-95"
+              className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-[#FF6A00] hover:bg-[#E65F00] text-white font-extrabold text-xs uppercase tracking-wider shadow-xl shadow-orange-950/40 transition-all active:scale-95"
             >
               <span>Confirm & Book Match</span>
               <ArrowRight className="w-4 h-4 stroke-[3]" />

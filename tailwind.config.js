@@ -8,6 +8,20 @@ export default {
   theme: {
     extend: {
       colors: {
+        brand: {
+          orange: '#FF6A00',
+          'orange-dark': '#E65F00',
+          navy: '#0B1D2D',
+          'navy-dark': '#061320',
+          'navy-card': '#0E3A4D',
+          teal: '#00B6C8',
+          blue: '#0D6EFD',
+          surface: '#F2F4F7',
+          card: '#FFFFFF',
+          'text-primary': '#1F2937',
+          'text-muted': '#4B5563',
+          'text-light': '#9CA3AF'
+        },
         turf: {
           50: '#f0fdf4',
           100: '#dcfce7',
@@ -32,8 +46,8 @@ export default {
         }
       },
       fontFamily: {
-        display: ['Impact', 'Space Grotesk', 'system-ui', 'sans-serif'],
-        sans: ['Plus Jakarta Sans', 'Inter', 'system-ui', 'sans-serif'],
+        display: ['Bebas Neue', 'Impact', 'Space Grotesk', 'system-ui', 'sans-serif'],
+        sans: ['Poppins', 'Plus Jakarta Sans', 'Inter', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'Fira Code', 'monospace']
       },
       boxShadow: {

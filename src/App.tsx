@@ -295,7 +295,7 @@ const TurfAppContent: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#070d09] text-gray-100 flex flex-col font-sans selection:bg-emerald-500 selection:text-black">
+    <div className="min-h-screen bg-[#F2F4F7] text-[#1F2937] flex flex-col font-sans selection:bg-[#FF6A00] selection:text-white">
       
       {/* Owner Workstation Active Top Banner (Only if accessed via Staff Portal or ?mode=owner) */}
       {currentView === 'owner' && (
@@ -344,8 +344,8 @@ const TurfAppContent: React.FC = () => {
               onSelectPitch={handlePitchChange}
             />
 
-            {/* Customer Section Navigation Bar */}
-            <div className="sticky top-[73px] z-30 bg-[#070e0a]/95 backdrop-blur-md border-b border-[#183020] py-2.5 shadow-md">
+            {/* Customer Section Navigation Bar (Hatrick Grounds Clean White Theme) */}
+            <div className="sticky top-[108px] z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 py-3 shadow-sm">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3 overflow-x-auto scrollbar-none">
                 <div className="flex items-center gap-2">
                   <button
@@ -353,10 +353,10 @@ const TurfAppContent: React.FC = () => {
                       setCustomerTab('booking');
                       scrollToSlots();
                     }}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-all active:scale-95 whitespace-nowrap ${
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all active:scale-95 whitespace-nowrap ${
                       customerTab === 'booking'
-                        ? 'bg-gradient-to-r from-emerald-400 to-green-500 text-black shadow-md font-extrabold'
-                        : 'bg-[#0c1810] text-zinc-300 hover:text-white border border-[#1f3d28]'
+                        ? 'bg-[#FF6A00] text-white shadow-md font-extrabold'
+                        : 'bg-slate-100 text-slate-700 hover:text-black border border-slate-200 hover:bg-slate-200'
                     }`}
                   >
                     <span>⚽ Book a Pitch</span>
@@ -367,10 +367,10 @@ const TurfAppContent: React.FC = () => {
                       setCustomerTab('matchfinder');
                       scrollToMatchFinder();
                     }}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-all active:scale-95 whitespace-nowrap ${
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all active:scale-95 whitespace-nowrap ${
                       customerTab === 'matchfinder'
-                        ? 'bg-gradient-to-r from-emerald-400 to-green-500 text-black shadow-md font-extrabold'
-                        : 'bg-[#0c1810] text-zinc-300 hover:text-white border border-[#1f3d28]'
+                        ? 'bg-[#FF6A00] text-white shadow-md font-extrabold'
+                        : 'bg-slate-100 text-slate-700 hover:text-black border border-slate-200 hover:bg-slate-200'
                     }`}
                   >
                     <span>👥 Battle Board ({communityPosts.length})</span>
@@ -378,10 +378,10 @@ const TurfAppContent: React.FC = () => {
 
                   <button
                     onClick={() => setCustomerTab('facilities')}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-all active:scale-95 whitespace-nowrap ${
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all active:scale-95 whitespace-nowrap ${
                       customerTab === 'facilities'
-                        ? 'bg-gradient-to-r from-emerald-400 to-green-500 text-black shadow-md font-extrabold'
-                        : 'bg-[#0c1810] text-zinc-300 hover:text-white border border-[#1f3d28]'
+                        ? 'bg-[#FF6A00] text-white shadow-md font-extrabold'
+                        : 'bg-slate-100 text-slate-700 hover:text-black border border-slate-200 hover:bg-slate-200'
                     }`}
                   >
                     <span>🏟️ Arena Amenities</span>
@@ -389,19 +389,19 @@ const TurfAppContent: React.FC = () => {
 
                   <button
                     onClick={() => setCustomerTab('reviews')}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-all active:scale-95 whitespace-nowrap ${
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all active:scale-95 whitespace-nowrap ${
                       customerTab === 'reviews'
-                        ? 'bg-gradient-to-r from-emerald-400 to-green-500 text-black shadow-md font-extrabold'
-                        : 'bg-[#0c1810] text-zinc-300 hover:text-white border border-[#1f3d28]'
+                        ? 'bg-[#FF6A00] text-white shadow-md font-extrabold'
+                        : 'bg-slate-100 text-slate-700 hover:text-black border border-slate-200 hover:bg-slate-200'
                     }`}
                   >
                     <span>⭐ Reviews (4.9★)</span>
                   </button>
                 </div>
 
-                <div className="hidden lg:flex items-center gap-3 text-xs font-mono text-zinc-400">
-                  <span className="flex items-center gap-1.5 text-zinc-300">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <div className="hidden lg:flex items-center gap-3 text-xs text-slate-500 font-semibold">
+                  <span className="flex items-center gap-1.5 text-slate-700">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                     <span>Instant Pass Confirmation</span>
                   </span>
                 </div>
@@ -428,33 +428,33 @@ const TurfAppContent: React.FC = () => {
                   settings={settings}
                 />
 
-                {/* Quick explore footer cards */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-[#183020]">
+                {/* Quick explore footer cards (Hatrick Grounds Style) */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-slate-200">
                   <div 
                     onClick={() => setCustomerTab('matchfinder')}
-                    className="p-4 rounded-2xl bg-[#0c1810] border border-[#1f3d28] hover:border-emerald-500/40 cursor-pointer transition-all space-y-1"
+                    className="p-5 rounded-2xl bg-white border border-slate-200 hover:border-[#FF6A00] cursor-pointer transition-all space-y-1 shadow-sm hover:shadow-md"
                   >
-                    <span className="text-[10px] uppercase font-mono text-emerald-400 font-bold block">Community Lobby</span>
-                    <h4 className="text-white font-bold text-sm">Need players for your squad?</h4>
-                    <p className="text-zinc-400 text-xs">Join or post match requests on the Battle Board →</p>
+                    <span className="text-[10px] uppercase font-bold text-[#FF6A00] tracking-wider block">Community Lobby</span>
+                    <h4 className="text-[#111827] font-bold text-sm">Need players for your squad?</h4>
+                    <p className="text-slate-500 text-xs">Join or post match requests on the Battle Board →</p>
                   </div>
 
                   <div 
                     onClick={() => setCustomerTab('facilities')}
-                    className="p-4 rounded-2xl bg-[#0c1810] border border-[#1f3d28] hover:border-emerald-500/40 cursor-pointer transition-all space-y-1"
+                    className="p-5 rounded-2xl bg-white border border-slate-200 hover:border-[#FF6A00] cursor-pointer transition-all space-y-1 shadow-sm hover:shadow-md"
                   >
-                    <span className="text-[10px] uppercase font-mono text-amber-400 font-bold block">Tournament Specs</span>
-                    <h4 className="text-white font-bold text-sm">FIFA Grass & 500-Lux LEDs</h4>
-                    <p className="text-zinc-400 text-xs">Explore changing rooms, showers & lockers →</p>
+                    <span className="text-[10px] uppercase font-bold text-amber-600 tracking-wider block">Tournament Specs</span>
+                    <h4 className="text-[#111827] font-bold text-sm">FIFA Grass & 500-Lux LEDs</h4>
+                    <p className="text-slate-500 text-xs">Explore changing rooms, showers & lockers →</p>
                   </div>
 
                   <div 
                     onClick={() => setCustomerTab('reviews')}
-                    className="p-4 rounded-2xl bg-[#0c1810] border border-[#1f3d28] hover:border-emerald-500/40 cursor-pointer transition-all space-y-1"
+                    className="p-5 rounded-2xl bg-white border border-slate-200 hover:border-[#FF6A00] cursor-pointer transition-all space-y-1 shadow-sm hover:shadow-md"
                   >
-                    <span className="text-[10px] uppercase font-mono text-emerald-400 font-bold block">Player Rating</span>
-                    <h4 className="text-white font-bold text-sm">4.9 / 5.0 Star Rating</h4>
-                    <p className="text-zinc-400 text-xs">Read 1,480+ reviews from verified captains →</p>
+                    <span className="text-[10px] uppercase font-bold text-emerald-600 tracking-wider block">Player Rating</span>
+                    <h4 className="text-[#111827] font-bold text-sm">4.9 / 5.0 Star Rating</h4>
+                    <p className="text-slate-500 text-xs">Read 1,480+ reviews from verified captains →</p>
                   </div>
                 </div>
               </div>
@@ -547,21 +547,21 @@ const TurfAppContent: React.FC = () => {
         settings={settings}
       />
 
-      {/* Footer */}
-      <footer className="border-t border-[#1a3322] bg-[#050a07] py-14 text-zinc-400 text-xs font-mono">
+      {/* Footer (Hatrick Grounds Deep Navy) */}
+      <footer className="border-t border-slate-200 bg-[#0B1D2D] py-14 text-slate-400 text-xs font-sans">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="space-y-3">
               <div className="flex items-center gap-2">
-                <Shield className="w-5 h-5 text-emerald-400" />
-                <span className="font-display font-black text-lg text-white uppercase italic tracking-wider">
-                  BATTLE<span className="text-emerald-400">GROUNDS</span>
+                <Shield className="w-5 h-5 text-[#FF6A00]" />
+                <span className="font-display font-black text-xl text-white uppercase italic tracking-wider">
+                  BATTLE<span className="text-[#FF6A00]">GROUNDS</span>
                 </span>
               </div>
-              <p className="text-zinc-400 text-xs leading-relaxed">
+              <p className="text-slate-400 text-xs leading-relaxed">
                 Elite floodlit multi-sport arena engineered for Football 7v7, 5v5, Box Cricket, and Pickleball tournaments.
               </p>
-              <div className="flex items-center gap-3 text-emerald-400 pt-1 font-bold">
+              <div className="flex items-center gap-3 text-slate-300 pt-1 font-semibold">
                 <span>⚡ 06:00 – 01:00 Daily</span>
                 <span>•</span>
                 <span>🌱 FIFA Certified Grass</span>
@@ -570,9 +570,9 @@ const TurfAppContent: React.FC = () => {
 
             <div className="space-y-2">
               <span className="text-white font-bold uppercase tracking-wider block">Arena Location</span>
-              <p className="text-zinc-300">{settings.address}</p>
-              <p className="text-zinc-300">Desk Phone: {settings.phone}</p>
-              <p className="text-zinc-300">WhatsApp: {settings.whatsapp}</p>
+              <p className="text-slate-300">{settings.address}</p>
+              <p className="text-slate-300">Desk Phone: {settings.phone}</p>
+              <p className="text-slate-300">WhatsApp: {settings.whatsapp}</p>
             </div>
 
             <div className="space-y-2">
@@ -585,22 +585,22 @@ const TurfAppContent: React.FC = () => {
 
             <div className="space-y-2">
               <span className="text-white font-bold uppercase tracking-wider block">Direct Turf Pay</span>
-              <p className="text-zinc-400 leading-relaxed">
+              <p className="text-slate-400 leading-relaxed">
                 Direct UPI to arena account. Zero intermediary gateway charges, instant slot generation & verified digital match passes.
               </p>
-              <div className="pt-2 text-emerald-400 font-mono text-[11px] font-bold">
-                UPI: {settings.upiId}
+              <div className="pt-2 text-[#FF6A00] font-mono text-[11px] font-bold">
+                UPI ID: {settings.upiId}
               </div>
             </div>
           </div>
 
-          <div className="border-t border-[#14261a] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-zinc-500">
+          <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
             <p>© {new Date().getFullYear()} BATTLEGROUNDS ARENA. All Rights Reserved.</p>
             <div className="flex items-center gap-4">
               <p>Premier Sports Turf Booking & Venue Management</p>
               <button
                 onClick={() => setCurrentView('owner')}
-                className="text-zinc-600 hover:text-zinc-400 transition-colors text-[10px]"
+                className="text-slate-600 hover:text-slate-400 transition-colors text-[10px]"
                 title="Staff login"
               >
                 Staff Portal
