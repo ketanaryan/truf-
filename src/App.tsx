@@ -65,11 +65,17 @@ const TurfAppContent: React.FC = () => {
   const [ticketModalOpen, setTicketModalOpen] = useState(false);
   const [myBookingsOpen, setMyBookingsOpen] = useState(false);
 
-  // Hidden staff/owner portal mode: only activated via URL param ?mode=owner or ?admin=true
+  // Hidden staff/owner portal mode: activated via URL param (?mode=owner, ?admin=true) or path (/admin, /owner)
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
-      if (params.get('mode') === 'owner' || params.get('admin') === 'true') {
+      const path = window.location.pathname.toLowerCase();
+      if (
+        params.get('mode') === 'owner' ||
+        params.get('admin') === 'true' ||
+        path.startsWith('/admin') ||
+        path.startsWith('/owner')
+      ) {
         setCurrentView('owner');
       }
     }
@@ -308,7 +314,12 @@ const TurfAppContent: React.FC = () => {
               </span>
             </div>
             <button
-              onClick={() => setCurrentView('customer')}
+              onClick={() => {
+                setCurrentView('customer');
+                if (typeof window !== 'undefined' && (window.location.pathname.startsWith('/admin') || window.location.pathname.startsWith('/owner'))) {
+                  window.history.pushState({}, '', '/');
+                }
+              }}
               className="px-3.5 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs transition-colors active:scale-95 shadow-md"
             >
               ← Return to Player View
@@ -601,6 +612,9 @@ const TurfAppContent: React.FC = () => {
               <button
                 onClick={() => {
                   setCurrentView('owner');
+                  if (typeof window !== 'undefined') {
+                    window.history.pushState({}, '', '/admin');
+                  }
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white transition-all text-xs font-semibold border border-white/15 cursor-pointer shadow-sm"
