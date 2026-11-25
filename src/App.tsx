@@ -65,6 +65,16 @@ const TurfAppContent: React.FC = () => {
   const [ticketModalOpen, setTicketModalOpen] = useState(false);
   const [myBookingsOpen, setMyBookingsOpen] = useState(false);
 
+  // Hidden staff/owner portal mode: only activated via URL param ?mode=owner or ?admin=true
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('mode') === 'owner' || params.get('admin') === 'true') {
+        setCurrentView('owner');
+      }
+    }
+  }, []);
+
   useEffect(() => {
     saveBookings(bookings);
   }, [bookings]);
@@ -287,15 +297,40 @@ const TurfAppContent: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#070d09] text-gray-100 flex flex-col font-sans selection:bg-emerald-500 selection:text-black">
       
+      {/* Owner Workstation Active Top Banner (Only if accessed via Staff Portal or ?mode=owner) */}
+      {currentView === 'owner' && (
+        <div className="bg-[#122217] border-b border-emerald-500/40 py-2.5 px-4 text-xs font-mono shadow-md">
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span className="text-emerald-300 font-bold uppercase tracking-wider">
+                STAFF WORKSTATION ACTIVE
+              </span>
+            </div>
+            <button
+              onClick={() => setCurrentView('customer')}
+              className="px-3.5 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs transition-colors active:scale-95 shadow-md"
+            >
+              ← Return to Player View
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Navbar */}
       <Navbar
-        currentView={currentView}
-        onViewChange={setCurrentView}
+        customerTab={customerTab}
+        onSelectTab={(tab) => {
+          setCustomerTab(tab);
+          if (tab === 'booking') scrollToSlots();
+          if (tab === 'matchfinder') scrollToMatchFinder();
+        }}
         selectedSlotsCount={selectedSlotIds.length}
         onOpenCheckout={() => setCheckoutOpen(true)}
         onOpenMyBookings={() => setMyBookingsOpen(true)}
         settings={settings}
         onResetData={handleResetData}
+        onScrollToSlots={scrollToSlots}
       />
 
       {/* Main Content */}
@@ -512,31 +547,6 @@ const TurfAppContent: React.FC = () => {
         settings={settings}
       />
 
-      {/* Floating Role Switcher Pill */}
-      <div className="fixed bottom-5 right-5 z-40 hidden sm:flex items-center gap-1.5 p-1.5 rounded-2xl bg-[#0c1810]/95 border border-[#1f3d28] backdrop-blur-xl shadow-2xl text-xs font-mono">
-        <span className="text-[10px] uppercase px-2 text-zinc-400">View as:</span>
-        <button
-          onClick={() => setCurrentView('customer')}
-          className={`px-3.5 py-1.5 rounded-xl transition-all font-bold ${
-            currentView === 'customer'
-              ? 'bg-emerald-500 text-black shadow-md'
-              : 'text-zinc-400 hover:text-white'
-          }`}
-        >
-          Player
-        </button>
-        <button
-          onClick={() => setCurrentView('owner')}
-          className={`px-3.5 py-1.5 rounded-xl transition-all font-bold ${
-            currentView === 'owner'
-              ? 'bg-amber-400 text-black shadow-md'
-              : 'text-zinc-400 hover:text-white'
-          }`}
-        >
-          Owner Desk
-        </button>
-      </div>
-
       {/* Footer */}
       <footer className="border-t border-[#1a3322] bg-[#050a07] py-14 text-zinc-400 text-xs font-mono">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
@@ -574,20 +584,28 @@ const TurfAppContent: React.FC = () => {
             </div>
 
             <div className="space-y-2">
-              <span className="text-white font-bold uppercase tracking-wider block">Owner Operations</span>
-              <p className="text-zinc-400">Turf reception workstation for counter walk-ins, phone entries, and gate check-in.</p>
-              <button
-                onClick={() => setCurrentView('owner')}
-                className="mt-2 px-3.5 py-2 rounded-xl bg-amber-400/20 hover:bg-amber-400 hover:text-black text-amber-300 border border-amber-400/40 text-xs font-bold transition-colors"
-              >
-                Open Owner Command Desk →
-              </button>
+              <span className="text-white font-bold uppercase tracking-wider block">Direct Turf Pay</span>
+              <p className="text-zinc-400 leading-relaxed">
+                Direct UPI to arena account. Zero intermediary gateway charges, instant slot generation & verified digital match passes.
+              </p>
+              <div className="pt-2 text-emerald-400 font-mono text-[11px] font-bold">
+                UPI: {settings.upiId}
+              </div>
             </div>
           </div>
 
           <div className="border-t border-[#14261a] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-zinc-500">
             <p>© {new Date().getFullYear()} BATTLEGROUNDS ARENA. All Rights Reserved.</p>
-            <p>Premier Sports Turf Booking & Venue Management Software</p>
+            <div className="flex items-center gap-4">
+              <p>Premier Sports Turf Booking & Venue Management</p>
+              <button
+                onClick={() => setCurrentView('owner')}
+                className="text-zinc-600 hover:text-zinc-400 transition-colors text-[10px]"
+                title="Staff login"
+              >
+                Staff Portal
+              </button>
+            </div>
           </div>
         </div>
       </footer>

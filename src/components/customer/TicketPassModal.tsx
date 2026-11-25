@@ -307,10 +307,13 @@ export const TicketPassModal: React.FC<TicketPassModalProps> = ({
 
             <button
               type="button"
-              onClick={onClose}
-              className="px-6 py-2 rounded-xl bg-gradient-to-r from-emerald-400 to-green-500 hover:from-emerald-300 hover:to-green-400 text-black text-xs font-black font-mono uppercase tracking-wider transition-all active:scale-95 shadow-md cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation();
+                onClose();
+              }}
+              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-400 to-green-500 hover:from-emerald-300 hover:to-green-400 text-black text-xs font-black font-mono uppercase tracking-wider transition-all active:scale-95 shadow-lg cursor-pointer"
             >
-              Done
+              Done ✓
             </button>
           </div>
 

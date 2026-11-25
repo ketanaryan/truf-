@@ -5,12 +5,14 @@ import {
   Star, 
   Sun, 
   Zap, 
-  ArrowRight,
-  ShieldCheck,
+  ArrowRight, 
   CheckCircle2, 
   Sparkles,
   Eye,
-  Layers
+  MapPin,
+  Clock,
+  ShieldCheck,
+  Award
 } from 'lucide-react';
 import { Pitch } from '../../types';
 import { PitchVisualizer } from './PitchVisualizer';
@@ -48,7 +50,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
             <div className="flex items-center gap-1 text-amber-400 font-bold">
               <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
               <span>4.9</span>
-              <span className="text-zinc-400 font-normal hidden xs:inline">(1,480+ player matches)</span>
+              <span className="text-zinc-400 font-normal hidden xs:inline">(1,480+ player ratings)</span>
             </div>
           </div>
 
@@ -67,15 +69,15 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
         {/* Hero Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
-          {/* Left Column: Headlines & Instant Booking Trigger */}
-          <div className="lg:col-span-7 space-y-5">
-            <div className="space-y-3">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 font-mono text-xs font-bold uppercase tracking-wider">
+          {/* Left Column: Headlines, Avatars & Instant Booking */}
+          <div className="lg:col-span-7 space-y-6">
+            <div className="space-y-3.5">
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-400/40 text-emerald-300 font-mono text-xs font-bold uppercase tracking-wider shadow-sm">
                 <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Instant Slot Confirmation • 0 Booking Fee</span>
+                <span>PREMIER MULTI-SPORT ARENA • DUAL FLOODLIT COURTS</span>
               </span>
               
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black font-display tracking-tight text-white uppercase italic leading-[1.06]">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black font-display tracking-tight text-white uppercase italic leading-[1.05]">
                 PLAY UNDER THE <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-green-300 to-amber-300 underline decoration-emerald-500/40">
                   FLOODLIGHTS.
@@ -83,10 +85,34 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
               </h1>
 
               <p className="text-zinc-300 text-sm sm:text-base max-w-xl font-normal leading-relaxed">
-                Book premium artificial turf slots at <strong className="text-white font-semibold">Battlegrounds Arena</strong>. 
-                Dual FIFA-certified pitches, 500-lux broadcast floodlights, 
-                high ceiling derby ball nets, and instant digital gate passes.
+                Experience international-grade artificial turf at <strong className="text-white font-semibold">Battlegrounds Arena</strong>. 
+                Dual FIFA-certified pitches, 500-lux anti-glare floodlights, zero waterlogging, and seamless 0% gateway fee UPI reservations.
               </p>
+            </div>
+
+            {/* Hatrick Grounds Inspired Social Proof Cluster */}
+            <div className="flex items-center gap-3 py-1">
+              <div className="flex -space-x-2.5 overflow-hidden">
+                <img 
+                  className="inline-block h-8 w-8 rounded-full ring-2 ring-[#0c1810] object-cover" 
+                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80" 
+                  alt="Player avatar"
+                />
+                <img 
+                  className="inline-block h-8 w-8 rounded-full ring-2 ring-[#0c1810] object-cover" 
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&h=120&q=80" 
+                  alt="Player avatar"
+                />
+                <img 
+                  className="inline-block h-8 w-8 rounded-full ring-2 ring-[#0c1810] object-cover" 
+                  src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&h=120&q=80" 
+                  alt="Player avatar"
+                />
+              </div>
+              <div className="text-xs font-mono">
+                <span className="text-white font-bold block">Visited by 2,400+ captains & squads</span>
+                <span className="text-emerald-400 text-[11px]">★★★★★ 4.9 Verified Arena Rating</span>
+              </div>
             </div>
 
             {/* Quick Action Buttons */}
@@ -126,9 +152,9 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
             </div>
           </div>
 
-          {/* Right Column: Clean Venue & Pitch Showcase Card */}
+          {/* Right Column: Hatrick Grounds Inspired Showcase Ground Card */}
           <div className="lg:col-span-5">
-            <div className="p-5 sm:p-6 rounded-3xl bg-[#0c1810] border-2 border-[#1f3d28] shadow-2xl space-y-4">
+            <div className="p-4 sm:p-5 rounded-3xl bg-[#0c1810] border-2 border-[#1f3d28] shadow-2xl space-y-4">
               
               {/* Pitch Switcher Tabs */}
               <div className="flex bg-[#070f09] p-1.5 rounded-2xl border border-[#1a3522]">
@@ -150,49 +176,78 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                 ))}
               </div>
 
-              {/* Pitch Information Box */}
-              <div className="space-y-3">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold block">
-                      {currentPitch.id === 'pitch-1' ? 'PITCH A • 7v7 & CRICKET' : 'PITCH B • 5v5 & PICKLEBALL'}
+              {/* Real Full-Bleed Ground Photo Banner (Inspired by Hatrick Grounds) */}
+              <div className="relative rounded-2xl overflow-hidden h-44 sm:h-48 border border-[#1f3d28] group bg-[#0d2215] bg-gradient-to-br from-[#122c1b] to-[#07130b]">
+                <img 
+                  src={currentPitch.image} 
+                  alt={currentPitch.name} 
+                  onError={(e) => {
+                    // Clean graceful fallback if external CDN image is blocked
+                    (e.currentTarget as HTMLElement).style.display = 'none';
+                  }}
+                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                />
+                {/* Athletic Pitch markings graphic fallback */}
+                <div className="absolute inset-0 pointer-events-none opacity-25 flex items-center justify-center">
+                  <div className="w-28 h-28 rounded-full border-2 border-emerald-400/50 flex items-center justify-center">
+                    <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
+                  </div>
+                  <div className="absolute inset-x-0 h-0.5 bg-emerald-400/50"></div>
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent flex flex-col justify-between p-3.5 font-mono">
+                  <div className="flex items-center justify-between">
+                    <span className="px-2.5 py-0.5 rounded-full bg-emerald-500 text-black font-extrabold text-[10px] tracking-wider uppercase shadow">
+                      {currentPitch.id === 'pitch-1' ? 'MAIN ARENA' : 'PRO CAGE'}
                     </span>
-                    <h3 className="text-xl font-extrabold text-white mt-0.5">{currentPitch.name}</h3>
-                    <p className="text-xs text-zinc-400 mt-0.5">{currentPitch.subtitle}</p>
+                    <span className="px-2.5 py-0.5 rounded-lg bg-black/70 backdrop-blur-md border border-white/20 text-white text-[11px] font-bold">
+                      📍 {currentPitch.dimensions}
+                    </span>
                   </div>
 
-                  <span className="px-2.5 py-1 rounded-lg bg-[#14281a] border border-[#204029] text-emerald-300 font-mono text-[11px] font-bold">
-                    {currentPitch.dimensions}
+                  <div>
+                    <h3 className="text-xl font-black text-white uppercase italic tracking-tight">{currentPitch.name}</h3>
+                    <p className="text-xs text-emerald-300 font-semibold">{currentPitch.subtitle}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Hatrick Grounds Inspired Split Day / Night Pricing Box */}
+              <div className="grid grid-cols-2 gap-2 text-xs font-mono">
+                <div className="p-3 rounded-2xl bg-[#08120b] border border-[#1b3623] space-y-0.5">
+                  <span className="text-[10px] uppercase text-zinc-400 flex items-center gap-1">
+                    <Sun className="w-3 h-3 text-amber-400" />
+                    <span>Day Rate (6 AM - 5 PM)</span>
                   </span>
-                </div>
-
-                <div className="grid grid-cols-2 gap-2 text-xs font-mono">
-                  <div className="p-2.5 rounded-xl bg-[#070f09] border border-[#172e1e]">
-                    <span className="text-zinc-500 text-[10px] uppercase block">Surface</span>
-                    <span className="text-white font-bold text-[11px] truncate block">{currentPitch.surface}</span>
-                  </div>
-                  <div className="p-2.5 rounded-xl bg-[#070f09] border border-[#172e1e]">
-                    <span className="text-zinc-500 text-[10px] uppercase block">Lighting</span>
-                    <span className="text-amber-300 font-bold text-[11px] truncate block">{currentPitch.lighting.split('(')[0]}</span>
+                  <div className="text-emerald-400 font-black text-base">
+                    ₹{currentPitch.baseWeekdayPrice} <span className="text-[10px] text-zinc-500 font-normal">/ hr</span>
                   </div>
                 </div>
 
-                <div className="p-3 rounded-2xl bg-[#08120b] border border-[#183622] flex items-center justify-between font-mono text-xs">
-                  <div>
-                    <span className="text-[10px] uppercase text-zinc-400 block">Slot Fee:</span>
-                    <span className="text-emerald-400 font-black text-sm">
-                      ₹{currentPitch.baseWeekdayPrice} – ₹{currentPitch.peakHourWeekendPrice} <span className="text-xs text-zinc-500 font-normal">/ hour</span>
-                    </span>
+                <div className="p-3 rounded-2xl bg-[#08120b] border border-amber-500/30 space-y-0.5">
+                  <span className="text-[10px] uppercase text-amber-300 flex items-center gap-1 font-bold">
+                    <Zap className="w-3 h-3 text-amber-400" />
+                    <span>Night Lights (5 PM+)</span>
+                  </span>
+                  <div className="text-amber-400 font-black text-base">
+                    ₹{currentPitch.peakHourWeekdayPrice} <span className="text-[10px] text-zinc-500 font-normal">/ hr</span>
                   </div>
-
-                  <button
-                    onClick={() => setShowPitchModal(true)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#122417] hover:bg-emerald-500 hover:text-black border border-[#21422a] text-emerald-300 text-xs font-bold transition-all active:scale-95"
-                  >
-                    <Eye className="w-3.5 h-3.5" />
-                    <span>View Field 2D</span>
-                  </button>
                 </div>
+              </div>
+
+              {/* Compact Amenities Pills (Hatrick Grounds Style) */}
+              <div className="flex flex-wrap gap-1.5 text-[10px] font-mono text-zinc-300">
+                <span className="px-2 py-1 rounded-lg bg-[#070e0a] border border-[#183621]">⚡ 500-Lux LEDs</span>
+                <span className="px-2 py-1 rounded-lg bg-[#070e0a] border border-[#183621]">⚽ 50mm Grass</span>
+                <span className="px-2 py-1 rounded-lg bg-[#070e0a] border border-[#183621]">🚿 Changing Rooms</span>
+                <span className="px-2 py-1 rounded-lg bg-[#070e0a] border border-[#183621]">🚰 Chilled RO</span>
+                <span className="px-2 py-1 rounded-lg bg-[#070e0a] border border-[#183621]">🚗 Free Parking</span>
+                <button
+                  type="button"
+                  onClick={() => setShowPitchModal(true)}
+                  className="px-2 py-1 rounded-lg bg-[#14291a] text-emerald-300 hover:text-white border border-[#21442a] font-bold"
+                >
+                  👁️ 2D Layout
+                </button>
               </div>
 
               {/* Direct Booking CTA */}
@@ -201,10 +256,10 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                   onSelectPitch?.(currentPitch.id);
                   onScrollToSlots();
                 }}
-                className="w-full py-3 rounded-xl bg-[#13281a] hover:bg-[#1a3824] border border-[#22482e] hover:border-emerald-500/50 text-emerald-300 hover:text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all"
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-400 to-green-500 hover:from-emerald-300 hover:to-green-400 text-black font-mono text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-md active:scale-95"
               >
-                <span>Select Date & Time Slots Below</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                <span>Book {currentPitch.name} Now</span>
+                <ArrowRight className="w-3.5 h-3.5 stroke-[3]" />
               </button>
 
             </div>
@@ -214,7 +269,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
 
       </div>
 
-      {/* 2D Pitch Modal Preview (Clean Popup on demand instead of cluttering screen) */}
+      {/* 2D Pitch Modal Preview */}
       {showPitchModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
           <div className="bg-[#0c1810] border-2 border-[#1f3d28] rounded-3xl w-full max-w-xl p-5 sm:p-6 shadow-2xl relative space-y-4 animate-in fade-in zoom-in-95">

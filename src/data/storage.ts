@@ -2,12 +2,12 @@ import { Booking, OwnerSettings, Slot, SlotStatus, CommunityLobbyPost, Pitch, Cu
 import { PITCHES, DEFAULT_SETTINGS, SEED_BOOKINGS, SEED_COMMUNITY_POSTS, SEED_REVIEWS, getTodayString } from './mockTurfData';
 
 const STORAGE_KEYS = {
-  BOOKINGS: 'battlegrounds_turf_bookings_v1',
-  SETTINGS: 'battlegrounds_turf_settings_v1',
-  BLOCKED_SLOTS: 'battlegrounds_turf_blocked_slots_v1',
-  COMMUNITY_POSTS: 'battlegrounds_turf_community_posts_v1',
-  PITCHES: 'battlegrounds_turf_pitches_v1',
-  REVIEWS: 'battlegrounds_turf_reviews_v1',
+  BOOKINGS: 'battlegrounds_turf_bookings_v2',
+  SETTINGS: 'battlegrounds_turf_settings_v2',
+  BLOCKED_SLOTS: 'battlegrounds_turf_blocked_slots_v2',
+  COMMUNITY_POSTS: 'battlegrounds_turf_community_posts_v2',
+  PITCHES: 'battlegrounds_turf_pitches_v2',
+  REVIEWS: 'battlegrounds_turf_reviews_v2',
 };
 
 // Initialize or get bookings

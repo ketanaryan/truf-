@@ -1,50 +1,42 @@
 import React, { useState } from 'react';
 import { 
   Shield, 
-  LayoutDashboard, 
-  User, 
   Ticket, 
   PhoneCall, 
   MapPin, 
-  RotateCcw,
   Menu,
   X,
   Zap,
-  Sparkles
+  Sparkles,
+  Calendar,
+  Users,
+  Star,
+  ArrowRight
 } from 'lucide-react';
 import { OwnerSettings } from '../../types';
-import { useToast } from '../common/ToastContext';
 
 interface NavbarProps {
-  currentView: 'customer' | 'owner';
-  onViewChange: (view: 'customer' | 'owner') => void;
+  customerTab: 'booking' | 'matchfinder' | 'facilities' | 'reviews';
+  onSelectTab: (tab: 'booking' | 'matchfinder' | 'facilities' | 'reviews') => void;
   selectedSlotsCount: number;
   onOpenCheckout: () => void;
   onOpenMyBookings: () => void;
   settings: OwnerSettings;
   onResetData: () => void;
+  onScrollToSlots: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
-  currentView,
-  onViewChange,
+  customerTab,
+  onSelectTab,
   selectedSlotsCount,
   onOpenCheckout,
   onOpenMyBookings,
   settings,
-  onResetData
+  onResetData,
+  onScrollToSlots
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { showToast } = useToast();
-
-  const handleResetWithToast = () => {
-    onResetData();
-    showToast({
-      title: 'Demo State Reset',
-      message: 'Arena slots, bookings & settings restored to pristine demo state.',
-      type: 'info'
-    });
-  };
 
   return (
     <header className="sticky top-0 z-50 bg-[#070e0a]/95 backdrop-blur-md border-b border-[#183020] shadow-xl">
@@ -82,12 +74,21 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
+      {/* Hatrick Grounds Inspired High-Energy Announcement Ribbon */}
+      <div className="bg-gradient-to-r from-emerald-600 via-green-600 to-teal-700 px-3 py-1.5 text-[11px] font-mono text-black font-extrabold tracking-wider uppercase text-center shadow-inner flex items-center justify-center gap-2 overflow-x-auto whitespace-nowrap">
+        <span className="bg-black text-amber-300 px-1.5 py-0.5 rounded text-[10px] font-black">SPECIAL OFFER</span>
+        <span>⚡ FLAT FULL-DAY TOURNAMENT PASSES NOW LIVE • 0% UPI FEES • INSTANT DIGITAL MATCH PASS</span>
+      </div>
+
       {/* Main Navigation Bar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         
         {/* Brand identity */}
         <div 
-          onClick={() => onViewChange('customer')}
+          onClick={() => {
+            onSelectTab('booking');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
           className="flex items-center gap-3 cursor-pointer group select-none"
         >
           <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-400 via-green-600 to-emerald-800 flex items-center justify-center shadow-lg shadow-emerald-950/70 border border-emerald-300/40 group-hover:scale-105 transition-all duration-200">
@@ -108,50 +109,71 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
 
-        {/* Center Mode Switcher (Athletic Stadium Pill) */}
-        <div className="hidden md:flex items-center bg-[#0a150e] p-1 rounded-2xl border border-[#1d3824] shadow-inner">
+        {/* Center Navigation Links (Clean & Customer Facing) */}
+        <nav className="hidden lg:flex items-center gap-1 bg-[#0a150e] p-1.5 rounded-2xl border border-[#1d3824]">
           <button
             onClick={() => {
-              onViewChange('customer');
-              showToast({ title: 'Player View', message: 'Switched to Player Booking matrix.', type: 'info', duration: 2000 });
+              onSelectTab('booking');
+              onScrollToSlots();
             }}
-            className={`flex items-center gap-2 px-4 py-1.5 rounded-xl text-xs font-bold font-mono transition-all duration-200 active:scale-95 ${
-              currentView === 'customer'
-                ? 'bg-gradient-to-r from-emerald-400 to-green-500 text-black shadow-lg font-extrabold'
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold font-mono transition-all duration-200 ${
+              customerTab === 'booking'
+                ? 'bg-gradient-to-r from-emerald-400 to-green-500 text-black shadow-md font-extrabold'
                 : 'text-zinc-300 hover:text-white hover:bg-white/5'
             }`}
           >
-            <User className="w-3.5 h-3.5 stroke-[2.5]" />
-            <span>Player Booking</span>
+            <Calendar className="w-3.5 h-3.5" />
+            <span>Book a Slot</span>
           </button>
-          
+
           <button
-            onClick={() => {
-              onViewChange('owner');
-              showToast({ title: 'Owner Command Desk', message: 'Switched to Reception & Turf Operations Desk.', type: 'warning', duration: 2000 });
-            }}
-            className={`flex items-center gap-2 px-4 py-1.5 rounded-xl text-xs font-bold font-mono transition-all duration-200 active:scale-95 ${
-              currentView === 'owner'
-                ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-black shadow-lg font-extrabold'
+            onClick={() => onSelectTab('facilities')}
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold font-mono transition-all duration-200 ${
+              customerTab === 'facilities'
+                ? 'bg-gradient-to-r from-emerald-400 to-green-500 text-black shadow-md font-extrabold'
                 : 'text-zinc-300 hover:text-white hover:bg-white/5'
             }`}
           >
-            <LayoutDashboard className="w-3.5 h-3.5 stroke-[2.5]" />
-            <span>Turf Owner Desk</span>
+            <Zap className="w-3.5 h-3.5" />
+            <span>Pitches & Specs</span>
           </button>
-        </div>
+
+          <button
+            onClick={() => onSelectTab('matchfinder')}
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold font-mono transition-all duration-200 ${
+              customerTab === 'matchfinder'
+                ? 'bg-gradient-to-r from-emerald-400 to-green-500 text-black shadow-md font-extrabold'
+                : 'text-zinc-300 hover:text-white hover:bg-white/5'
+            }`}
+          >
+            <Users className="w-3.5 h-3.5" />
+            <span>Battle Board</span>
+          </button>
+
+          <button
+            onClick={() => onSelectTab('reviews')}
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold font-mono transition-all duration-200 ${
+              customerTab === 'reviews'
+                ? 'bg-gradient-to-r from-emerald-400 to-green-500 text-black shadow-md font-extrabold'
+                : 'text-zinc-300 hover:text-white hover:bg-white/5'
+            }`}
+          >
+            <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+            <span>Reviews</span>
+          </button>
+        </nav>
 
         {/* Right side actions */}
-        <div className="hidden md:flex items-center gap-2.5">
+        <div className="hidden sm:flex items-center gap-2.5">
           <button
             onClick={onOpenMyBookings}
             className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#0f1d13] hover:bg-[#162b1d] border border-[#213e2a] text-zinc-200 text-xs font-semibold font-mono transition-all active:scale-95 hover:border-emerald-500/40"
           >
             <Ticket className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Lookup Pass</span>
+            <span>Find My Pass</span>
           </button>
 
-          {selectedSlotsCount > 0 && currentView === 'customer' && (
+          {selectedSlotsCount > 0 ? (
             <button
               onClick={onOpenCheckout}
               className="relative flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-400 via-green-400 to-emerald-500 hover:from-emerald-300 hover:to-green-300 text-black font-extrabold text-xs uppercase tracking-wider font-mono shadow-xl shadow-emerald-950/80 transition-all duration-200 active:scale-95 animate-pulse"
@@ -159,28 +181,36 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span>Book ({selectedSlotsCount} {selectedSlotsCount === 1 ? 'Slot' : 'Slots'})</span>
               <span className="w-2 h-2 rounded-full bg-black"></span>
             </button>
+          ) : (
+            <button
+              onClick={onScrollToSlots}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-400 to-green-500 hover:from-emerald-300 text-black font-black text-xs uppercase tracking-wider font-mono shadow-md active:scale-95"
+            >
+              <span>Book Slot</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
           )}
-
-          <button
-            onClick={handleResetWithToast}
-            className="p-2.5 rounded-xl bg-[#0f1d13] hover:bg-[#162b1d] border border-[#213e2a] text-zinc-400 hover:text-white transition-all active:scale-90"
-            title="Reset sample bookings and demo data"
-            aria-label="Reset sample data"
-          >
-            <RotateCcw className="w-3.5 h-3.5" />
-          </button>
         </div>
 
         {/* Mobile quick actions & menu trigger */}
-        <div className="flex md:hidden items-center gap-2">
-          {selectedSlotsCount > 0 && currentView === 'customer' && (
+        <div className="flex lg:hidden items-center gap-2">
+          {selectedSlotsCount > 0 ? (
             <button
               onClick={onOpenCheckout}
               className="px-3.5 py-1.5 rounded-xl bg-emerald-400 text-black font-black text-xs uppercase tracking-wider shadow-lg active:scale-95"
             >
               Book ({selectedSlotsCount})
             </button>
+          ) : (
+            <button
+              onClick={onOpenMyBookings}
+              className="p-2 rounded-xl bg-[#0f1d13] border border-[#213e2a] text-emerald-400 text-xs"
+              title="Lookup Pass"
+            >
+              <Ticket className="w-4 h-4" />
+            </button>
           )}
+
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-2.5 rounded-xl bg-[#0f1d13] border border-[#213e2a] text-zinc-200 active:scale-95"
@@ -194,37 +224,65 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Mobile Menu Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#09140e] border-b border-[#1b3322] px-4 py-4 space-y-3.5 animate-in slide-in-from-top-2 duration-200">
-          <div className="grid grid-cols-2 gap-2">
-            <button
-              onClick={() => {
-                onViewChange('customer');
-                setMobileMenuOpen(false);
-              }}
-              className={`p-3 rounded-xl text-center text-xs font-bold font-mono transition-all ${
-                currentView === 'customer'
-                  ? 'bg-gradient-to-r from-emerald-400 to-green-500 text-black shadow-md'
-                  : 'bg-[#122217] text-zinc-300 border border-[#223d2b]'
-              }`}
-            >
-              Player Booking
-            </button>
-            <button
-              onClick={() => {
-                onViewChange('owner');
-                setMobileMenuOpen(false);
-              }}
-              className={`p-3 rounded-xl text-center text-xs font-bold font-mono transition-all ${
-                currentView === 'owner'
-                  ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-black shadow-md'
-                  : 'bg-[#122217] text-zinc-300 border border-[#223d2b]'
-              }`}
-            >
-              Turf Owner Desk
-            </button>
-          </div>
+        <div className="lg:hidden bg-[#09140e] border-b border-[#1b3322] px-4 py-4 space-y-2 animate-in slide-in-from-top-2 duration-200 font-mono text-xs">
+          <button
+            onClick={() => {
+              onSelectTab('booking');
+              onScrollToSlots();
+              setMobileMenuOpen(false);
+            }}
+            className="w-full p-2.5 rounded-xl text-left font-bold flex items-center justify-between text-zinc-200 hover:bg-[#122217]"
+          >
+            <span className="flex items-center gap-2">
+              <Calendar className="w-4 h-4 text-emerald-400" />
+              <span>Book a Slot</span>
+            </span>
+            <span className="text-emerald-400 font-mono text-[10px]">Instant Confirmation →</span>
+          </button>
 
-          <div className="flex items-center justify-between pt-3 border-t border-[#182e1f] text-xs font-mono">
+          <button
+            onClick={() => {
+              onSelectTab('facilities');
+              setMobileMenuOpen(false);
+            }}
+            className="w-full p-2.5 rounded-xl text-left font-bold flex items-center justify-between text-zinc-200 hover:bg-[#122217]"
+          >
+            <span className="flex items-center gap-2">
+              <Zap className="w-4 h-4 text-amber-400" />
+              <span>Pitches & Amenities</span>
+            </span>
+            <span className="text-zinc-500 text-[10px]">FIFA Spec Turf →</span>
+          </button>
+
+          <button
+            onClick={() => {
+              onSelectTab('matchfinder');
+              setMobileMenuOpen(false);
+            }}
+            className="w-full p-2.5 rounded-xl text-left font-bold flex items-center justify-between text-zinc-200 hover:bg-[#122217]"
+          >
+            <span className="flex items-center gap-2">
+              <Users className="w-4 h-4 text-emerald-400" />
+              <span>Battle Board (Find Players)</span>
+            </span>
+            <span className="text-zinc-500 text-[10px]">Community →</span>
+          </button>
+
+          <button
+            onClick={() => {
+              onSelectTab('reviews');
+              setMobileMenuOpen(false);
+            }}
+            className="w-full p-2.5 rounded-xl text-left font-bold flex items-center justify-between text-zinc-200 hover:bg-[#122217]"
+          >
+            <span className="flex items-center gap-2">
+              <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+              <span>Customer Reviews (4.9★)</span>
+            </span>
+            <span className="text-amber-400 text-[10px]">Google Verified →</span>
+          </button>
+
+          <div className="pt-3 border-t border-[#182e1f] flex items-center justify-between">
             <button
               onClick={() => {
                 onOpenMyBookings();
@@ -235,17 +293,13 @@ export const Navbar: React.FC<NavbarProps> = ({
               <Ticket className="w-4 h-4" />
               <span>Lookup My Match Pass</span>
             </button>
-            
-            <button
-              onClick={() => {
-                handleResetWithToast();
-                setMobileMenuOpen(false);
-              }}
-              className="flex items-center gap-1.5 text-zinc-400 hover:text-white"
+            <a
+              href={`tel:${settings.phone}`}
+              className="text-zinc-400 hover:text-white flex items-center gap-1"
             >
-              <RotateCcw className="w-3.5 h-3.5" />
-              <span>Reset Data</span>
-            </button>
+              <PhoneCall className="w-3.5 h-3.5 text-emerald-400" />
+              <span>{settings.phone}</span>
+            </a>
           </div>
         </div>
       )}
