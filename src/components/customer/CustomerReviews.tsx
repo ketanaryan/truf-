@@ -12,7 +12,7 @@ export const CustomerReviews: React.FC<CustomerReviewsProps> = ({ settings }) =>
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [name, setName] = useState('');
   const [team, setTeam] = useState('');
-  const [sport, setSport] = useState<SportType>('Football 7v7');
+  const [sport, setSport] = useState<SportType>('Box Cricket');
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState('');
   const [showGooglePrompt, setShowGooglePrompt] = useState(false);
@@ -62,8 +62,8 @@ export const CustomerReviews: React.FC<CustomerReviewsProps> = ({ settings }) =>
               Loved by 1,400+ Squads & Captains
             </h2>
             <p className="text-slate-600 text-sm max-w-xl">
-              From corporate leagues and weekend derbies to evening pickleball rallies, 
-              here is what teams say about playing at Battlegrounds.
+              From corporate tournaments and night matches to weekend cricket derbies, 
+              here is what cricket captains and squads say about playing at Battlegrounds.
             </p>
           </div>
 
@@ -259,17 +259,10 @@ export const CustomerReviews: React.FC<CustomerReviewsProps> = ({ settings }) =>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-slate-700 font-bold block mb-1">Sport Format</label>
-                    <select
-                      value={sport}
-                      onChange={e => setSport(e.target.value as SportType)}
-                      className="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 focus:outline-none focus:border-[#FF6A00]"
-                    >
-                      <option value="Football 7v7">Football 7v7</option>
-                      <option value="Box Cricket">Box Cricket</option>
-                      <option value="Football 5v5">Football 5v5</option>
-                      <option value="Pickleball">Pickleball</option>
-                    </select>
+                    <label className="text-slate-700 font-bold block mb-1">Match Format</label>
+                    <div className="w-full px-3 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-800 font-semibold text-xs">
+                      🏏 Box Cricket
+                    </div>
                   </div>
                   <div>
                     <label className="text-slate-700 font-bold block mb-1">Rating</label>

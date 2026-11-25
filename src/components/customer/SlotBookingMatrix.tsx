@@ -112,7 +112,7 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
   return (
     <div id="booking-matrix-section" className="space-y-6 scroll-mt-28 font-sans">
       
-      {/* Step 1: Choose Pitch & Sport */}
+      {/* Step 1: Arena Specifications & Rates */}
       <div className="p-5 sm:p-7 rounded-3xl bg-white border border-slate-200/90 shadow-xl space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
           <div className="flex items-center gap-2.5">
@@ -120,97 +120,66 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
               1
             </span>
             <h3 className="text-base sm:text-lg font-display font-black uppercase text-[#111827] tracking-wide">
-              Choose Pitch & Sport Format
+              Box Cricket Turf Specs & Rates
             </h3>
           </div>
-          <span className="text-xs font-semibold text-[#0D6EFD]">
-            {currentPitch.name} • {selectedSport}
+          <span className="text-xs font-semibold text-[#0D6EFD] bg-blue-50 px-3 py-1 rounded-full border border-blue-200">
+            🏏 Dedicated Box Cricket Arena
           </span>
         </div>
 
-        {/* Pitch Selection Cards (Side-by-side with Motion Primitives Spotlight) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {pitches.map(pitch => {
-            const isSelected = pitch.id === selectedPitchId;
-            const baseRate = weekend ? pitch.baseWeekendPrice : pitch.baseWeekdayPrice;
-            const peakRate = weekend ? pitch.peakHourWeekendPrice : pitch.peakHourWeekdayPrice;
+        {/* Single Premier Ground Highlight Card */}
+        <SpotlightCard
+          spotlightColor="rgba(255, 106, 0, 0.12)"
+          className="p-5 sm:p-6 rounded-2xl bg-orange-50/40 border-2 border-[#FF6A00]/40 shadow-sm relative flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
+        >
+          <div className="space-y-3 max-w-xl">
+            <div className="flex items-center gap-2">
+              <span className="px-2.5 py-0.5 rounded-full bg-[#FF6A00] text-white text-[10px] font-black uppercase tracking-wider">
+                MAIN ARENA
+              </span>
+              <span className="text-xs font-bold text-slate-700">120 ft × 65 ft Enclosed Rebound Cage</span>
+            </div>
 
-            return (
-              <SpotlightCard
-                key={pitch.id}
-                spotlightColor="rgba(255, 106, 0, 0.12)"
-                onClick={() => {
-                  onPitchChange(pitch.id);
-                  if (!pitch.sports.includes(selectedSport)) {
-                    onSportChange(pitch.sports[0]);
-                  }
-                }}
-                className={`p-5 rounded-2xl cursor-pointer transition-all border-2 relative flex flex-col justify-between select-none active:scale-[0.99] ${
-                  isSelected
-                    ? 'bg-orange-50/50 border-[#FF6A00] shadow-md ring-2 ring-[#FF6A00]/20'
-                    : 'bg-slate-50/60 border-slate-200 hover:border-slate-300 hover:bg-slate-100/70'
-                }`}
-              >
-                {isSelected && (
-                  <motion.div 
-                    initial={{ scale: 0, rotate: -25 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={{ type: 'spring', stiffness: 500, damping: 25 }}
-                    className="absolute top-4 right-4 w-6 h-6 rounded-full bg-[#FF6A00] text-white flex items-center justify-center font-black text-xs shadow-md"
-                  >
-                    <Check className="w-4 h-4 stroke-[3]" />
-                  </motion.div>
-                )}
+            <h4 className="text-xl font-black text-[#111827] uppercase tracking-wide">
+              {currentPitch.name}
+            </h4>
 
-                <div>
-                  <span className="text-[11px] uppercase tracking-wider text-[#FF6A00] font-bold block mb-1">
-                    {pitch.id === 'pitch-1' ? '7v7 FOOTBALL & CRICKET' : '5v5 FOOTBALL & PICKLEBALL'}
-                  </span>
-                  <h4 className="text-lg font-black text-[#111827]">{pitch.name}</h4>
-                  <p className="text-xs text-slate-500 mb-2">{pitch.subtitle}</p>
+            <p className="text-xs text-slate-600 leading-relaxed font-normal">
+              50mm dense monofilament astroturf with shockpad cushioning. High-tension ceiling and 360° boundary nets ensure zero ball loss. Regulation wooden stumps, bails and umpire gear provided free with every booking.
+            </p>
 
-                  <div className="flex flex-wrap gap-2 text-xs text-slate-600 mb-3">
-                    <span className="px-2.5 py-1 rounded-lg bg-white border border-slate-200 font-medium">
-                      📐 {pitch.dimensions}
-                    </span>
-                    <span className="px-2.5 py-1 rounded-lg bg-white border border-slate-200 font-medium">
-                      🌱 {pitch.surface.split('(')[0]}
-                    </span>
-                  </div>
-                </div>
+            <div className="flex flex-wrap gap-2 text-xs text-slate-700 pt-1">
+              <span className="px-3 py-1 rounded-xl bg-white border border-slate-200 font-semibold">
+                🏏 Wooden Stumps Provided
+              </span>
+              <span className="px-3 py-1 rounded-xl bg-white border border-slate-200 font-semibold">
+                🎾 Hard Tennis & Tape Ball
+              </span>
+              <span className="px-3 py-1 rounded-xl bg-white border border-slate-200 font-semibold">
+                🔆 500-Lux Anti-Glare Floodlights
+              </span>
+              <span className="px-3 py-1 rounded-xl bg-white border border-slate-200 font-semibold">
+                🚹 Dugout Seating (12/side)
+              </span>
+            </div>
+          </div>
 
-                <div className="pt-3 border-t border-slate-200 flex items-center justify-between text-xs">
-                  <span className="text-slate-500 font-medium">Hourly Rate:</span>
-                  <span className="text-[#0D6EFD] font-black text-base">
-                    ₹{baseRate} – ₹{peakRate} <span className="text-slate-500 text-xs font-normal">/ hr</span>
-                  </span>
-                </div>
-              </SpotlightCard>
-            );
-          })}
-        </div>
-
-        {/* Sport Format Pills */}
-        <div className="pt-2 flex flex-wrap items-center gap-2 text-xs">
-          <span className="text-slate-600 font-bold mr-1">Select Sport:</span>
-          {currentPitch.sports.map(sport => {
-            const isSelected = sport === selectedSport;
-            return (
-              <button
-                key={sport}
-                type="button"
-                onClick={() => onSportChange(sport)}
-                className={`px-4 py-2 rounded-xl font-bold transition-all border active:scale-95 ${
-                  isSelected
-                    ? 'bg-[#FF6A00] text-white border-[#E65F00] shadow-md font-extrabold'
-                    : 'bg-slate-100 text-slate-700 hover:text-black border-slate-200 hover:bg-slate-200'
-                }`}
-              >
-                {sport}
-              </button>
-            );
-          })}
-        </div>
+          <div className="w-full md:w-auto p-4 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-3 min-w-[240px]">
+            <div className="flex items-center justify-between text-xs pb-2 border-b border-slate-100">
+              <span className="text-slate-500 font-medium">Day Slots (6 AM - 5 PM)</span>
+              <span className="text-[#0D6EFD] font-black text-sm">₹{weekend ? currentPitch.baseWeekendPrice : currentPitch.baseWeekdayPrice} / hr</span>
+            </div>
+            <div className="flex items-center justify-between text-xs pb-2 border-b border-slate-100">
+              <span className="text-slate-500 font-medium">Night Floodlit (5 PM+)</span>
+              <span className="text-[#FF6A00] font-black text-sm">₹{weekend ? currentPitch.peakHourWeekendPrice : currentPitch.peakHourWeekdayPrice} / hr</span>
+            </div>
+            <div className="flex items-center justify-between text-xs pt-1 text-emerald-700 font-bold">
+              <span>0% Gateway Fee</span>
+              <span>Direct UPI</span>
+            </div>
+          </div>
+        </SpotlightCard>
       </div>
 
       {/* Step 2: Choose Date */}

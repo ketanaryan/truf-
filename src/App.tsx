@@ -47,7 +47,7 @@ const TurfAppContent: React.FC = () => {
 
   const [selectedDate, setSelectedDate] = useState<string>(getTodayString());
   const [selectedPitchId, setSelectedPitchId] = useState<string>(PITCHES[0].id);
-  const [selectedSport, setSelectedSport] = useState<SportType>('Football 7v7');
+  const [selectedSport, setSelectedSport] = useState<SportType>('Box Cricket');
   const [selectedSlotIds, setSelectedSlotIds] = useState<string[]>([]);
 
   const handlePitchChange = (pitchId: string) => {
@@ -146,7 +146,7 @@ const TurfAppContent: React.FC = () => {
     setTicketModalOpen(true);
 
     showToast({
-      title: 'Match Confirmed! ⚽',
+      title: 'Match Confirmed! 🏏',
       message: `Pass #${newBooking.bookingRef} ready for Captain ${newBooking.captainName}`,
       type: 'success',
       duration: 5000
@@ -359,7 +359,7 @@ const TurfAppContent: React.FC = () => {
                         : 'bg-slate-100 text-slate-700 hover:text-black border border-slate-200 hover:bg-slate-200'
                     }`}
                   >
-                    <span>⚽ Book a Pitch</span>
+                    <span>🏏 Book Box Cricket Slot</span>
                   </button>
 
                   <button
@@ -373,7 +373,7 @@ const TurfAppContent: React.FC = () => {
                         : 'bg-slate-100 text-slate-700 hover:text-black border border-slate-200 hover:bg-slate-200'
                     }`}
                   >
-                    <span>👥 Battle Board ({communityPosts.length})</span>
+                    <span>👥 Players Board ({communityPosts.length})</span>
                   </button>
 
                   <button
@@ -384,7 +384,7 @@ const TurfAppContent: React.FC = () => {
                         : 'bg-slate-100 text-slate-700 hover:text-black border border-slate-200 hover:bg-slate-200'
                     }`}
                   >
-                    <span>🏟️ Arena Amenities</span>
+                    <span>🏟️ Turf Specs & Amenities</span>
                   </button>
 
                   <button
@@ -443,9 +443,9 @@ const TurfAppContent: React.FC = () => {
                     onClick={() => setCustomerTab('facilities')}
                     className="p-5 rounded-2xl bg-white border border-slate-200 hover:border-[#FF6A00] cursor-pointer transition-all space-y-1 shadow-sm hover:shadow-md"
                   >
-                    <span className="text-[10px] uppercase font-bold text-amber-600 tracking-wider block">Tournament Specs</span>
-                    <h4 className="text-[#111827] font-bold text-sm">FIFA Grass & 500-Lux LEDs</h4>
-                    <p className="text-slate-500 text-xs">Explore changing rooms, showers & lockers →</p>
+                    <span className="text-[10px] uppercase font-bold text-amber-600 tracking-wider block">Turf Specifications</span>
+                    <h4 className="text-[#111827] font-bold text-sm">50mm Astroturf & 500-Lux Floodlights</h4>
+                    <p className="text-slate-500 text-xs">Ceiling nets, wooden stumps, dugouts & lockers →</p>
                   </div>
 
                   <div 
@@ -559,12 +559,12 @@ const TurfAppContent: React.FC = () => {
                 </span>
               </div>
               <p className="text-slate-400 text-xs leading-relaxed">
-                Elite floodlit multi-sport arena engineered for Football 7v7, 5v5, Box Cricket, and Pickleball tournaments.
+                Premier floodlit box cricket arena with heavy-gauge ceiling netting, certified bounce for tennis ball cricket, wooden stumps, and instant online slot booking.
               </p>
               <div className="flex items-center gap-3 text-slate-300 pt-1 font-semibold">
                 <span>⚡ 06:00 – 01:00 Daily</span>
                 <span>•</span>
-                <span>🌱 FIFA Certified Grass</span>
+                <span>🏏 50mm Cricket Astroturf</span>
               </div>
             </div>
 

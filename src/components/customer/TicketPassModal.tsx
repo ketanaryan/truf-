@@ -8,12 +8,8 @@ import {
   Calendar, 
   Clock, 
   MapPin, 
-  Sparkles,
-  Award,
-  CircleDollarSign,
-  AlertCircle,
-  Star,
-  ExternalLink
+  ExternalLink,
+  QrCode
 } from 'lucide-react';
 import { Booking, OwnerSettings } from '../../types';
 
@@ -38,10 +34,9 @@ export const TicketPassModal: React.FC<TicketPassModalProps> = ({
 
   const handleShareWhatsApp = () => {
     const text = encodeURIComponent(
-      `⚽ *BATTLEGROUNDS MATCH PASS*\n` +
+      `🏏 *BATTLEGROUNDS BOX CRICKET MATCH PASS*\n` +
       `Booking ID: *#${booking.bookingRef}*\n` +
-      `Pitch: *${booking.pitchName}*\n` +
-      `Format: *${booking.sport}*\n` +
+      `Turf: *${booking.pitchName}*\n` +
       `Date: *${booking.date}*\n` +
       `Slot: *${booking.timeRange}*\n` +
       `Captain: *${booking.captainName}* (${booking.teamName})\n` +
@@ -55,7 +50,7 @@ export const TicketPassModal: React.FC<TicketPassModalProps> = ({
           : `Advance Token Paid (Counter Balance Due ₹${booking.balanceDue})`
       }*\n` +
       `Venue: ${settings.address}\n\n` +
-      `Please arrive 15 minutes before kick-off!`
+      `Please report 15 minutes before match start! Wooden stumps provided.`
     );
     window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
   };
@@ -65,7 +60,7 @@ export const TicketPassModal: React.FC<TicketPassModalProps> = ({
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-sm overflow-y-auto font-sans"
       onClick={(e) => {
         if (e.target === e.currentTarget) {
           onClose();
@@ -74,37 +69,28 @@ export const TicketPassModal: React.FC<TicketPassModalProps> = ({
     >
       <div className="relative w-full max-w-md my-auto animate-in fade-in zoom-in-95">
         
-        {/* Ticket Container */}
-        <div className="bg-[#0c1810] border-2 border-[#1f3d28] rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.8)] overflow-hidden">
+        {/* Ticket Container (Hatrick Grounds Deep Navy & Crisp White Card) */}
+        <div className="bg-white border border-slate-200 rounded-3xl shadow-2xl overflow-hidden text-slate-800">
           
-          {/* Printable Ticket Area */}
-          <div id="printable-ticket" className="relative p-6 sm:p-7 space-y-4 bg-gradient-to-b from-[#0f2216] via-[#0c1810] to-[#08100b]">
-            
-            {/* Ticket Notches */}
-            <div className="ticket-notch-left"></div>
-            <div className="ticket-notch-right"></div>
-
-            {/* Stadium Glow Arc at top */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-12 bg-emerald-400/20 blur-2xl pointer-events-none rounded-full"></div>
-
-            {/* Pass Header with Close button */}
-            <div className="flex items-center justify-between border-b border-[#1c3824] pb-3">
+          {/* Ticket Header */}
+          <div className="bg-[#0B1D2D] p-5 sm:p-6 text-white relative">
+            <div className="flex items-center justify-between border-b border-white/10 pb-3">
               <div className="space-y-0.5">
                 <div className="flex items-center gap-1.5">
-                  <Shield className="w-4 h-4 text-emerald-400" />
+                  <Shield className="w-5 h-5 text-[#FF6A00]" />
                   <span className="font-display font-black text-xl tracking-wider text-white uppercase italic">
-                    BATTLE<span className="text-emerald-400">GROUNDS</span>
+                    BATTLE<span className="text-[#FF6A00]">GROUNDS</span>
                   </span>
                 </div>
-                <span className="text-[10px] block font-mono text-emerald-400 font-bold uppercase tracking-widest">
-                  OFFICIAL DIGITAL MATCH PASS
+                <span className="text-[10px] block text-[#00B6C8] font-bold uppercase tracking-wider">
+                  OFFICIAL BOX CRICKET MATCH PASS
                 </span>
               </div>
 
               <div className="flex items-center gap-2">
                 <div className="text-right">
-                  <span className="text-[9px] font-mono text-zinc-400 uppercase tracking-wider block">Pass ID</span>
-                  <span className="text-xs font-mono font-black text-emerald-300 bg-[#122619] px-2.5 py-0.5 rounded-lg border border-[#234b2f]">
+                  <span className="text-[9px] text-slate-400 uppercase tracking-wider block">Pass ID</span>
+                  <span className="text-xs font-mono font-black text-white bg-white/10 px-2.5 py-0.5 rounded-lg border border-white/20">
                     #{booking.bookingRef}
                   </span>
                 </div>
@@ -112,7 +98,7 @@ export const TicketPassModal: React.FC<TicketPassModalProps> = ({
                 <button
                   type="button"
                   onClick={onClose}
-                  className="w-8 h-8 rounded-full bg-[#122417] hover:bg-[#1a3823] text-zinc-400 hover:text-white flex items-center justify-center border border-[#204229] transition-colors"
+                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
                   aria-label="Close pass"
                 >
                   <X className="w-4 h-4" />
@@ -121,93 +107,94 @@ export const TicketPassModal: React.FC<TicketPassModalProps> = ({
             </div>
 
             {/* Status Live Bar */}
-            <div className="flex items-center justify-between bg-[#122619]/90 border border-[#20442a] p-3 rounded-2xl text-xs font-mono shadow-sm">
+            <div className="mt-3.5 flex items-center justify-between bg-white/10 border border-white/10 p-2.5 rounded-xl text-xs">
               <div className="flex items-center gap-2">
                 <span className="relative flex h-2.5 w-2.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400"></span>
                 </span>
-                <span className="text-emerald-200 font-bold uppercase tracking-wide text-[11px]">
-                  {booking.isCheckedIn ? 'Player On Turf' : 'Confirmed & Slot Reserved'}
+                <span className="text-emerald-300 font-bold uppercase tracking-wide text-[11px]">
+                  {booking.isCheckedIn ? 'Checked In On Turf' : 'Slot Confirmed & Reserved'}
                 </span>
               </div>
               
               <span className={`text-[10px] uppercase px-2.5 py-1 rounded-lg font-black tracking-wider ${
                 isFullyPaid
-                  ? 'bg-emerald-500 text-black shadow-md'
+                  ? 'bg-emerald-500 text-white shadow-sm'
                   : isUpiPending
-                  ? 'bg-amber-400/20 text-amber-300 border border-amber-400/40'
-                  : 'bg-amber-400/20 text-amber-300 border border-amber-400/40'
+                  ? 'bg-amber-400 text-black font-extrabold shadow-sm'
+                  : 'bg-orange-500 text-white font-extrabold shadow-sm'
               }`}>
                 {isFullyPaid ? '100% PAID' : isUpiPending ? 'UPI SUBMITTED' : `DUE ₹${booking.balanceDue}`}
               </span>
             </div>
+          </div>
 
-            {/* UPI Payment Proof Box if paid via UPI */}
+          {/* Ticket Body */}
+          <div id="printable-ticket" className="p-5 sm:p-6 space-y-4">
+            
+            {/* UPI Payment Proof status if applicable */}
             {isUpiPending && (
-              <div className="p-3 rounded-2xl bg-[#1f190e] border border-amber-500/40 text-xs font-mono space-y-1.5">
-                <div className="flex items-center justify-between text-amber-300 font-bold text-[11px]">
-                  <span>Payment Proof Attached</span>
-                  <span className="text-[10px] bg-amber-400/20 px-1.5 py-0.5 rounded">0% Gateway Fee</span>
+              <div className="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-xs space-y-1.5">
+                <div className="flex items-center justify-between text-amber-800 font-bold text-[11px]">
+                  <span>Payment Proof Attached ✓</span>
+                  <span className="text-[10px] bg-amber-200/80 px-2 py-0.5 rounded text-amber-900 font-extrabold">0% Gateway Fee</span>
                 </div>
                 {booking.paymentScreenshot && (
-                  <div className="flex items-center gap-2.5 p-2 rounded-xl bg-black/40 border border-amber-500/30">
+                  <div className="flex items-center gap-2.5 p-2 rounded-xl bg-white border border-amber-200">
                     <img 
                       src={booking.paymentScreenshot} 
                       alt="Receipt" 
-                      className="w-10 h-10 rounded-lg object-cover border border-amber-400/50 shrink-0" 
+                      className="w-10 h-10 rounded-lg object-cover border border-amber-300 shrink-0" 
                     />
                     <div className="overflow-hidden">
-                      <span className="text-white text-[11px] font-bold block truncate">Receipt Screenshot Attached ✓</span>
-                      <span className="text-zinc-400 text-[10px] block">Awaiting Owner 1-click verification</span>
+                      <span className="text-slate-800 text-[11px] font-bold block truncate">Receipt Photo Uploaded</span>
+                      <span className="text-slate-500 text-[10px] block">Owner can verify from workstation</span>
                     </div>
                   </div>
                 )}
                 {booking.upiUtr && (
-                  <div className="text-zinc-300 text-xs flex justify-between">
-                    <span>UTR / Ref No:</span>
-                    <strong className="text-amber-200 font-mono">{booking.upiUtr}</strong>
+                  <div className="text-slate-700 text-xs flex justify-between font-mono">
+                    <span>UPI Reference:</span>
+                    <strong className="text-amber-800">{booking.upiUtr}</strong>
                   </div>
                 )}
-                <p className="text-[10px] text-zinc-400 pt-0.5">
-                  ✓ Slot reserved. Turf owner will review the photo receipt and approve entry.
-                </p>
               </div>
             )}
 
-            {/* Match Grid Telemetry */}
-            <div className="grid grid-cols-2 gap-2.5 text-xs font-mono">
-              <div className="p-3 rounded-2xl bg-[#09140d] border border-[#1b3623]">
-                <span className="text-zinc-400 text-[10px] uppercase tracking-wider block mb-0.5">Court & Pitch</span>
-                <span className="text-white font-black block truncate text-sm">{booking.pitchName}</span>
-                <span className="text-emerald-400 text-[11px] font-semibold">{booking.sport}</span>
+            {/* Match Details Grid */}
+            <div className="grid grid-cols-2 gap-2.5 text-xs">
+              <div className="p-3 rounded-2xl bg-slate-50 border border-slate-200">
+                <span className="text-slate-400 text-[10px] uppercase font-bold block mb-0.5">Turf</span>
+                <span className="text-[#111827] font-black block truncate text-sm">Box Cricket Turf</span>
+                <span className="text-[#FF6A00] text-[11px] font-bold">120 ft Rebound Cage</span>
               </div>
 
-              <div className="p-3 rounded-2xl bg-[#09140d] border border-[#1b3623]">
-                <span className="text-zinc-400 text-[10px] uppercase tracking-wider block mb-0.5">Date & Time</span>
-                <span className="text-white font-bold block text-sm">{booking.date}</span>
-                <span className="text-amber-400 text-[11px] font-semibold">{booking.timeRange}</span>
+              <div className="p-3 rounded-2xl bg-slate-50 border border-slate-200">
+                <span className="text-slate-400 text-[10px] uppercase font-bold block mb-0.5">Date & Time</span>
+                <span className="text-[#111827] font-bold block text-sm font-mono">{booking.date}</span>
+                <span className="text-[#0D6EFD] text-[11px] font-bold font-mono">{booking.timeRange}</span>
               </div>
 
-              <div className="p-3 rounded-2xl bg-[#09140d] border border-[#1b3623]">
-                <span className="text-zinc-400 text-[10px] uppercase tracking-wider block mb-0.5">Team Captain</span>
-                <span className="text-white font-bold block truncate">{booking.captainName}</span>
-                <span className="text-zinc-400 text-[11px]">{booking.captainPhone}</span>
+              <div className="p-3 rounded-2xl bg-slate-50 border border-slate-200">
+                <span className="text-slate-400 text-[10px] uppercase font-bold block mb-0.5">Team Captain</span>
+                <span className="text-[#111827] font-bold block truncate">{booking.captainName}</span>
+                <span className="text-slate-500 text-[11px] font-mono">{booking.captainPhone}</span>
               </div>
 
-              <div className="p-3 rounded-2xl bg-[#09140d] border border-[#1b3623]">
-                <span className="text-zinc-400 text-[10px] uppercase tracking-wider block mb-0.5">Squad Name</span>
-                <span className="text-white font-bold block truncate">{booking.teamName}</span>
-                <span className="text-zinc-400 text-[11px]">
-                  {booking.isFullDayBooking ? 'Full Day Booking' : `${booking.durationHours} hr match`}
+              <div className="p-3 rounded-2xl bg-slate-50 border border-slate-200">
+                <span className="text-slate-400 text-[10px] uppercase font-bold block mb-0.5">Squad Name</span>
+                <span className="text-[#111827] font-bold block truncate">{booking.teamName}</span>
+                <span className="text-slate-500 text-[11px]">
+                  {booking.isFullDayBooking ? 'Full Day Tournament' : `${booking.durationHours} hr match`}
                 </span>
               </div>
             </div>
 
             {/* Scannable Gate Verification Box */}
-            <div className="p-3.5 rounded-2xl bg-[#070f09] border-2 border-[#1c3824] flex items-center justify-between gap-4 shadow-inner">
+            <div className="p-3.5 rounded-2xl bg-slate-50 border-2 border-slate-200 flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-white rounded-xl shadow-md border-2 border-emerald-500/50">
+                <div className="p-2 bg-white rounded-xl shadow border border-slate-200">
                   <svg className="w-12 h-12" viewBox="0 0 100 100" fill="none">
                     <rect width="100" height="100" fill="white" />
                     <rect x="10" y="10" width="30" height="30" fill="black" />
@@ -225,37 +212,35 @@ export const TicketPassModal: React.FC<TicketPassModalProps> = ({
                   </svg>
                 </div>
 
-                <div className="text-[11px] font-mono space-y-0.5">
-                  <span className="text-emerald-400 font-bold block uppercase tracking-wider text-[10px]">
+                <div className="text-xs space-y-0.5">
+                  <span className="text-[#0D6EFD] font-bold block uppercase tracking-wider text-[10px]">
                     Reception Gate QR
                   </span>
-                  <span className="text-white font-bold block">Show at Turf Gate</span>
-                  <span className="text-zinc-400 text-[10px] block">Quick check-in & entry</span>
+                  <span className="text-slate-900 font-extrabold block">Scan at Turf Reception</span>
+                  <span className="text-slate-500 text-[11px] block">Quick check-in & bib issue</span>
                 </div>
               </div>
 
-              <div className="text-right font-mono">
-                <span className="text-zinc-400 block text-[10px] uppercase">Amount</span>
-                <span className="text-emerald-400 font-black text-base">₹{booking.advancePaid}</span>
+              <div className="text-right">
+                <span className="text-slate-400 block text-[10px] uppercase font-bold">Paid</span>
+                <span className="text-[#0D6EFD] font-black text-lg">₹{booking.advancePaid}</span>
                 {booking.balanceDue > 0 && (
-                  <span className="text-amber-400 font-bold text-[10px] block">
-                    +₹{booking.balanceDue} due at gate
+                  <span className="text-amber-600 font-bold text-[10px] block">
+                    +₹{booking.balanceDue} at desk
                   </span>
                 )}
               </div>
             </div>
 
-            {/* Google Review Call to Action */}
-            <div className="p-3 rounded-2xl bg-gradient-to-r from-[#12281a] to-[#0c1c12] border border-amber-500/40 flex items-center justify-between gap-2.5">
+            {/* Google Review Prompt */}
+            <div className="p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200 flex items-center justify-between gap-2.5">
               <div className="space-y-0.5">
-                <div className="flex items-center gap-1 text-amber-400 font-bold text-[11px]">
-                  {'★★★★★'.split('').map((s, idx) => (
-                    <span key={idx}>{s}</span>
-                  ))}
-                  <span className="text-zinc-300 ml-1 font-semibold">Rate us on Google</span>
+                <div className="flex items-center gap-1 text-amber-500 font-bold text-xs">
+                  <span>★★★★★</span>
+                  <span className="text-slate-800 ml-1 font-bold">Review on Google</span>
                 </div>
-                <p className="text-[10px] text-zinc-400">
-                  Loved your game? Drop a quick 5★ review!
+                <p className="text-[10px] text-slate-500">
+                  Help fellow cricket captains discover Battlegrounds!
                 </p>
               </div>
 
@@ -263,44 +248,44 @@ export const TicketPassModal: React.FC<TicketPassModalProps> = ({
                 href={settings.googleReviewUrl || `https://search.google.com/local/writereview?placeid=battlegrounds-arena`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 text-black text-[11px] font-black uppercase tracking-wider shrink-0 shadow transition-all active:scale-95"
+                className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-white text-[11px] font-black uppercase tracking-wider shrink-0 shadow-sm transition-all active:scale-95 cursor-pointer"
               >
                 <span>5★ Review</span>
                 <ExternalLink className="w-3 h-3" />
               </a>
             </div>
 
-            {/* Venue Address */}
-            <div className="text-[10px] text-zinc-400 font-mono space-y-0.5 pt-1 border-t border-[#162b1d]">
-              <div className="flex items-start gap-1.5 text-zinc-300">
-                <MapPin className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+            {/* Venue Address & Instructions */}
+            <div className="text-xs text-slate-500 space-y-1 pt-1 border-t border-slate-100">
+              <div className="flex items-start gap-1.5 text-slate-700">
+                <MapPin className="w-3.5 h-3.5 text-[#FF6A00] shrink-0 mt-0.5" />
                 <span className="truncate">{settings.address}</span>
               </div>
-              <p className="text-zinc-400 pl-5">
-                • Please arrive 15 mins prior • Rubber studs or turf shoes only.
+              <p className="text-slate-400 text-[11px] pl-5">
+                • Please arrive 15 mins prior • Rubber studs or flat sneakers only.
               </p>
             </div>
 
           </div>
 
           {/* Modal Action Footer */}
-          <div className="p-4 bg-[#09140d] border-t border-[#1b3623] flex items-center justify-between gap-3">
+          <div className="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={handlePrint}
-                className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#122417] hover:bg-[#1a3321] border border-[#21422a] text-zinc-200 text-xs font-mono font-bold transition-all active:scale-95"
+                className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold transition-all active:scale-95 shadow-sm cursor-pointer"
               >
-                <Printer className="w-3.5 h-3.5 text-emerald-400" />
+                <Printer className="w-3.5 h-3.5 text-slate-600" />
                 <span>Print</span>
               </button>
 
               <button
                 type="button"
                 onClick={handleShareWhatsApp}
-                className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#122e1b] hover:bg-[#183d24] border border-[#24522f] text-emerald-300 text-xs font-mono font-bold transition-all active:scale-95"
+                className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-800 text-xs font-bold transition-all active:scale-95 shadow-sm cursor-pointer"
               >
-                <Share2 className="w-3.5 h-3.5 text-emerald-400" />
+                <Share2 className="w-3.5 h-3.5 text-emerald-600" />
                 <span>WhatsApp</span>
               </button>
             </div>
@@ -311,7 +296,7 @@ export const TicketPassModal: React.FC<TicketPassModalProps> = ({
                 e.stopPropagation();
                 onClose();
               }}
-              className="px-8 py-2.5 rounded-xl bg-[#FF6A00] hover:bg-[#E65F00] text-white text-xs font-black uppercase tracking-wider transition-all active:scale-95 shadow-lg shadow-orange-950/40 cursor-pointer"
+              className="px-8 py-2.5 rounded-xl bg-[#FF6A00] hover:bg-[#E65F00] text-white text-xs font-black uppercase tracking-wider transition-all active:scale-95 shadow-lg shadow-orange-500/30 cursor-pointer"
             >
               Done ✓
             </button>

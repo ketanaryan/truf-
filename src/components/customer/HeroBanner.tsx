@@ -2,21 +2,15 @@ import React, { useState } from 'react';
 import { 
   Calendar, 
   Users, 
-  Star, 
   Sun, 
   Zap, 
-  ArrowRight, 
   CheckCircle2, 
-  Sparkles,
-  Eye,
-  MapPin,
-  Clock,
   ShieldCheck,
   Award
 } from 'lucide-react';
 import { Pitch } from '../../types';
 import { PitchVisualizer } from './PitchVisualizer';
-import { SpotlightCard, SlidingTabs, AnimatedCounter, SpringButton } from '../motion/MotionPrimitives';
+import { SpotlightCard, AnimatedCounter, SpringButton } from '../motion/MotionPrimitives';
 
 interface HeroBannerProps {
   onScrollToSlots: () => void;
@@ -31,40 +25,40 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
   pitches,
   onSelectPitch
 }) => {
-  const [selectedPitchIdx, setSelectedPitchIdx] = useState(0);
   const [showPitchModal, setShowPitchModal] = useState(false);
-  const currentPitch = pitches[selectedPitchIdx] || pitches[0];
+  const currentPitch = pitches[0];
 
   return (
     <section className="relative bg-[#F2F4F7] pt-8 sm:pt-12 pb-12 sm:pb-16 border-b border-slate-200 overflow-hidden font-sans">
       
-      {/* Hatrick Grounds ambient background glows */}
+      {/* Ambient background glows */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#FF6A00]/8 rounded-full blur-3xl pointer-events-none -mr-40 -mt-20"></div>
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#00B6C8]/10 rounded-full blur-3xl pointer-events-none -ml-40 -mb-20"></div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           
-          {/* Left Column: Athletic Headline, Slogan & CTAs */}
+          {/* Left Column: Athletic Cricket Headline & Action Buttons */}
           <div className="lg:col-span-7 space-y-5 sm:space-y-6">
             
             {/* Orange Tag Badge (Hatrick Grounds Style) */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 border border-[#FF6A00]/30 text-[#E65F00] text-xs font-bold uppercase tracking-wider shadow-sm">
               <span className="w-2 h-2 rounded-full bg-[#FF6A00] animate-pulse"></span>
-              <span>PREMIER FLOODLIT HYBRID TURF</span>
+              <span>PREMIER FLOODLIT BOX CRICKET ARENA</span>
             </div>
 
             {/* Display Headline */}
             <div className="space-y-1">
               <h1 className="font-display font-black text-4xl sm:text-5xl lg:text-6xl text-[#111827] uppercase tracking-tight leading-[0.95]">
-                WELCOME TO BATTLEGROUNDS
-                <span className="block text-[#FF6A00] mt-1">- HYBRID TURF | HYPER PLAY</span>
+                PLAY UNDER THE FLOODLIGHTS
+                <span className="block text-[#FF6A00] mt-1">- 120 FT BOX CRICKET TURF</span>
               </h1>
             </div>
 
-            {/* Subtitle */}
+            {/* Subtitle - Authentic Indian Box Cricket details without AI slop */}
             <p className="text-[#4B5563] text-sm sm:text-base leading-relaxed max-w-xl font-normal">
-              Experience one of the finest multisport floodlit turfs in the city, designed for passionate players, friendly weekend matches, and competitive tournaments. Don't miss out — slots fill up fast, so gather your team, book your slot in seconds!
+              Dedicated box cricket arena with heavy-gauge ceiling and side nets so zero balls are lost. 
+              Equipped with match-grade wooden stumps, 500-lux anti-glare floodlights, and calibrated bounce for hard tennis and tape balls.
             </p>
 
             {/* Social Proof Cluster */}
@@ -88,7 +82,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
               </div>
               <div className="text-xs text-[#1F2937]">
                 <div className="font-bold flex items-center gap-1.5">
-                  <span>Visited by 2.4k+ players till now</span>
+                  <span>Visited by 2,400+ captains & squads</span>
                   <span className="flex text-amber-500">★★★★★</span>
                 </div>
                 <span className="text-[#6B7280]">4.9 / 5.0 Google Verified Arena Rating</span>
@@ -110,7 +104,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                 className="flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-white hover:bg-slate-50 text-[#1F2937] font-bold text-sm border border-slate-300 shadow-sm cursor-pointer"
               >
                 <Users className="w-4 h-4 text-[#FF6A00]" />
-                <span>FIND PLAYERS (BATTLE BOARD)</span>
+                <span>FIND PLAYERS (PLAYERS BOARD)</span>
               </SpringButton>
             </div>
 
@@ -118,11 +112,11 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
             <div className="pt-2 flex flex-wrap items-center gap-4 text-xs font-semibold text-[#4B5563]">
               <span className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                <span>Zero Waterlogging</span>
+                <span>Wooden Stumps & Bails Included</span>
               </span>
               <span className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                <span>500-Lux Broadcast LEDs</span>
+                <span>High Ceiling Nets (Zero Lost Balls)</span>
               </span>
               <span className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-[#FF6A00]" />
@@ -132,30 +126,14 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
 
           </div>
 
-          {/* Right Column: Hatrick Grounds Inspired Showcase Ground Card with Kokonut UI Spotlight */}
+          {/* Right Column: Showcase Ground Card with Kokonut UI Spotlight */}
           <div className="lg:col-span-5">
             <SpotlightCard
               spotlightColor="rgba(255, 106, 0, 0.12)"
               className="bg-white rounded-3xl p-5 sm:p-6 shadow-2xl border border-slate-200/90 space-y-4 relative"
             >
               
-              {/* Pitch Switcher Tabs (Motion Primitives Spring Pill) */}
-              <SlidingTabs
-                tabs={[
-                  { id: '0', label: 'Pitch A • 7v7 Arena' },
-                  { id: '1', label: 'Pitch B • 5v5 Court' }
-                ]}
-                activeId={String(selectedPitchIdx)}
-                onChange={(id) => {
-                  const idx = parseInt(id, 10);
-                  setSelectedPitchIdx(idx);
-                  if (pitches[idx]) onSelectPitch?.(pitches[idx].id);
-                }}
-                activeColor="bg-[#0B1D2D] text-white"
-                layoutGroupId="hero-pitch-switcher"
-              />
-
-              {/* Real Full-Bleed Ground Photo Banner (With Floating Badges) */}
+              {/* Full-Bleed Ground Photo Banner */}
               <div className="relative rounded-2xl overflow-hidden h-48 sm:h-52 border border-slate-200 bg-[#0B1D2D]">
                 <img 
                   src={currentPitch.image} 
@@ -177,7 +155,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent flex flex-col justify-between p-3.5">
                   <div className="flex items-center justify-between">
                     <span className="px-2.5 py-0.5 rounded-full bg-[#00B6C8] text-white font-black text-[11px] tracking-wider uppercase shadow">
-                      NEW
+                      BOX CRICKET
                     </span>
                     <span className="px-3 py-1 rounded-full bg-white text-[#1F2937] text-xs font-bold shadow-md flex items-center gap-2">
                       <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-radar-beacon"></span>
@@ -187,18 +165,18 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
 
                   <div>
                     <h3 className="text-xl font-display font-black text-white uppercase tracking-wide">
-                      {currentPitch.name === 'pitch-1' || currentPitch.id === 'pitch-1' ? 'PITCH A (7v7 & BOX CRICKET)' : 'PITCH B (5v5 & PICKLEBALL)'}
+                      BOX CRICKET TURF
                     </h3>
-                    <p className="text-xs text-orange-300 font-semibold">{currentPitch.subtitle}</p>
+                    <p className="text-xs text-orange-300 font-semibold">{currentPitch.dimensions} • High Ceiling Netting</p>
                   </div>
                 </div>
 
-                {/* Floating '98% Happy Players' badge (Hatrick Grounds signature + Micro-float motion) */}
+                {/* Floating '98% Happy Players' badge (Hatrick Grounds signature) */}
                 <div className="absolute bottom-3 right-3 bg-white px-3 py-1.5 rounded-xl shadow-lg border-l-4 border-[#FF6A00] flex items-center gap-2 text-xs font-bold text-[#1F2937] animate-float-subtle">
                   <span className="text-sm">⚡</span>
                   <div>
                     <div className="text-[#FF6A00] leading-none font-extrabold">98%</div>
-                    <div className="text-[10px] text-slate-500 font-medium">Happy Players</div>
+                    <div className="text-[10px] text-slate-500 font-medium">Happy Teams</div>
                   </div>
                 </div>
               </div>
@@ -242,19 +220,19 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                 </div>
               </div>
 
-              {/* Amenity Pills (Hatrick Grounds Exact Style) */}
+              {/* Amenity Pills for Box Cricket */}
               <div className="flex flex-wrap gap-1.5 text-xs text-slate-700">
+                <span className="px-2.5 py-1 rounded-xl bg-slate-100 border border-slate-200">🏏 Wooden Stumps</span>
+                <span className="px-2.5 py-1 rounded-xl bg-slate-100 border border-slate-200">🕸️ Ceiling Nets</span>
                 <span className="px-2.5 py-1 rounded-xl bg-slate-100 border border-slate-200">🔆 Floodlights</span>
                 <span className="px-2.5 py-1 rounded-xl bg-slate-100 border border-slate-200">🅿️ Free Parking</span>
-                <span className="px-2.5 py-1 rounded-xl bg-slate-100 border border-slate-200">🚾 Clean Washroom</span>
-                <span className="px-2.5 py-1 rounded-xl bg-slate-100 border border-slate-200">🚪 Changing Room</span>
                 <span className="px-2.5 py-1 rounded-xl bg-slate-100 border border-slate-200">💧 Chilled RO Water</span>
                 <button
                   type="button"
                   onClick={() => setShowPitchModal(true)}
                   className="px-2.5 py-1 rounded-xl bg-orange-100/60 border border-orange-300 text-[#E65F00] font-bold hover:bg-orange-200/60 transition-colors cursor-pointer"
                 >
-                  👁️ 2D Layout
+                  👁️ 2D Field View
                 </button>
               </div>
 
@@ -266,7 +244,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                 }}
                 className="w-full py-4 rounded-2xl bg-[#FF6A00] hover:bg-[#E65F00] text-white font-extrabold text-sm uppercase tracking-wider shadow-lg shadow-orange-500/30 flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>BOOK {currentPitch.name.toUpperCase()} NOW →</span>
+                <span>BOOK BOX CRICKET NOW →</span>
               </SpringButton>
 
             </SpotlightCard>
@@ -290,7 +268,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
               </div>
               <button
                 onClick={() => setShowPitchModal(false)}
-                className="px-3 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold border border-slate-300"
+                className="px-3 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold border border-slate-300 cursor-pointer"
               >
                 Close ✕
               </button>
@@ -299,16 +277,16 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
             <PitchVisualizer pitch={currentPitch} sport={currentPitch.sports[0]} />
 
             <div className="flex items-center justify-between text-xs text-slate-500 pt-1">
-              <span>Goalposts, referee dugouts, boundary safety nets included</span>
+              <span>Wooden stumps, bails, umpire clicker, boundary safety nets included</span>
               <button
                 onClick={() => {
                   setShowPitchModal(false);
                   onSelectPitch?.(currentPitch.id);
                   onScrollToSlots();
                 }}
-                className="px-4 py-2 rounded-xl bg-[#FF6A00] hover:bg-[#E65F00] text-white font-extrabold uppercase shadow-md"
+                className="px-4 py-2 rounded-xl bg-[#FF6A00] hover:bg-[#E65F00] text-white font-extrabold uppercase shadow-md cursor-pointer"
               >
-                Book This Pitch →
+                Book This Slot →
               </button>
             </div>
           </div>

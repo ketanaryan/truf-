@@ -6,8 +6,8 @@ import {
   Calendar, 
   Clock, 
   ChevronRight, 
-  CheckCircle2, 
-  Shield 
+  Star,
+  MapPin
 } from 'lucide-react';
 import { Booking, OwnerSettings } from '../../types';
 
@@ -45,20 +45,20 @@ export const MyBookingsModal: React.FC<MyBookingsModalProps> = ({
   });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
-      <div className="bg-[#0c1810] border-2 border-[#1f3d28] rounded-3xl w-full max-w-lg max-h-[85vh] overflow-hidden shadow-2xl relative animate-in fade-in zoom-in-95 flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-sm overflow-y-auto font-sans">
+      <div className="bg-white border border-slate-200 rounded-3xl w-full max-w-lg max-h-[85vh] overflow-hidden shadow-2xl relative animate-in fade-in zoom-in-95 flex flex-col text-slate-800">
         
-        {/* Header */}
-        <div className="p-5 sm:p-6 border-b border-[#1b3623] bg-[#0e1d13] flex items-center justify-between">
+        {/* Header (Hatrick Grounds Deep Navy) */}
+        <div className="p-5 sm:p-6 border-b border-white/10 bg-[#0B1D2D] text-white flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-400/30 flex items-center justify-center text-emerald-400">
+            <div className="w-11 h-11 rounded-2xl bg-[#FF6A00] flex items-center justify-center text-white shadow-md shadow-orange-950/40">
               <Ticket className="w-5 h-5 stroke-[2.5]" />
             </div>
             <div>
-              <h3 className="text-base font-extrabold uppercase text-white font-mono tracking-wider">
+              <h3 className="text-lg font-black uppercase tracking-wide text-white">
                 Find My Match Pass
               </h3>
-              <p className="text-xs text-zinc-400">
+              <p className="text-xs text-slate-300">
                 Enter your 10-digit mobile number or Pass ID
               </p>
             </div>
@@ -66,40 +66,41 @@ export const MyBookingsModal: React.FC<MyBookingsModalProps> = ({
 
           <button
             onClick={onClose}
-            className="w-9 h-9 rounded-xl bg-[#14281a] hover:bg-[#1a3523] text-zinc-300 hover:text-white flex items-center justify-center border border-[#21422a] transition-colors"
+            className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+            aria-label="Close modal"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Search Input Bar */}
-        <div className="p-4 sm:p-5 border-b border-[#1b3623] bg-[#09130d]">
+        <div className="p-4 sm:p-5 border-b border-slate-200 bg-[#F8FAFC]">
           <div className="relative">
-            <Search className="w-4 h-4 text-emerald-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search by mobile number (e.g. 98201) or #BG ref..."
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 rounded-xl bg-[#0f2216] border border-[#23482d] text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-400 font-mono shadow-inner"
+              className="w-full pl-10 pr-4 py-3 rounded-2xl bg-white border border-slate-300 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#FF6A00] focus:ring-2 focus:ring-[#FF6A00]/20 shadow-sm"
               autoFocus
             />
           </div>
-          <div className="flex items-center justify-between text-[11px] font-mono text-zinc-400 mt-2 px-1">
-            <span>Tip: Enter your phone number used at booking</span>
-            <span>Total match passes: {bookings.length}</span>
+          <div className="flex items-center justify-between text-[11px] text-slate-500 mt-2 px-1 font-medium">
+            <span>Tip: Enter the phone number used while booking</span>
+            <span>Passes: {bookings.length}</span>
           </div>
         </div>
 
         {/* Bookings List Area */}
-        <div className="p-4 sm:p-5 space-y-3 overflow-y-auto flex-1">
+        <div className="p-4 sm:p-5 space-y-3 overflow-y-auto flex-1 bg-white">
           {filtered.length === 0 ? (
             <div className="text-center py-12 space-y-2">
-              <div className="w-12 h-12 rounded-full bg-[#122417] text-zinc-500 mx-auto flex items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-slate-100 text-slate-400 mx-auto flex items-center justify-center">
                 <Ticket className="w-6 h-6" />
               </div>
-              <p className="text-white font-mono font-bold text-sm">No match passes found</p>
-              <p className="text-zinc-500 text-xs font-mono">
+              <p className="text-slate-800 font-bold text-sm">No match passes found</p>
+              <p className="text-slate-500 text-xs">
                 Check the mobile number or booking reference and try again.
               </p>
             </div>
@@ -113,61 +114,61 @@ export const MyBookingsModal: React.FC<MyBookingsModalProps> = ({
                     onSelectBooking(booking);
                     onClose();
                   }}
-                  className="p-4 rounded-2xl bg-[#0e1d13] border border-[#1f3d28] hover:border-emerald-400/60 hover:bg-[#122417] transition-all cursor-pointer flex items-center justify-between group shadow-sm active:scale-[0.99]"
+                  className="p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-[#FF6A00] hover:bg-orange-50/30 transition-all cursor-pointer flex items-center justify-between group shadow-sm active:scale-[0.99]"
                 >
-                  <div className="space-y-1.5 text-xs font-mono">
+                  <div className="space-y-1.5 text-xs">
                     <div className="flex items-center gap-2">
-                      <span className="font-extrabold text-emerald-400 text-sm">
+                      <span className="font-mono font-black text-[#0D6EFD] text-sm">
                         #{booking.bookingRef}
                       </span>
-                      <span className="text-zinc-500">•</span>
-                      <span className="text-white font-bold">{booking.pitchName}</span>
+                      <span className="text-slate-300">•</span>
+                      <span className="text-slate-900 font-extrabold">Box Cricket Turf</span>
                     </div>
 
-                    <div className="flex items-center gap-2 text-zinc-300 text-[11px]">
-                      <span className="flex items-center gap-1 text-zinc-400">
-                        <Calendar className="w-3 h-3 text-emerald-400" />
-                        {booking.date}
+                    <div className="flex items-center gap-2 text-slate-600 text-[11px]">
+                      <span className="flex items-center gap-1">
+                        <Calendar className="w-3.5 h-3.5 text-[#FF6A00]" />
+                        <span className="font-mono font-semibold">{booking.date}</span>
                       </span>
-                      <span className="text-zinc-600">•</span>
-                      <span className="flex items-center gap-1 text-amber-300">
-                        <Clock className="w-3 h-3 text-amber-400" />
+                      <span className="text-slate-300">•</span>
+                      <span className="flex items-center gap-1 text-slate-700 font-mono font-semibold">
+                        <Clock className="w-3.5 h-3.5 text-amber-500" />
                         {booking.timeRange}
                       </span>
                     </div>
 
-                    <div className="text-zinc-400 text-[11px] flex items-center gap-2">
-                      <span>Captain: <strong className="text-white">{booking.captainName}</strong></span>
-                      <span className="text-zinc-600">•</span>
-                      <span>{booking.sport}</span>
+                    <div className="text-slate-500 text-[11px] flex items-center gap-2">
+                      <span>Captain: <strong className="text-slate-800">{booking.captainName}</strong></span>
+                      <span className="text-slate-300">•</span>
+                      <span className="text-[#E65F00] font-bold">🏏 Box Cricket</span>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <div className="text-right font-mono">
+                    <div className="text-right">
                       {booking.status === 'cancelled' ? (
-                        <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-md block bg-red-500/20 text-red-300">
+                        <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-md block bg-red-100 text-red-700">
                           CANCELLED
                         </span>
                       ) : isPaid ? (
-                        <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-md block bg-emerald-500/20 text-emerald-300">
+                        <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-md block bg-emerald-100 text-emerald-800">
                           PAID IN FULL
                         </span>
                       ) : booking.paymentStatus === 'upi_pending' ? (
-                        <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-md block bg-amber-400/20 text-amber-300">
-                          {booking.balanceDue > 0 ? `TOKEN (DUE ₹${booking.balanceDue})` : 'UPI VERIFYING'}
+                        <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-md block bg-amber-100 text-amber-800">
+                          {booking.balanceDue > 0 ? `DUE ₹${booking.balanceDue}` : 'UPI SUBMITTED'}
                         </span>
                       ) : (
-                        <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-md block bg-amber-400/20 text-amber-300">
-                          DUE ₹{booking.balanceDue}
+                        <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-md block bg-orange-100 text-orange-800">
+                          DUE ₹${booking.balanceDue}
                         </span>
                       )}
-                      <span className="text-xs font-bold text-white mt-1 block">
+                      <span className="text-sm font-black text-slate-900 mt-1 block">
                         ₹{booking.totalAmount}
                       </span>
                     </div>
 
-                    <div className="w-8 h-8 rounded-xl bg-[#14291b] group-hover:bg-emerald-500 group-hover:text-black text-emerald-400 flex items-center justify-center transition-colors">
+                    <div className="w-9 h-9 rounded-xl bg-slate-200/80 group-hover:bg-[#FF6A00] group-hover:text-white text-slate-600 flex items-center justify-center transition-colors shadow-sm">
                       <ChevronRight className="w-4 h-4 stroke-[2.5]" />
                     </div>
                   </div>
@@ -178,22 +179,22 @@ export const MyBookingsModal: React.FC<MyBookingsModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="p-4 bg-[#09130d] border-t border-[#1b3623] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono text-zinc-400">
+        <div className="p-4 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-600">
           <div className="flex items-center gap-2">
-            <span className="text-zinc-400">Desk: {settings.phone}</span>
-            <span className="text-zinc-600">•</span>
+            <span>Desk: <strong className="text-slate-800 font-mono">{settings.phone}</strong></span>
+            <span className="text-slate-300">•</span>
             <a
               href={settings.googleReviewUrl || `https://search.google.com/local/writereview?placeid=battlegrounds-arena`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-amber-400 hover:text-amber-300 font-bold flex items-center gap-1"
+              className="text-[#FF6A00] hover:underline font-bold flex items-center gap-1"
             >
-              <span>⭐ Rate 5★ on Google</span>
+              <span>⭐ Rate on Google</span>
             </a>
           </div>
           <button
             onClick={onClose}
-            className="px-4 py-1.5 rounded-xl bg-[#14281a] hover:bg-[#1b3623] text-white font-bold transition-colors"
+            className="px-5 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold transition-colors cursor-pointer"
           >
             Close
           </button>

@@ -21,23 +21,23 @@ export const ArenaFacilities: React.FC<ArenaFacilitiesProps> = ({ settings }) =>
   const specs = [
     {
       icon: <Award className="w-5 h-5 text-[#FF6A00]" />,
-      title: 'FIFA Certified Astroturf',
-      desc: '50mm dual-tone monofilament grass with shock-absorbing sub-base to protect knees and ankles.'
+      title: '50mm Cricket Astroturf',
+      desc: 'High-density monofilament turf with calibrated rubber shockpad for consistent ball bounce and joint protection.'
     },
     {
       icon: <SunMedium className="w-5 h-5 text-[#FF6A00]" />,
-      title: '500-Lux LED Floodlights',
-      desc: 'Zero-shadow broadcast-grade Philips sports lighting for high-speed night matches.'
+      title: '500-Lux Anti-Glare Floodlights',
+      desc: 'Uniform high-intensity lighting engineered specifically for night cricket with zero blind spots.'
     },
     {
       icon: <Video className="w-5 h-5 text-[#00B6C8]" />,
-      title: '4K Match Recording & Reels',
-      desc: 'High-mount 4K camera system capturing match highlights, goals, and penalty drama.'
+      title: 'Wooden Stumps & Bails Included',
+      desc: 'Regulation wooden wickets, bails, umpire counter, and match balls provided free on request.'
     },
     {
       icon: <Droplet className="w-5 h-5 text-[#00B6C8]" />,
       title: 'Changing Rooms & RO Water',
-      desc: 'Clean sanitised shower suites, lockers, and complimentary chilled purified drinking water.'
+      desc: 'Clean sanitised washrooms, secure player lockers, and unlimited chilled RO drinking water.'
     },
     {
       icon: <Car className="w-5 h-5 text-[#FF6A00]" />,
@@ -46,8 +46,8 @@ export const ArenaFacilities: React.FC<ArenaFacilitiesProps> = ({ settings }) =>
     },
     {
       icon: <ShieldCheck className="w-5 h-5 text-emerald-600" />,
-      title: 'Perimeter Netting & Dugouts',
-      desc: 'Heavy-gauge ceiling and boundary nets to prevent ball losses, plus shaded team benches.'
+      title: 'High Ceiling Rebound Netting',
+      desc: 'Heavy-gauge ceiling and 360° perimeter netting ensures zero lost balls and fast wall rebounds.'
     }
   ];
 

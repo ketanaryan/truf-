@@ -54,45 +54,45 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             <div
               key={toast.id}
               role="alert"
-              className={`pointer-events-auto p-4 rounded-2xl shadow-2xl backdrop-blur-xl border flex items-start gap-3 transition-all duration-300 animate-in slide-in-from-top-3 fade-in ${
+              className={`pointer-events-auto p-4 rounded-2xl shadow-2xl bg-white border flex items-start gap-3 transition-all duration-300 animate-in slide-in-from-top-3 fade-in ${
                 isSuccess
-                  ? 'bg-[#0d1f14]/95 border-emerald-500/50 text-white shadow-emerald-950/60'
+                  ? 'border-emerald-300 shadow-emerald-950/10 text-slate-900'
                   : isWarning
-                  ? 'bg-[#1e190b]/95 border-amber-500/50 text-white shadow-amber-950/60'
+                  ? 'border-amber-300 shadow-amber-950/10 text-slate-900'
                   : isError
-                  ? 'bg-[#200f0f]/95 border-red-500/50 text-white shadow-red-950/60'
-                  : 'bg-[#0e1713]/95 border-zinc-700 text-white shadow-black/80'
+                  ? 'border-red-300 shadow-red-950/10 text-slate-900'
+                  : 'border-slate-300 shadow-slate-950/10 text-slate-900'
               }`}
             >
               <div className="shrink-0 mt-0.5">
                 {isSuccess && (
-                  <div className="w-7 h-7 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/40">
+                  <div className="w-7 h-7 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-200">
                     <CheckCircle2 className="w-4 h-4 stroke-[2.5]" />
                   </div>
                 )}
                 {isWarning && (
-                  <div className="w-7 h-7 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center border border-amber-500/40">
+                  <div className="w-7 h-7 rounded-xl bg-orange-50 text-[#FF6A00] flex items-center justify-center border border-orange-200">
                     <Zap className="w-4 h-4 stroke-[2.5]" />
                   </div>
                 )}
                 {isError && (
-                  <div className="w-7 h-7 rounded-xl bg-red-500/20 text-red-400 flex items-center justify-center border border-red-500/40">
+                  <div className="w-7 h-7 rounded-xl bg-red-50 text-red-600 flex items-center justify-center border border-red-200">
                     <AlertCircle className="w-4 h-4 stroke-[2.5]" />
                   </div>
                 )}
                 {!isSuccess && !isWarning && !isError && (
-                  <div className="w-7 h-7 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center border border-cyan-500/40">
+                  <div className="w-7 h-7 rounded-xl bg-blue-50 text-[#0D6EFD] flex items-center justify-center border border-blue-200">
                     <Info className="w-4 h-4 stroke-[2.5]" />
                   </div>
                 )}
               </div>
 
-              <div className="flex-1 min-w-0 font-mono">
-                <h4 className="text-xs font-bold text-white uppercase tracking-wide">
+              <div className="flex-1 min-w-0 font-sans">
+                <h4 className="text-xs font-black text-slate-900 uppercase tracking-wide">
                   {toast.title}
                 </h4>
                 {toast.message && (
-                  <p className="text-[11px] text-zinc-300 mt-0.5 leading-snug">
+                  <p className="text-[11px] text-slate-600 mt-0.5 leading-snug">
                     {toast.message}
                   </p>
                 )}

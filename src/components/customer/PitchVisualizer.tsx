@@ -1,183 +1,175 @@
 import React, { useState } from 'react';
 import { Pitch, SportType } from '../../types';
-import { Eye, ShieldCheck, Sun, Zap, Info } from 'lucide-react';
+import { Eye, ShieldCheck, Zap } from 'lucide-react';
 
 interface PitchVisualizerProps {
   pitch: Pitch;
   sport: SportType;
 }
 
-export const PitchVisualizer: React.FC<PitchVisualizerProps> = ({ pitch, sport }) => {
-  const [showTacticalLineup, setShowTacticalLineup] = useState(false);
+export const PitchVisualizer: React.FC<PitchVisualizerProps> = ({ pitch }) => {
+  const [showTacticalFielders, setShowTacticalFielders] = useState(false);
 
   return (
-    <div className="relative rounded-2xl overflow-hidden border border-[#203c27] shadow-2xl bg-[#08120b] group">
+    <div className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-xl bg-[#0B1D2D] group font-sans">
       
       {/* Top Telemetry Header */}
-      <div className="bg-[#0a160e] px-4 py-2.5 border-b border-[#1b3322] flex items-center justify-between text-xs font-mono">
+      <div className="bg-[#061320] px-4 py-2.5 border-b border-white/10 flex items-center justify-between text-xs">
         <div className="flex items-center gap-2">
           <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
           <span className="text-white font-bold uppercase tracking-wider">{pitch.name}</span>
-          <span className="text-zinc-600">•</span>
-          <span className="text-emerald-400 font-semibold">{sport}</span>
+          <span className="text-slate-500">•</span>
+          <span className="text-[#FF6A00] font-bold">120 ft × 65 ft Enclosed Rebound Cage</span>
         </div>
 
         <button
-          onClick={() => setShowTacticalLineup(!showTacticalLineup)}
-          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-mono transition-all border active:scale-95 ${
-            showTacticalLineup
-              ? 'bg-emerald-500 text-black font-bold border-emerald-400 shadow-sm'
-              : 'bg-[#122217] hover:bg-[#193322] text-zinc-300 hover:text-white border-[#223d2b]'
+          onClick={() => setShowTacticalFielders(!showTacticalFielders)}
+          className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition-all border active:scale-95 ${
+            showTacticalFielders
+              ? 'bg-[#FF6A00] text-white border-[#E65F00] shadow-sm'
+              : 'bg-white/10 hover:bg-white/20 text-slate-200 border-white/20'
           }`}
-          aria-label="Toggle tactical lineup view"
+          aria-label="Toggle box cricket fielding positions"
         >
-          <Eye className="w-3.5 h-3.5 stroke-[2.5]" />
-          <span>{showTacticalLineup ? 'Hide Tactical Lineup' : 'Tactical 2D View'}</span>
+          <Eye className="w-3.5 h-3.5" />
+          <span>{showTacticalFielders ? 'Hide Fielding Map' : 'Box Cricket Field Setup'}</span>
         </button>
       </div>
 
-      {/* 2D Synthetic Grass Pitch Canvas */}
-      <div className="relative h-60 sm:h-72 w-full pitch-stripes p-3.5 sm:p-5 flex items-center justify-center select-none overflow-hidden">
+      {/* 2D Box Cricket Arena Canvas */}
+      <div className="relative h-64 sm:h-80 w-full pitch-stripes p-4 sm:p-6 flex items-center justify-center select-none overflow-hidden">
         
-        {/* Floodlight Beam Ambiance (4 Warm Gold Cones) */}
-        <div className="absolute top-0 left-0 w-36 h-36 bg-gradient-to-br from-amber-400/15 via-transparent to-transparent pointer-events-none rounded-br-full blur-xl"></div>
-        <div className="absolute top-0 right-0 w-36 h-36 bg-gradient-to-bl from-amber-400/15 via-transparent to-transparent pointer-events-none rounded-bl-full blur-xl"></div>
-        <div className="absolute bottom-0 left-0 w-36 h-36 bg-gradient-to-tr from-amber-400/15 via-transparent to-transparent pointer-events-none rounded-tr-full blur-xl"></div>
-        <div className="absolute bottom-0 right-0 w-36 h-36 bg-gradient-to-tl from-amber-400/15 via-transparent to-transparent pointer-events-none rounded-tl-full blur-xl"></div>
+        {/* Anti-Glare LED Floodlight Cones */}
+        <div className="absolute top-0 left-0 w-40 h-40 bg-gradient-to-br from-amber-400/20 via-transparent to-transparent pointer-events-none rounded-br-full blur-xl"></div>
+        <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-amber-400/20 via-transparent to-transparent pointer-events-none rounded-bl-full blur-xl"></div>
+        <div className="absolute bottom-0 left-0 w-40 h-40 bg-gradient-to-tr from-amber-400/20 via-transparent to-transparent pointer-events-none rounded-tr-full blur-xl"></div>
+        <div className="absolute bottom-0 right-0 w-40 h-40 bg-gradient-to-tl from-amber-400/20 via-transparent to-transparent pointer-events-none rounded-tl-full blur-xl"></div>
 
-        {/* Outer White Pitch Boundary Line */}
-        <div className="relative w-full h-full border-2 border-white/40 rounded-lg flex items-center justify-center shadow-inner">
+        {/* Outer Heavy-Gauge Rebound Cage Netting (Perimeter Wall) */}
+        <div className="relative w-full h-full border-2 border-white/70 rounded-xl flex items-center justify-center shadow-2xl bg-emerald-950/40">
           
-          {/* Halfway Line */}
-          <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-0.5 bg-white/35"></div>
-          
-          {/* Center Circle */}
-          <div className="absolute w-20 h-20 sm:w-28 sm:h-28 rounded-full border-2 border-white/40 flex items-center justify-center">
-            <div className="w-2 h-2 rounded-full bg-white/80 shadow-[0_0_8px_white]"></div>
+          {/* Side Netting Rebound Run Markings */}
+          <div className="absolute top-2 left-4 text-[10px] font-mono font-bold text-amber-300 bg-black/60 px-2 py-0.5 rounded border border-amber-400/30">
+            Side Net: 1 Run
+          </div>
+          <div className="absolute bottom-2 left-4 text-[10px] font-mono font-bold text-amber-300 bg-black/60 px-2 py-0.5 rounded border border-amber-400/30">
+            Side Net: 1 Run
+          </div>
+          <div className="absolute top-2 right-4 text-[10px] font-mono font-bold text-emerald-300 bg-black/60 px-2 py-0.5 rounded border border-emerald-400/30">
+            Straight Drive: 4 Runs
+          </div>
+          <div className="absolute bottom-2 right-4 text-[10px] font-mono font-bold text-[#FF6A00] bg-black/60 px-2 py-0.5 rounded border border-[#FF6A00]/40">
+            Direct Ceiling Hit: 6 Runs
           </div>
 
-          {/* Left Goal Area & Penalty Box */}
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-12 sm:w-16 h-28 sm:h-36 border-r-2 border-y-2 border-white/40 bg-white/5">
-            <div className="absolute -left-2.5 top-1/2 -translate-y-1/2 w-2.5 h-14 border-2 border-white/70 bg-white/20 rounded-l"></div>
-            {/* Penalty Spot */}
-            <div className="absolute right-3.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/90"></div>
-            {/* Penalty Arc */}
-            <div className="absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-14 border-r-2 border-white/40 rounded-r-full pointer-events-none"></div>
-          </div>
-
-          {/* Right Goal Area & Penalty Box */}
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-12 sm:w-16 h-28 sm:h-36 border-l-2 border-y-2 border-white/40 bg-white/5">
-            <div className="absolute -right-2.5 top-1/2 -translate-y-1/2 w-2.5 h-14 border-2 border-white/70 bg-white/20 rounded-r"></div>
-            {/* Penalty Spot */}
-            <div className="absolute left-3.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/90"></div>
-            {/* Penalty Arc */}
-            <div className="absolute -left-4 top-1/2 -translate-y-1/2 w-8 h-14 border-l-2 border-white/40 rounded-l-full pointer-events-none"></div>
-          </div>
-
-          {/* Corner Arcs */}
-          <div className="absolute -top-0.5 -left-0.5 w-4 h-4 border-b-2 border-r-2 border-white/40 rounded-br-full"></div>
-          <div className="absolute -top-0.5 -right-0.5 w-4 h-4 border-b-2 border-l-2 border-white/40 rounded-bl-full"></div>
-          <div className="absolute -bottom-0.5 -left-0.5 w-4 h-4 border-t-2 border-r-2 border-white/40 rounded-tr-full"></div>
-          <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 border-t-2 border-l-2 border-white/40 rounded-tl-full"></div>
-
-          {/* Box Cricket Pitch Overlay */}
-          {sport === 'Box Cricket' && (
-            <div className="absolute w-44 sm:w-60 h-14 sm:h-16 bg-amber-950/45 border-2 border-amber-400/70 rounded-md flex items-center justify-between px-3 shadow-xl backdrop-blur-[1px]">
-              <div className="h-full w-1.5 bg-amber-400 flex flex-col justify-around py-1" title="Bowling Crease">
+          {/* Center 22-Yard Cricket Astroturf Pitch Strip */}
+          <div className="relative w-3/5 sm:w-2/3 h-16 sm:h-20 bg-amber-900/40 border-2 border-amber-300/80 rounded-md flex items-center justify-between px-3 shadow-2xl backdrop-blur-sm">
+            
+            {/* Bowling End Crease & Stumps */}
+            <div className="flex items-center gap-2">
+              <div className="h-12 w-1.5 bg-amber-300 flex flex-col justify-around py-1" title="Bowling Crease">
                 <span className="w-1 h-2 bg-white rounded-full"></span>
                 <span className="w-1 h-2 bg-white rounded-full"></span>
                 <span className="w-1 h-2 bg-white rounded-full"></span>
               </div>
-              <div className="text-center font-mono">
-                <span className="text-[10px] text-amber-300 font-bold uppercase tracking-wider block">
-                  22-YD ASTROTURF WICKET
-                </span>
-                <span className="text-[8px] text-zinc-300 uppercase">
-                  HIGH CEILING DERBY CAGE
-                </span>
-              </div>
-              <div className="h-full w-1.5 bg-amber-400 flex flex-col justify-around py-1" title="Batting Crease">
-                <span className="w-1 h-2 bg-white rounded-full"></span>
-                <span className="w-1 h-2 bg-white rounded-full"></span>
-                <span className="w-1 h-2 bg-white rounded-full"></span>
+              <div className="text-[9px] font-mono text-amber-200 font-bold hidden sm:block">
+                BOWLER
               </div>
             </div>
-          )}
 
-          {/* Pickleball Court Overlay */}
-          {sport === 'Pickleball' && (
-            <div className="absolute w-48 sm:w-64 h-32 sm:h-40 border-2 border-cyan-400/80 bg-cyan-950/20 rounded flex items-center justify-center">
-              {/* Center Net */}
-              <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-1 bg-white/90 shadow-[0_0_8px_white]"></div>
-              {/* Kitchen / Non-Volley Zone Lines (7ft on either side) */}
-              <div className="absolute top-0 bottom-0 left-[35%] w-0.5 bg-cyan-300/70 border-dashed"></div>
-              <div className="absolute top-0 bottom-0 right-[35%] w-0.5 bg-cyan-300/70 border-dashed"></div>
-              {/* Center Service Line */}
-              <div className="absolute left-0 right-[65%] top-1/2 -translate-y-1/2 h-0.5 bg-cyan-300/60"></div>
-              <div className="absolute left-[65%] right-0 top-1/2 -translate-y-1/2 h-0.5 bg-cyan-300/60"></div>
-              <span className="text-[9px] font-mono text-cyan-300 font-bold uppercase tracking-widest bg-black/60 px-2 py-0.5 rounded border border-cyan-400/40">
-                PRO PICKLEBALL CAGE
+            {/* Pitch Center Badge */}
+            <div className="text-center font-mono">
+              <span className="text-[10px] sm:text-xs text-amber-300 font-black tracking-wider block">
+                22-YD ASTROTURF WICKET
+              </span>
+              <span className="text-[8px] sm:text-[9px] text-slate-200 uppercase tracking-widest">
+                TENNIS & TAPE BALL CERTIFIED
               </span>
             </div>
-          )}
 
-          {/* Tactical Player Formation Overlay if toggled */}
-          {showTacticalLineup && (
-            <div className="absolute inset-0 pointer-events-none p-3 flex items-center justify-around z-10">
-              {/* Home Team (Emerald Squad) */}
-              <div className="flex flex-col justify-around h-full">
-                <span className="w-5 h-5 rounded-full bg-emerald-400 text-black font-extrabold text-[9px] flex items-center justify-center shadow-lg border border-black animate-pulse">GK</span>
+            {/* Batting End Crease & Stumps */}
+            <div className="flex items-center gap-2">
+              <div className="text-[9px] font-mono text-amber-200 font-bold hidden sm:block">
+                BATSMAN
               </div>
-              <div className="flex flex-col justify-around h-full space-y-4">
-                <span className="w-5 h-5 rounded-full bg-white text-black font-extrabold text-[9px] flex items-center justify-center shadow-lg border border-black">DF</span>
-                <span className="w-5 h-5 rounded-full bg-white text-black font-extrabold text-[9px] flex items-center justify-center shadow-lg border border-black">DF</span>
+              <div className="h-12 w-1.5 bg-amber-300 flex flex-col justify-around py-1" title="Batting Crease">
+                <span className="w-1 h-2 bg-white rounded-full"></span>
+                <span className="w-1 h-2 bg-white rounded-full"></span>
+                <span className="w-1 h-2 bg-white rounded-full"></span>
               </div>
-              <div className="flex flex-col justify-around h-full space-y-3">
-                <span className="w-5 h-5 rounded-full bg-white text-black font-extrabold text-[9px] flex items-center justify-center shadow-lg border border-black">MF</span>
-                <span className="w-5 h-5 rounded-full bg-white text-black font-extrabold text-[9px] flex items-center justify-center shadow-lg border border-black">MF</span>
-              </div>
-              <div className="flex flex-col justify-around h-full">
-                <span className="w-5 h-5 rounded-full bg-white text-black font-extrabold text-[9px] flex items-center justify-center shadow-lg border border-black">ST</span>
+            </div>
+
+          </div>
+
+          {/* Tactical Box Cricket Fielders Formation */}
+          {showTacticalFielders && (
+            <div className="absolute inset-0 pointer-events-none p-4 flex items-center justify-between z-10">
+              {/* Bowler Run-up position */}
+              <div className="absolute left-6 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
+                <span className="w-6 h-6 rounded-full bg-[#FF6A00] text-white font-black text-[10px] flex items-center justify-center shadow-lg border border-white">
+                  BW
+                </span>
+                <span className="text-[9px] font-bold text-white bg-black/60 px-1.5 py-0.5 rounded">Bowler</span>
               </div>
 
-              {/* Away Team (Amber Squad) */}
-              <div className="flex flex-col justify-around h-full">
-                <span className="w-5 h-5 rounded-full bg-amber-400 text-black font-extrabold text-[9px] flex items-center justify-center shadow-lg border border-black">ST</span>
+              {/* Mid-off & Mid-on */}
+              <div className="absolute left-1/3 top-6 flex items-center gap-1">
+                <span className="w-5 h-5 rounded-full bg-white text-black font-extrabold text-[9px] flex items-center justify-center shadow-md">
+                  MO
+                </span>
+                <span className="text-[8px] text-white bg-black/50 px-1 rounded">Mid-Off</span>
               </div>
-              <div className="flex flex-col justify-around h-full space-y-3">
-                <span className="w-5 h-5 rounded-full bg-amber-400 text-black font-extrabold text-[9px] flex items-center justify-center shadow-lg border border-black">MF</span>
-                <span className="w-5 h-5 rounded-full bg-amber-400 text-black font-extrabold text-[9px] flex items-center justify-center shadow-lg border border-black">MF</span>
+              <div className="absolute left-1/3 bottom-6 flex items-center gap-1">
+                <span className="w-5 h-5 rounded-full bg-white text-black font-extrabold text-[9px] flex items-center justify-center shadow-md">
+                  MN
+                </span>
+                <span className="text-[8px] text-white bg-black/50 px-1 rounded">Mid-On</span>
               </div>
-              <div className="flex flex-col justify-around h-full space-y-4">
-                <span className="w-5 h-5 rounded-full bg-amber-400 text-black font-extrabold text-[9px] flex items-center justify-center shadow-lg border border-black">DF</span>
-                <span className="w-5 h-5 rounded-full bg-amber-400 text-black font-extrabold text-[9px] flex items-center justify-center shadow-lg border border-black">DF</span>
+
+              {/* Point & Square Leg */}
+              <div className="absolute right-1/3 top-6 flex items-center gap-1">
+                <span className="w-5 h-5 rounded-full bg-white text-black font-extrabold text-[9px] flex items-center justify-center shadow-md">
+                  PT
+                </span>
+                <span className="text-[8px] text-white bg-black/50 px-1 rounded">Point</span>
               </div>
-              <div className="flex flex-col justify-around h-full">
-                <span className="w-5 h-5 rounded-full bg-amber-500 text-black font-extrabold text-[9px] flex items-center justify-center shadow-lg border border-black">GK</span>
+              <div className="absolute right-1/3 bottom-6 flex items-center gap-1">
+                <span className="w-5 h-5 rounded-full bg-white text-black font-extrabold text-[9px] flex items-center justify-center shadow-md">
+                  SQ
+                </span>
+                <span className="text-[8px] text-white bg-black/50 px-1 rounded">Square Leg</span>
+              </div>
+
+              {/* Wicketkeeper & Slips */}
+              <div className="absolute right-8 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
+                <span className="w-6 h-6 rounded-full bg-emerald-400 text-black font-black text-[10px] flex items-center justify-center shadow-lg border border-black">
+                  WK
+                </span>
+                <span className="text-[9px] font-bold text-white bg-black/60 px-1.5 py-0.5 rounded">Keeper</span>
               </div>
             </div>
           )}
 
-          {/* 4 Corner Floodlight Simulators */}
-          <div className="absolute -top-1.5 -left-1.5 w-3 h-3 rounded-full bg-amber-300 shadow-[0_0_14px_rgba(251,191,36,1)] border border-white"></div>
-          <div className="absolute -top-1.5 -right-1.5 w-3 h-3 rounded-full bg-amber-300 shadow-[0_0_14px_rgba(251,191,36,1)] border border-white"></div>
-          <div className="absolute -bottom-1.5 -left-1.5 w-3 h-3 rounded-full bg-amber-300 shadow-[0_0_14px_rgba(251,191,36,1)] border border-white"></div>
-          <div className="absolute -bottom-1.5 -right-1.5 w-3 h-3 rounded-full bg-amber-300 shadow-[0_0_14px_rgba(251,191,36,1)] border border-white"></div>
+          {/* 8 Perimeter Floodlight Points */}
+          <div className="absolute -top-1.5 left-1/4 w-3 h-3 rounded-full bg-amber-300 shadow-[0_0_12px_#F59E0B] border border-white"></div>
+          <div className="absolute -top-1.5 right-1/4 w-3 h-3 rounded-full bg-amber-300 shadow-[0_0_12px_#F59E0B] border border-white"></div>
+          <div className="absolute -bottom-1.5 left-1/4 w-3 h-3 rounded-full bg-amber-300 shadow-[0_0_12px_#F59E0B] border border-white"></div>
+          <div className="absolute -bottom-1.5 right-1/4 w-3 h-3 rounded-full bg-amber-300 shadow-[0_0_12px_#F59E0B] border border-white"></div>
         </div>
       </div>
 
       {/* Bottom Specs Strip */}
-      <div className="bg-[#0a160e] px-4 py-2.5 border-t border-[#1b3322] flex flex-wrap items-center justify-between text-[11px] font-mono text-zinc-300 gap-2">
+      <div className="bg-[#061320] px-4 py-2.5 border-t border-white/10 flex flex-wrap items-center justify-between text-xs text-slate-300 gap-2">
         <div className="flex items-center gap-2">
-          <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-          <span className="font-bold text-white">{pitch.dimensions}</span>
+          <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+          <span className="font-bold text-white">120 ft × 65 ft Box Cricket Rebound Cage</span>
         </div>
-        <div className="flex items-center gap-2 text-zinc-400">
-          <span>50mm FIFA Certified Monofilament</span>
+        <div className="flex items-center gap-2 text-slate-400">
+          <span>50mm Dense Astroturf with Rubber Infill & Shockpad</span>
         </div>
         <div className="flex items-center gap-1.5 text-amber-400 font-bold">
-          <Zap className="w-3 h-3" />
-          <span>500-Lux Broadcast Ready</span>
+          <Zap className="w-3.5 h-3.5 text-[#FF6A00]" />
+          <span>500-Lux Anti-Glare Floodlights</span>
         </div>
       </div>
     </div>

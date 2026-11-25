@@ -122,25 +122,39 @@ export const MasterScheduleGrid: React.FC<MasterScheduleGridProps> = ({
             <span>Time Slot</span>
           </div>
 
-          <div className="col-span-5 px-4 border-l-2 border-[#1f3d28] flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-              <span className="text-white text-sm font-extrabold">{pitches[0]?.name}</span>
+          {pitches.length === 1 ? (
+            <div className="col-span-10 px-4 border-l-2 border-[#1f3d28] flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                <span className="text-white text-sm font-extrabold">{pitches[0]?.name}</span>
+              </div>
+              <span className="px-2.5 py-0.5 rounded-lg bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 text-xs font-mono font-bold">
+                120 ft × 65 ft Box Cricket Rebound Cage
+              </span>
             </div>
-            <span className="px-2 py-0.5 rounded-lg bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 text-[10px] normal-case">
-              7v7 Football / Box Cricket (120×70ft)
-            </span>
-          </div>
+          ) : (
+            <>
+              <div className="col-span-5 px-4 border-l-2 border-[#1f3d28] flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                  <span className="text-white text-sm font-extrabold">{pitches[0]?.name}</span>
+                </div>
+                <span className="px-2 py-0.5 rounded-lg bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 text-[10px] normal-case">
+                  Box Cricket Turf (120×65ft)
+                </span>
+              </div>
 
-          <div className="col-span-5 px-4 border-l-2 border-[#1f3d28] flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
-              <span className="text-white text-sm font-extrabold">{pitches[1]?.name}</span>
-            </div>
-            <span className="px-2 py-0.5 rounded-lg bg-amber-400/15 border border-amber-400/30 text-amber-300 text-[10px] normal-case">
-              5v5 Football / Pickleball (90×50ft)
-            </span>
-          </div>
+              <div className="col-span-5 px-4 border-l-2 border-[#1f3d28] flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                  <span className="text-white text-sm font-extrabold">{pitches[1]?.name}</span>
+                </div>
+                <span className="px-2 py-0.5 rounded-lg bg-amber-400/15 border border-amber-400/30 text-amber-300 text-[10px] normal-case">
+                  Court 2 (120×65ft)
+                </span>
+              </div>
+            </>
+          )}
         </div>
 
         {/* Operating Hours Rows */}
@@ -176,7 +190,7 @@ export const MasterScheduleGrid: React.FC<MasterScheduleGridProps> = ({
                 </div>
 
                 {/* Pitch 1 Cell */}
-                <div className="col-span-5 p-2.5 border-r-2 border-[#1f3d28] flex items-center">
+                <div className={`${pitches.length === 1 ? 'col-span-10' : 'col-span-5'} p-2.5 ${pitches.length > 1 ? 'border-r-2 border-[#1f3d28]' : ''} flex items-center`}>
                   {p1Booking ? (
                     <div 
                       onClick={() => onSelectBooking(p1Booking)}
@@ -300,8 +314,9 @@ export const MasterScheduleGrid: React.FC<MasterScheduleGridProps> = ({
                   )}
                 </div>
 
-                {/* Pitch 2 Cell */}
-                <div className="col-span-5 p-2.5 flex items-center">
+                {/* Pitch 2 Cell (Only if second pitch exists) */}
+                {pitches.length > 1 && pitches[1] && (
+                  <div className="col-span-5 p-2.5 flex items-center">
                   {p2Booking ? (
                     <div 
                       onClick={() => onSelectBooking(p2Booking)}
@@ -424,6 +439,7 @@ export const MasterScheduleGrid: React.FC<MasterScheduleGridProps> = ({
                     </div>
                   )}
                 </div>
+                )}
 
               </div>
             );

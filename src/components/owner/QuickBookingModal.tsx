@@ -42,7 +42,7 @@ export const QuickBookingModal: React.FC<QuickBookingModalProps> = ({
   const [pitchId, setPitchId] = useState(initialPitchId || pitches[0].id);
   const [date, setDate] = useState(selectedDate);
   const [startTime, setStartTime] = useState(initialTime || '18:00');
-  const [sport, setSport] = useState<SportType>(pitches[0]?.sports[0] || 'Football 7v7');
+  const [sport, setSport] = useState<SportType>(pitches[0]?.sports[0] || 'Box Cricket');
   const [captainName, setCaptainName] = useState('');
   const [captainPhone, setCaptainPhone] = useState('');
   const [teamName, setTeamName] = useState('');
@@ -319,7 +319,7 @@ export const QuickBookingModal: React.FC<QuickBookingModalProps> = ({
                 type="text"
                 value={notes}
                 onChange={e => setNotes(e.target.value)}
-                placeholder="e.g. Request 2 extra footballs"
+                placeholder="e.g. Request extra tennis balls / wooden stumps"
                 className="w-full px-3 py-2.5 rounded-xl bg-[#09140d] border border-[#204229] text-white focus:outline-none focus:border-emerald-400"
               />
             </div>

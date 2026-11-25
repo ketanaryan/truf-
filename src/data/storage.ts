@@ -2,12 +2,12 @@ import { Booking, OwnerSettings, Slot, SlotStatus, CommunityLobbyPost, Pitch, Cu
 import { PITCHES, DEFAULT_SETTINGS, SEED_BOOKINGS, SEED_COMMUNITY_POSTS, SEED_REVIEWS, getTodayString } from './mockTurfData';
 
 const STORAGE_KEYS = {
-  BOOKINGS: 'battlegrounds_turf_bookings_v2',
-  SETTINGS: 'battlegrounds_turf_settings_v2',
-  BLOCKED_SLOTS: 'battlegrounds_turf_blocked_slots_v2',
-  COMMUNITY_POSTS: 'battlegrounds_turf_community_posts_v2',
-  PITCHES: 'battlegrounds_turf_pitches_v2',
-  REVIEWS: 'battlegrounds_turf_reviews_v2',
+  BOOKINGS: 'battlegrounds_turf_bookings_v4',
+  SETTINGS: 'battlegrounds_turf_settings_v4',
+  BLOCKED_SLOTS: 'battlegrounds_turf_blocked_slots_v4',
+  COMMUNITY_POSTS: 'battlegrounds_turf_community_posts_v4',
+  PITCHES: 'battlegrounds_turf_pitches_v4',
+  REVIEWS: 'battlegrounds_turf_reviews_v4',
 };
 
 // Initialize or get bookings
@@ -21,13 +21,9 @@ export const getStoredBookings = (): Booking[] => {
     const parsed: Booking[] = JSON.parse(data);
     return parsed.map(b => ({
       ...b,
-      pitchName: b.pitchName
-        ? b.pitchName
-            .replace('The Colosseum (Pitch A)', 'Pitch A')
-            .replace('The Thunder Cage (Pitch B)', 'Pitch B')
-            .replace('The Colosseum', 'Pitch A')
-            .replace('The Thunder Cage', 'Pitch B')
-        : (b.pitchId === 'pitch-2' ? 'Pitch B' : 'Pitch A')
+      pitchId: 'box-cricket-1',
+      pitchName: 'Box Cricket Turf',
+      sport: 'Box Cricket'
     }));
   } catch (e) {
     console.error('Failed to load bookings from storage', e);
@@ -83,10 +79,11 @@ export const getStoredPitches = (): Pitch[] => {
       return PITCHES;
     }
     const parsed: Pitch[] = JSON.parse(data);
-    return parsed.map(p => ({
-      ...p,
-      name: p.id === 'pitch-2' ? 'Pitch B' : 'Pitch A'
-    }));
+    if (!Array.isArray(parsed) || parsed.length === 0 || parsed[0].id !== 'box-cricket-1') {
+      localStorage.setItem(STORAGE_KEYS.PITCHES, JSON.stringify(PITCHES));
+      return PITCHES;
+    }
+    return parsed;
   } catch (e) {
     return PITCHES;
   }

@@ -306,7 +306,7 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({
             ₹{todayGross.toLocaleString()}
           </div>
           <span className="text-[11px] text-zinc-400">
-            Pitch A & B combined
+            Box Cricket Turf Total
           </span>
         </div>
 

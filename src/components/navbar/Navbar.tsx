@@ -54,7 +54,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               Arena Status:
             </span>
             <span className="text-white font-medium truncate max-w-[220px] xs:max-w-none">
-              {settings.isRainHalted ? '⚠️ Inclement Weather Hold' : 'Open 06:00 AM – 01:00 AM • Dual Pitches Floodlit'}
+              {settings.isRainHalted ? '⚠️ Inclement Weather Hold' : 'Open 06:00 AM – 01:00 AM • Floodlit Box Cricket Arena'}
             </span>
           </div>
 
@@ -102,7 +102,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               </span>
             </div>
             <p className="text-[10px] text-slate-300 font-semibold uppercase tracking-wider -mt-0.5 hidden sm:block">
-              HYBRID TURF | HYPER PLAY
+              BOX CRICKET TURF
             </p>
           </div>
         </div>
@@ -111,8 +111,8 @@ export const Navbar: React.FC<NavbarProps> = ({
         <nav className="hidden lg:flex items-center gap-1 bg-[#061320] p-1.5 rounded-2xl border border-white/10">
           {[
             { id: 'booking', label: 'Book a Slot', icon: <Calendar className="w-3.5 h-3.5" /> },
-            { id: 'facilities', label: 'Pitches & Specs', icon: <Zap className="w-3.5 h-3.5" /> },
-            { id: 'matchfinder', label: 'Battle Board', icon: <Users className="w-3.5 h-3.5" /> },
+            { id: 'facilities', label: 'Turf Specs & Amenities', icon: <Zap className="w-3.5 h-3.5" /> },
+            { id: 'matchfinder', label: 'Players Board', icon: <Users className="w-3.5 h-3.5" /> },
             { id: 'reviews', label: 'Reviews', icon: <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" /> }
           ].map((tab) => {
             const isActive = customerTab === tab.id;
@@ -206,7 +206,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 customerTab === 'booking' ? 'bg-[#FF6A00] text-white' : 'bg-[#061320] text-slate-200'
               }`}
             >
-              ⚽ Book a Slot
+              🏏 Book a Slot
             </button>
             <button
               onClick={() => {
@@ -217,7 +217,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 customerTab === 'facilities' ? 'bg-[#FF6A00] text-white' : 'bg-[#061320] text-slate-200'
               }`}
             >
-              🏟️ Pitches & Specs
+              🏟️ Turf Specs
             </button>
             <button
               onClick={() => {
@@ -228,7 +228,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 customerTab === 'matchfinder' ? 'bg-[#FF6A00] text-white' : 'bg-[#061320] text-slate-200'
               }`}
             >
-              👥 Battle Board
+              👥 Players Board
             </button>
             <button
               onClick={() => {
