@@ -49,7 +49,7 @@ export const CustomerReviews: React.FC<CustomerReviewsProps> = ({ settings }) =>
   };
 
   return (
-    <section className="py-16 border-t border-[#1a3322] bg-[#070e0a]">
+    <section className="py-16 pb-24 sm:pb-28 border-t border-[#1a3322] bg-[#070e0a]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
         {/* Section Header */}
