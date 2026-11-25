@@ -193,42 +193,7 @@ export const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({
       status: 'confirmed'
     };
 
-    // Open Turf Owner's WhatsApp directly with complete booking details pre-filled
-    try {
-      const rawOwnerPhone = (settings.whatsapp || settings.phone || '9403564779').replace(/\D/g, '');
-      const cleanOwnerPhone = rawOwnerPhone.length === 10 ? `91${rawOwnerPhone}` : rawOwnerPhone;
 
-      const paymentPlanLabel = 
-        paymentPlan === 'upi_direct'
-          ? (upiUtr.trim() ? `100% UPI Paid (UTR: ${upiUtr.trim()})` : '100% UPI Paid (Receipt Screenshot Uploaded)')
-          : paymentPlan === 'advance_token'
-          ? (upiUtr.trim() ? `30% Advance Token ₹${amountToPayNow} Paid (UTR: ${upiUtr.trim()})` : `30% Advance Token ₹${amountToPayNow} Paid (Receipt Uploaded)`)
-          : `Pay at Turf Counter on Arrival (Due ₹${totalAmount})`;
-
-      const waText = 
-        `🏏 *NEW TURF RESERVATION*\n` +
-        `-----------------------------------------\n` +
-        `🎫 *Pass Ref:* #${randomRef}\n` +
-        `🏟️ *Turf:* Sonawane's Multi Sport Turf (Rane Nagar, Nashik)\n` +
-        `📅 *Date:* ${selectedDate}\n` +
-        `⏰ *Time Slot:* ${timeRange}\n` +
-        `👤 *Captain:* ${captainName.trim()}\n` +
-        `📱 *Contact:* ${captainPhone.trim()}\n` +
-        `👥 *Squad Name:* ${teamName.trim() || `${captainName.trim()}'s Squad`}\n` +
-        (notes.trim() ? `📝 *Match Notes:* ${notes.trim()}\n` : '') +
-        `-----------------------------------------\n` +
-        `💰 *Total Turf Fee:* ₹${totalAmount}\n` +
-        `✅ *Paid Online/Advance:* ₹${amountToPayNow}\n` +
-        (balanceDue > 0 ? `⏳ *Balance Due at Turf:* ₹${balanceDue}\n` : '') +
-        `💳 *Payment Status:* ${paymentPlanLabel}\n` +
-        `-----------------------------------------\n` +
-        `Hello Kiran Sonawane, I have submitted my match reservation on your website. Please check and confirm my slot!`;
-
-      const waUrl = `https://api.whatsapp.com/send?phone=${cleanOwnerPhone}&text=${encodeURIComponent(waText)}`;
-      window.open(waUrl, '_blank');
-    } catch (err) {
-      console.error('Failed to open WhatsApp', err);
-    }
 
     try {
       confetti({

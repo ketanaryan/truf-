@@ -13,7 +13,8 @@ import {
   Filter,
   Image as ImageIcon,
   DollarSign,
-  AlertCircle
+  AlertCircle,
+  Share2
 } from 'lucide-react';
 import { Booking } from '../../types';
 import { getTodayString } from '../../data/mockTurfData';
@@ -274,6 +275,32 @@ export const BookingsLedger: React.FC<BookingsLedgerProps> = ({
                   >
                     View Pass
                   </button>
+
+                  <a
+                    href={`https://api.whatsapp.com/send?phone=${(b.captainPhone || '').replace(/\D/g, '').length === 10 ? `91${(b.captainPhone || '').replace(/\D/g, '')}` : (b.captainPhone || '').replace(/\D/g, '')}&text=${encodeURIComponent(
+                      `🏏 *SONAWANE'S MULTI SPORT TURF - MATCH CONFIRMATION*\n` +
+                      `-----------------------------------------\n` +
+                      `Hi Captain ${b.captainName},\n` +
+                      `Your match reservation at Sonawane's Multi Sport Turf is CONFIRMED!\n\n` +
+                      `🎫 *Pass ID:* #${b.bookingRef}\n` +
+                      `🏟️ *Turf:* Sonawane's Multi Sport Turf (Nashik)\n` +
+                      `📅 *Date:* ${b.date}\n` +
+                      `⏰ *Slot:* ${b.timeRange}\n` +
+                      `👥 *Squad:* ${b.teamName || `${b.captainName}'s Squad`}\n` +
+                      `💰 *Turf Fee:* ₹${b.totalAmount} (Paid: ₹${b.advancePaid}${b.balanceDue > 0 ? `, Balance at Desk: ₹${b.balanceDue}` : ' - Fully Paid'})\n` +
+                      `📍 *Venue:* Plot No. 1, Sonawane Mala, Chetana Nagar, Rane Nagar, Nashik\n` +
+                      `👤 *Turf Manager:* Kiran Sonawane (+91 94035 64779)\n` +
+                      `-----------------------------------------\n` +
+                      `Please arrive 15 minutes prior to match time. See you on the turf!`
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-bold text-xs flex items-center justify-center gap-1 transition-all"
+                    title="Send Confirmation Pass from Turf to Captain's WhatsApp"
+                  >
+                    <Share2 className="w-3 h-3 text-emerald-600" />
+                    <span>WhatsApp</span>
+                  </a>
 
                   {!isCancelled && (
                     <button

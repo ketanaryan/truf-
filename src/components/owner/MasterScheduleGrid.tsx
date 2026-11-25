@@ -12,7 +12,8 @@ import {
   Sparkles,
   ShieldAlert,
   Image as ImageIcon,
-  DollarSign
+  DollarSign,
+  Share2
 } from 'lucide-react';
 import { Pitch, Booking, OwnerSettings } from '../../types';
 import { BlockedSlotRecord } from '../../data/storage';
@@ -251,6 +252,30 @@ export const MasterScheduleGrid: React.FC<MasterScheduleGridProps> = ({
                             <span>Collect ₹{booking.balanceDue}</span>
                           </button>
                         )}
+
+                        <a
+                          href={`https://api.whatsapp.com/send?phone=${(booking.captainPhone || '').replace(/\D/g, '').length === 10 ? `91${(booking.captainPhone || '').replace(/\D/g, '')}` : (booking.captainPhone || '').replace(/\D/g, '')}&text=${encodeURIComponent(
+                            `🏏 *SONAWANE'S MULTI SPORT TURF - MATCH CONFIRMED*\n` +
+                            `-----------------------------------------\n` +
+                            `Hi Captain ${booking.captainName}, your match slot is CONFIRMED!\n\n` +
+                            `🎫 *Pass ID:* #${booking.bookingRef}\n` +
+                            `🏟️ *Turf:* Sonawane's Multi Sport Turf (Nashik)\n` +
+                            `📅 *Date:* ${booking.date}\n` +
+                            `⏰ *Slot:* ${booking.timeRange}\n` +
+                            `👥 *Squad:* ${booking.teamName || `${booking.captainName}'s Squad`}\n` +
+                            `💰 *Fee:* ₹${booking.totalAmount} (Paid: ₹${booking.advancePaid}${booking.balanceDue > 0 ? `, Due: ₹${booking.balanceDue}` : ' - Fully Paid'})\n` +
+                            `📍 *Address:* Plot No. 1, Sonawane Mala, Chetana Nagar, Rane Nagar, Nashik\n` +
+                            `👤 *Turf Manager:* Kiran Sonawane (+91 94035 64779)`
+                          )}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="p-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/40 text-emerald-300 border border-emerald-500/30 transition-all flex items-center gap-1 text-xs font-bold"
+                          title="Send Confirmation Pass from Turf to Captain's WhatsApp"
+                        >
+                          <Share2 className="w-3.5 h-3.5 text-emerald-400" />
+                          <span className="hidden sm:inline">WhatsApp</span>
+                        </a>
 
                         {booking.isCheckedIn ? (
                           <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/20 text-emerald-300 font-extrabold text-xs border border-emerald-500/30">

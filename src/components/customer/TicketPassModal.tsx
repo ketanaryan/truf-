@@ -32,6 +32,33 @@ export const TicketPassModal: React.FC<TicketPassModalProps> = ({
     window.print();
   };
 
+  const handleSendToMyWhatsApp = () => {
+    const rawCaptain = (booking.captainPhone || '').replace(/\D/g, '');
+    const cleanCaptain = rawCaptain.length === 10 ? `91${rawCaptain}` : rawCaptain;
+    const text = encodeURIComponent(
+      `🏏 *SONAWANE'S MULTI SPORT TURF MATCH PASS*\n` +
+      `-----------------------------------------\n` +
+      `Booking ID: *#${booking.bookingRef}*\n` +
+      `Turf: *${booking.pitchName}*\n` +
+      `Date: *${booking.date}*\n` +
+      `Slot: *${booking.timeRange}*\n` +
+      `Captain: *${booking.captainName}* (${booking.teamName})\n` +
+      `Payment: *${
+        booking.paymentStatus === 'paid_full' 
+          ? '100% FULLY PAID' 
+          : booking.paymentStatus === 'upi_pending' 
+          ? (booking.upiUtr ? `UPI SUBMITTED (UTR ${booking.upiUtr})` : 'UPI RECEIPT ATTACHED (Pending Verification)') 
+          : booking.paymentStatus === 'pay_at_venue'
+          ? `Pay at Turf (Counter Due ₹${booking.balanceDue})`
+          : `Advance Token Paid (Counter Balance Due ₹${booking.balanceDue})`
+      }*\n` +
+      `Venue: ${settings.address}\n` +
+      `Turf Manager: Kiran Sonawane (${settings.phone})\n\n` +
+      `Report 15 minutes before match start! Rubber studs or flat sneakers only.`
+    );
+    window.open(`https://api.whatsapp.com/send?phone=${cleanCaptain}&text=${text}`, '_blank');
+  };
+
   const handleShareWhatsApp = () => {
     const text = encodeURIComponent(
       `🏏 *SONAWANE'S MULTI SPORT TURF MATCH PASS*\n` +
@@ -270,12 +297,13 @@ export const TicketPassModal: React.FC<TicketPassModalProps> = ({
           </div>
 
           {/* Modal Action Footer */}
-          <div className="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
+          <div className="p-4 bg-slate-50 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2.5">
+            <div className="flex flex-wrap items-center gap-2">
               <button
                 type="button"
                 onClick={handlePrint}
-                className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold transition-all active:scale-95 shadow-sm cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold transition-all active:scale-95 shadow-sm cursor-pointer"
+                title="Print Pass"
               >
                 <Printer className="w-3.5 h-3.5 text-slate-600" />
                 <span>Print</span>
@@ -283,11 +311,21 @@ export const TicketPassModal: React.FC<TicketPassModalProps> = ({
 
               <button
                 type="button"
-                onClick={handleShareWhatsApp}
-                className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-800 text-xs font-bold transition-all active:scale-95 shadow-sm cursor-pointer"
+                onClick={handleSendToMyWhatsApp}
+                className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-extrabold transition-all active:scale-95 shadow-sm cursor-pointer"
+                title={`Send Match Pass to Captain's WhatsApp (${booking.captainPhone})`}
               >
-                <Share2 className="w-3.5 h-3.5 text-emerald-600" />
-                <span>WhatsApp</span>
+                <Share2 className="w-3.5 h-3.5" />
+                <span>Send to My WhatsApp</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleShareWhatsApp}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all active:scale-95 cursor-pointer"
+                title="Share with Squad / Friends on WhatsApp"
+              >
+                <span>Share</span>
               </button>
             </div>
 
@@ -297,7 +335,7 @@ export const TicketPassModal: React.FC<TicketPassModalProps> = ({
                 e.stopPropagation();
                 onClose();
               }}
-              className="px-8 py-2.5 rounded-xl bg-[#FF6A00] hover:bg-[#E65F00] text-white text-xs font-black uppercase tracking-wider transition-all active:scale-95 shadow-lg shadow-orange-500/30 cursor-pointer"
+              className="px-6 py-2 rounded-xl bg-[#FF6A00] hover:bg-[#E65F00] text-white text-xs font-black uppercase tracking-wider transition-all active:scale-95 shadow-md shadow-orange-500/25 cursor-pointer"
             >
               Done ✓
             </button>
