@@ -93,7 +93,7 @@ export const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({
   const balanceDue = totalAmount - amountToPayNow;
 
   const handleCopyUpiId = () => {
-    navigator.clipboard.writeText(settings.upiId || 'battlegroundsturf@icici');
+    navigator.clipboard.writeText(settings.upiId || '9403564779@okaxis');
     setCopiedUpi(true);
     setTimeout(() => setCopiedUpi(false), 2500);
   };
@@ -195,7 +195,7 @@ export const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({
 
     // Open Turf Owner's WhatsApp directly with complete booking details pre-filled
     try {
-      const rawOwnerPhone = (settings.whatsapp || settings.phone || '9820477123').replace(/\D/g, '');
+      const rawOwnerPhone = (settings.whatsapp || settings.phone || '9403564779').replace(/\D/g, '');
       const cleanOwnerPhone = rawOwnerPhone.length === 10 ? `91${rawOwnerPhone}` : rawOwnerPhone;
 
       const paymentPlanLabel = 
@@ -206,10 +206,10 @@ export const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({
           : `Pay at Turf Counter on Arrival (Due ₹${totalAmount})`;
 
       const waText = 
-        `🏏 *NEW BOX CRICKET RESERVATION*\n` +
+        `🏏 *NEW TURF RESERVATION*\n` +
         `-----------------------------------------\n` +
         `🎫 *Pass Ref:* #${randomRef}\n` +
-        `🏟️ *Turf:* Box Cricket Turf (120 ft Rebound Cage)\n` +
+        `🏟️ *Turf:* Sonawane's Multi Sport Turf (Rane Nagar, Nashik)\n` +
         `📅 *Date:* ${selectedDate}\n` +
         `⏰ *Time Slot:* ${timeRange}\n` +
         `👤 *Captain:* ${captainName.trim()}\n` +
@@ -222,7 +222,7 @@ export const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({
         (balanceDue > 0 ? `⏳ *Balance Due at Turf:* ₹${balanceDue}\n` : '') +
         `💳 *Payment Status:* ${paymentPlanLabel}\n` +
         `-----------------------------------------\n` +
-        `Hello Turf Owner, I have submitted my match reservation on your website. Please check and confirm my slot!`;
+        `Hello Kiran Sonawane, I have submitted my match reservation on your website. Please check and confirm my slot!`;
 
       const waUrl = `https://api.whatsapp.com/send?phone=${cleanOwnerPhone}&text=${encodeURIComponent(waText)}`;
       window.open(waUrl, '_blank');
@@ -242,7 +242,7 @@ export const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({
     onBookingConfirmed(newBooking);
   };
 
-  const upiIntentUri = `upi://pay?pa=${encodeURIComponent(settings.upiId || 'battlegroundsturf@icici')}&pn=${encodeURIComponent(settings.turfName || 'Battlegrounds Turf')}&am=${amountToPayNow}&tn=PassBooking&cu=INR`;
+  const upiIntentUri = `upi://pay?pa=${encodeURIComponent(settings.upiId || '9403564779@okaxis')}&pn=${encodeURIComponent(settings.turfName || "Sonawane's Multi Sport Turf")}&am=${amountToPayNow}&tn=PassBooking&cu=INR`;
 
   return (
     <div 
@@ -529,7 +529,7 @@ export const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({
                     
                     <div className="flex items-center justify-between p-2 rounded-xl bg-slate-50 border border-slate-200 text-[11px]">
                       <span className="text-[#0D6EFD] font-mono font-bold">
-                        {settings.upiId || 'battlegroundsturf@icici'}
+                        {settings.upiId || '9403564779@okaxis'}
                       </span>
                       <button
                         type="button"

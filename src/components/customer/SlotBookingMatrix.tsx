@@ -254,7 +254,7 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
                 </span>
               </div>
               <p className="text-xs text-slate-600 mt-0.5">
-                Reserve entire {currentPitch.name} for all operating hours (06:00 AM – 01:00 AM) at flat package rate
+                Reserve entire {currentPitch.name} for all operating hours (06:00 AM – 11:00 PM) at flat package rate
               </p>
             </div>
           </div>

@@ -34,7 +34,7 @@ export const TicketPassModal: React.FC<TicketPassModalProps> = ({
 
   const handleShareWhatsApp = () => {
     const text = encodeURIComponent(
-      `🏏 *BATTLEGROUNDS BOX CRICKET MATCH PASS*\n` +
+      `🏏 *SONAWANE'S MULTI SPORT TURF MATCH PASS*\n` +
       `Booking ID: *#${booking.bookingRef}*\n` +
       `Turf: *${booking.pitchName}*\n` +
       `Date: *${booking.date}*\n` +
@@ -50,7 +50,7 @@ export const TicketPassModal: React.FC<TicketPassModalProps> = ({
           : `Advance Token Paid (Counter Balance Due ₹${booking.balanceDue})`
       }*\n` +
       `Venue: ${settings.address}\n\n` +
-      `Please report 15 minutes before match start! Wooden stumps provided.`
+      `Please report 15 minutes before match start! Managed by Kiran Sonawane.`
     );
     window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
   };
@@ -79,11 +79,11 @@ export const TicketPassModal: React.FC<TicketPassModalProps> = ({
                 <div className="flex items-center gap-1.5">
                   <Shield className="w-5 h-5 text-[#FF6A00]" />
                   <span className="font-display font-black text-xl tracking-wider text-white uppercase italic">
-                    BATTLE<span className="text-[#FF6A00]">GROUNDS</span>
+                    SONAWANE'S<span className="text-[#FF6A00]"> TURF</span>
                   </span>
                 </div>
                 <span className="text-[10px] block text-[#00B6C8] font-bold uppercase tracking-wider">
-                  OFFICIAL BOX CRICKET MATCH PASS
+                  OFFICIAL MULTI-SPORT MATCH PASS
                 </span>
               </div>
 
@@ -240,12 +240,12 @@ export const TicketPassModal: React.FC<TicketPassModalProps> = ({
                   <span className="text-slate-800 ml-1 font-bold">Review on Google</span>
                 </div>
                 <p className="text-[10px] text-slate-500">
-                  Help fellow cricket captains discover Battlegrounds!
+                  Help fellow cricket & football squads discover Sonawane's Turf!
                 </p>
               </div>
 
               <a
-                href={settings.googleReviewUrl || `https://search.google.com/local/writereview?placeid=battlegrounds-arena`}
+                href={settings.googleReviewUrl || `https://www.google.com/search?q=sonawane+multisports+turf+nashik+reviews`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-white text-[11px] font-black uppercase tracking-wider shrink-0 shadow-sm transition-all active:scale-95 cursor-pointer"

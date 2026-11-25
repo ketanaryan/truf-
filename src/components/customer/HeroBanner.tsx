@@ -44,21 +44,21 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
             {/* Orange Tag Badge (Hatrick Grounds Style) */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 border border-[#FF6A00]/30 text-[#E65F00] text-xs font-bold uppercase tracking-wider shadow-sm">
               <span className="w-2 h-2 rounded-full bg-[#FF6A00] animate-pulse"></span>
-              <span>PREMIER FLOODLIT BOX CRICKET ARENA</span>
+              <span>📍 RANE NAGAR / CHETANA NAGAR • NASHIK</span>
             </div>
 
             {/* Display Headline */}
             <div className="space-y-1">
-              <h1 className="font-display font-black text-4xl sm:text-5xl lg:text-6xl text-[#111827] uppercase tracking-tight leading-[0.95]">
-                PLAY UNDER THE FLOODLIGHTS
-                <span className="block text-[#FF6A00] mt-1">- 120 FT BOX CRICKET TURF</span>
+              <h1 className="font-display font-black text-3xl xs:text-4xl sm:text-5xl lg:text-6xl text-[#111827] uppercase tracking-tight leading-[0.95] break-words">
+                SONAWANE'S MULTI SPORT TURF
+                <span className="block text-[#FF6A00] mt-1 text-2xl xs:text-3xl sm:text-4xl lg:text-5xl">CRICKET & FOOTBALL ARENA</span>
               </h1>
             </div>
 
             {/* Subtitle - Authentic Indian Box Cricket details without AI slop */}
             <p className="text-[#4B5563] text-sm sm:text-base leading-relaxed max-w-xl font-normal">
-              Dedicated box cricket arena with heavy-gauge ceiling and side nets so zero balls are lost. 
-              Equipped with match-grade wooden stumps, 500-lux anti-glare floodlights, and calibrated bounce for hard tennis and tape balls.
+              Located at Plot No. 1, Sonawane Mala, Chetana Nagar, Rane Nagar, Nashik. 
+              Open daily 6:00 AM – 11:00 PM with floodlights, high-density astroturf, ceiling net protection, and starting rates around ₹500 – ₹800/hr. Direct Google Pay & WhatsApp confirmation managed by Kiran Sonawane.
             </p>
 
             {/* Social Proof Cluster */}
@@ -82,10 +82,11 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
               </div>
               <div className="text-xs text-[#1F2937]">
                 <div className="font-bold flex items-center gap-1.5">
-                  <span>Visited by 2,400+ captains & squads</span>
-                  <span className="flex text-amber-500">★★★★★</span>
+                  <span>★ 4.0 / 5.0 (22 Google Reviews)</span>
+                  <span className="text-[#FF6A00] font-bold">•</span>
+                  <span className="text-emerald-700 font-semibold">Verified Venue</span>
                 </div>
-                <span className="text-[#6B7280]">4.9 / 5.0 Google Verified Arena Rating</span>
+                <span className="text-[#6B7280]">Managed by Kiran Sonawane • Desk: +91 94035 64779</span>
               </div>
             </div>
 
@@ -155,19 +156,19 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent flex flex-col justify-between p-3.5">
                   <div className="flex items-center justify-between">
                     <span className="px-2.5 py-0.5 rounded-full bg-[#00B6C8] text-white font-black text-[11px] tracking-wider uppercase shadow">
-                      BOX CRICKET
+                      CRICKET & FOOTBALL
                     </span>
                     <span className="px-3 py-1 rounded-full bg-white text-[#1F2937] text-xs font-bold shadow-md flex items-center gap-2">
                       <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-radar-beacon"></span>
-                      <span>Live Availability</span>
+                      <span>Live Slots</span>
                     </span>
                   </div>
 
                   <div>
                     <h3 className="text-xl font-display font-black text-white uppercase tracking-wide">
-                      BOX CRICKET TURF
+                      SONAWANE'S TURF
                     </h3>
-                    <p className="text-xs text-orange-300 font-semibold">{currentPitch.dimensions} • High Ceiling Netting</p>
+                    <p className="text-xs text-orange-300 font-semibold">{currentPitch.dimensions} • High Netting • ₹500-₹800/hr</p>
                   </div>
                 </div>
 

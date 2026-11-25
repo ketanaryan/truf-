@@ -54,7 +54,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               Arena Status:
             </span>
             <span className="text-white font-medium truncate max-w-[220px] xs:max-w-none">
-              {settings.isRainHalted ? '⚠️ Inclement Weather Hold' : 'Open 06:00 AM – 01:00 AM • Floodlit Box Cricket Arena'}
+              {settings.isRainHalted ? '⚠️ Inclement Weather Hold' : 'Open 06:00 AM – 11:00 PM • Multi-Sport Cricket & Football Turf'}
             </span>
           </div>
 
@@ -97,12 +97,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-display font-black text-2xl tracking-wide text-white uppercase italic">
-                BATTLE<span className="text-[#FF6A00]">GROUNDS</span>
+              <span className="font-display font-black text-xl sm:text-2xl tracking-wide text-white uppercase italic">
+                SONAWANE'S<span className="text-[#FF6A00]"> TURF</span>
               </span>
             </div>
             <p className="text-[10px] text-slate-300 font-semibold uppercase tracking-wider -mt-0.5 hidden sm:block">
-              BOX CRICKET TURF
+              CRICKET & FOOTBALL • NASHIK
             </p>
           </div>
         </div>
@@ -172,12 +172,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           )}
         </div>
 
-        {/* Mobile Menu Button */}
+        {/* Mobile Menu Button & Mobile Quick Book */}
         <div className="lg:hidden flex items-center gap-2">
           {selectedSlotsCount > 0 && (
             <button
               onClick={onOpenCheckout}
-              className="px-3 py-1.5 rounded-xl bg-[#FF6A00] text-white text-xs font-bold"
+              className="sm:hidden px-3 py-1.5 rounded-xl bg-[#FF6A00] text-white text-xs font-bold shadow-md active:scale-95"
             >
               Book ({selectedSlotsCount})
             </button>

@@ -64,7 +64,7 @@ export const ArenaFacilities: React.FC<ArenaFacilitiesProps> = ({ settings }) =>
             Built for Competitive Matches & Tournaments
           </h2>
           <p className="text-slate-600 text-sm leading-relaxed">
-            Every specification at Battlegrounds is built to commercial tournament standards, guaranteeing maximum grip and safety.
+            Every specification at Sonawane's Multi Sport Turf is built for intense box cricket & football matches, guaranteeing maximum grip and player comfort.
           </p>
         </div>
 
@@ -88,7 +88,7 @@ export const ArenaFacilities: React.FC<ArenaFacilitiesProps> = ({ settings }) =>
         <div className="p-6 sm:p-8 rounded-3xl bg-[#0B1D2D] border border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-2xl text-white">
           <div className="space-y-1.5">
             <span className="text-xs uppercase tracking-wider text-[#FF6A00] font-bold block">
-              VISIT BATTLEGROUNDS TODAY
+              VISIT SONAWANE'S TURF TODAY • NASHIK
             </span>
             <h3 className="text-lg sm:text-2xl font-black text-white uppercase font-display tracking-wide">
               {settings.address}

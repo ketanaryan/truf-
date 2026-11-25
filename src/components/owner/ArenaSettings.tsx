@@ -218,7 +218,7 @@ export const ArenaSettings: React.FC<ArenaSettingsProps> = ({
             </label>
             <input
               type="text"
-              placeholder="e.g. battlegroundsturf@icici or 9820477123@okaxis"
+              placeholder="e.g. 9403564779@okaxis"
               value={formData.upiId || ''}
               onChange={e => setFormData({ ...formData, upiId: e.target.value })}
               className="w-full px-3.5 py-2.5 rounded-xl bg-[#09140d] border border-[#204229] text-white font-mono text-xs focus:border-emerald-400"
@@ -235,7 +235,7 @@ export const ArenaSettings: React.FC<ArenaSettingsProps> = ({
             </label>
             <input
               type="text"
-              placeholder="e.g. Battlegrounds Arena"
+              placeholder="e.g. Kiran Sonawane"
               value={formData.upiPayeeName || ''}
               onChange={e => setFormData({ ...formData, upiPayeeName: e.target.value })}
               className="w-full px-3.5 py-2.5 rounded-xl bg-[#09140d] border border-[#204229] text-white font-mono text-xs focus:border-emerald-400"

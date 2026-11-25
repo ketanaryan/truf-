@@ -1,4 +1,4 @@
-export type SportType = 'Box Cricket';
+export type SportType = 'Box Cricket' | 'Football';
 
 export type SlotStatus = 'available' | 'booked' | 'blocked' | 'selected' | 'past';
 

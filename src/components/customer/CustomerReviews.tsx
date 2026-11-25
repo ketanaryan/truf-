@@ -17,7 +17,7 @@ export const CustomerReviews: React.FC<CustomerReviewsProps> = ({ settings }) =>
   const [comment, setComment] = useState('');
   const [showGooglePrompt, setShowGooglePrompt] = useState(false);
 
-  const googleReviewUrl = settings?.googleReviewUrl || 'https://search.google.com/local/writereview?placeid=battlegrounds-arena';
+  const googleReviewUrl = settings?.googleReviewUrl || 'https://www.google.com/search?q=sonawane+multisports+turf+nashik+reviews';
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,24 +59,24 @@ export const CustomerReviews: React.FC<CustomerReviewsProps> = ({ settings }) =>
               VERIFIED MATCH REVIEWS & GOOGLE RATINGS
             </span>
             <h2 className="text-3xl sm:text-4xl font-black font-display text-[#111827] uppercase leading-tight">
-              Loved by 1,400+ Squads & Captains
+              Player Reviews & Ratings
             </h2>
             <p className="text-slate-600 text-sm max-w-xl">
-              From corporate tournaments and night matches to weekend cricket derbies, 
-              here is what cricket captains and squads say about playing at Battlegrounds.
+              From competitive box cricket matches to 5v5 football showdowns, 
+              here is what teams and players say about Sonawane's Multi Sport Turf in Nashik.
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
             <div className="flex items-center gap-3 bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
-              <div className="text-3xl font-black text-[#FF6A00] font-mono">4.9</div>
+              <div className="text-3xl font-black text-[#FF6A00] font-mono">4.0</div>
               <div className="text-xs">
                 <div className="flex text-amber-500">
-                  {'★★★★★'.split('').map((s, i) => (
-                    <span key={i}>★</span>
+                  {'★★★★☆'.split('').map((s, i) => (
+                    <span key={i}>{s}</span>
                   ))}
                 </div>
-                <span className="text-slate-500 text-[11px] font-medium">1,480+ Match Ratings</span>
+                <span className="text-slate-500 text-[11px] font-medium">22 Google Reviews</span>
               </div>
             </div>
 
@@ -109,7 +109,7 @@ export const CustomerReviews: React.FC<CustomerReviewsProps> = ({ settings }) =>
             </div>
             <div>
               <h3 className="text-base font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                <span>Support Battlegrounds Arena on Google Maps</span>
+                <span>Support Sonawane's Multi Sport Turf on Google Maps</span>
                 <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] lowercase font-normal">verified</span>
               </h3>
               <p className="text-xs text-slate-300 mt-0.5">

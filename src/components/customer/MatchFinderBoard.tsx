@@ -182,7 +182,7 @@ export const MatchFinderBoard: React.FC<MatchFinderBoardProps> = ({
                     const cleanPhone = rawDigits.length === 10 ? `91${rawDigits}` : rawDigits;
                     return (
                       <a
-                        href={`https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(`Hi Captain ${post.captainName}, saw your box cricket post on Battlegrounds for ${post.date} (${post.timeSlot}). I would like to join your team!`)}`}
+                        href={`https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(`Hi Captain ${post.captainName}, saw your match post for Sonawane Turf for ${post.date} (${post.timeSlot}). I would like to join your team!`)}`}
                         target="_blank"
                         rel="noreferrer"
                         className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#0B1D2D] hover:bg-[#FF6A00] text-white text-xs font-bold transition-all active:scale-95 shadow-sm"

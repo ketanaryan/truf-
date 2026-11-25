@@ -105,20 +105,18 @@ const TurfAppContent: React.FC = () => {
   }, [selectedPitchId, selectedDate, bookings, blockedSlots, settings, pitches]);
 
   const handleToggleSlot = (slotId: string) => {
-    setSelectedSlotIds(prev => {
-      const willAdd = !prev.includes(slotId);
-      if (willAdd) {
-        showToast({
-          title: 'Slot Selected',
-          message: 'Slot added to session. Click Book to confirm.',
-          type: 'info',
-          duration: 2000
-        });
-        return [...prev, slotId];
-      } else {
-        return prev.filter(id => id !== slotId);
-      }
-    });
+    const isAlreadySelected = selectedSlotIds.includes(slotId);
+    if (!isAlreadySelected) {
+      setSelectedSlotIds(prev => [...prev, slotId]);
+      showToast({
+        title: 'Slot Selected',
+        message: 'Slot added to session. Click Book to confirm.',
+        type: 'info',
+        duration: 2000
+      });
+    } else {
+      setSelectedSlotIds(prev => prev.filter(id => id !== slotId));
+    }
   };
 
   const handleClearSelectedSlots = () => {
@@ -606,9 +604,9 @@ const TurfAppContent: React.FC = () => {
           </div>
 
           <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
-            <p>© {new Date().getFullYear()} BATTLEGROUNDS ARENA. All Rights Reserved.</p>
+            <p>© {new Date().getFullYear()} SONAWANE'S MULTI SPORT TURF (NASHIK). All Rights Reserved.</p>
             <div className="flex items-center gap-4">
-              <p>Premier Box Cricket Turf Booking & Venue Management</p>
+              <p>Cricket & Football Turf • Rane Nagar, Nashik</p>
               <button
                 onClick={() => {
                   setCurrentView('owner');

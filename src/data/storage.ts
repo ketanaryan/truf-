@@ -2,12 +2,12 @@ import { Booking, OwnerSettings, Slot, SlotStatus, CommunityLobbyPost, Pitch, Cu
 import { PITCHES, DEFAULT_SETTINGS, SEED_BOOKINGS, SEED_COMMUNITY_POSTS, SEED_REVIEWS, getTodayString } from './mockTurfData';
 
 const STORAGE_KEYS = {
-  BOOKINGS: 'battlegrounds_turf_bookings_v4',
-  SETTINGS: 'battlegrounds_turf_settings_v4',
-  BLOCKED_SLOTS: 'battlegrounds_turf_blocked_slots_v4',
-  COMMUNITY_POSTS: 'battlegrounds_turf_community_posts_v4',
-  PITCHES: 'battlegrounds_turf_pitches_v4',
-  REVIEWS: 'battlegrounds_turf_reviews_v4',
+  BOOKINGS: 'sonawane_turf_bookings_v6',
+  SETTINGS: 'sonawane_turf_settings_v6',
+  BLOCKED_SLOTS: 'sonawane_turf_blocked_slots_v6',
+  COMMUNITY_POSTS: 'sonawane_turf_community_posts_v6',
+  PITCHES: 'sonawane_turf_pitches_v6',
+  REVIEWS: 'sonawane_turf_reviews_v6',
 };
 
 // Initialize or get bookings
@@ -21,9 +21,8 @@ export const getStoredBookings = (): Booking[] => {
     const parsed: Booking[] = JSON.parse(data);
     return parsed.map(b => ({
       ...b,
-      pitchId: 'box-cricket-1',
-      pitchName: 'Box Cricket Turf',
-      sport: 'Box Cricket'
+      pitchId: 'sonawane-pitch-1',
+      pitchName: "Sonawane's Multi Sport Turf"
     }));
   } catch (e) {
     console.error('Failed to load bookings from storage', e);
@@ -79,7 +78,7 @@ export const getStoredPitches = (): Pitch[] => {
       return PITCHES;
     }
     const parsed: Pitch[] = JSON.parse(data);
-    if (!Array.isArray(parsed) || parsed.length === 0 || parsed[0].id !== 'box-cricket-1') {
+    if (!Array.isArray(parsed) || parsed.length === 0 || parsed[0].id !== 'sonawane-pitch-1') {
       localStorage.setItem(STORAGE_KEYS.PITCHES, JSON.stringify(PITCHES));
       return PITCHES;
     }
@@ -235,11 +234,11 @@ export const resetDemoData = () => {
   localStorage.setItem(STORAGE_KEYS.REVIEWS, JSON.stringify(SEED_REVIEWS));
 };
 
-// Slot Generation Engine
+// Slot Generation Engine (06:00 AM to 11:00 PM per Google listing)
 export const OPERATING_HOURS = [
   '06:00', '07:00', '08:00', '09:00', '10:00', '11:00',
   '12:00', '13:00', '14:00', '15:00', '16:00', '17:00',
-  '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '00:00'
+  '18:00', '19:00', '20:00', '21:00', '22:00'
 ];
 
 export const formatDisplayTime = (startHour24: string): string => {

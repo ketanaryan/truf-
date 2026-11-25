@@ -184,7 +184,7 @@ export const MyBookingsModal: React.FC<MyBookingsModalProps> = ({
             <span>Desk: <strong className="text-slate-800 font-mono">{settings.phone}</strong></span>
             <span className="text-slate-300">•</span>
             <a
-              href={settings.googleReviewUrl || `https://search.google.com/local/writereview?placeid=battlegrounds-arena`}
+              href={settings.googleReviewUrl || `https://www.google.com/search?q=sonawane+multisports+turf+nashik+reviews`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-[#FF6A00] hover:underline font-bold flex items-center gap-1"
