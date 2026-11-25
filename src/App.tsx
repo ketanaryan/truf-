@@ -301,46 +301,69 @@ const TurfAppContent: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#F2F4F7] text-[#1F2937] flex flex-col font-sans selection:bg-[#FF6A00] selection:text-white">
       
-      {/* Owner Workstation Active Top Banner (Only if accessed via Staff Portal or ?mode=owner) */}
-      {currentView === 'owner' && (
-        <div className="bg-[#122217] border-b border-emerald-500/40 py-2.5 px-4 text-xs font-mono shadow-md">
-          <div className="max-w-7xl mx-auto flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span className="text-emerald-300 font-bold uppercase tracking-wider">
-                STAFF WORKSTATION ACTIVE
-              </span>
+      {/* Header: Dedicated Venue Operations Top Header for Owner, or Customer Navbar for Players */}
+      {currentView === 'owner' ? (
+        <header className="sticky top-0 z-50 bg-[#0B1D2D] border-b border-white/10 shadow-lg font-sans">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-[#FF6A00] to-amber-500 flex items-center justify-center text-white font-black text-xl shadow-md border border-white/20">
+                ⚡
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-white font-black text-base sm:text-xl tracking-tight uppercase">
+                    SONAWANE'S TURF
+                  </span>
+                  <span className="px-2 py-0.5 rounded-md bg-[#FF6A00]/20 border border-[#FF6A00]/30 text-[#FF6A00] text-[10px] font-black uppercase tracking-wider">
+                    Owner Desk
+                  </span>
+                </div>
+                <p className="text-slate-400 text-[11px] font-medium hidden sm:block">
+                  Venue Operations & Management Suite • Rane Nagar, Nashik
+                </p>
+              </div>
             </div>
-            <button
-              onClick={() => {
-                setCurrentView('customer');
-                if (typeof window !== 'undefined' && (window.location.pathname.startsWith('/admin') || window.location.pathname.startsWith('/owner'))) {
-                  window.history.pushState({}, '', '/');
-                }
-              }}
-              className="px-3.5 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs transition-colors active:scale-95 shadow-md"
-            >
-              ← Return to Player View
-            </button>
-          </div>
-        </div>
-      )}
 
-      {/* Navbar */}
-      <Navbar
-        customerTab={customerTab}
-        onSelectTab={(tab) => {
-          setCustomerTab(tab);
-          if (tab === 'booking') scrollToSlots();
-          if (tab === 'matchfinder') scrollToMatchFinder();
-        }}
-        selectedSlotsCount={selectedSlotIds.length}
-        onOpenCheckout={() => setCheckoutOpen(true)}
-        onOpenMyBookings={() => setMyBookingsOpen(true)}
-        settings={settings}
-        onResetData={handleResetData}
-        onScrollToSlots={scrollToSlots}
-      />
+            <div className="flex items-center gap-2 sm:gap-4">
+              <div className="hidden lg:flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span className="text-slate-300 font-medium">Turf Manager:</span>
+                <span className="text-white font-bold">Kiran Sonawane</span>
+                <span className="text-slate-500">•</span>
+                <span className="text-[#FF6A00] font-mono font-bold">+91 94035 64779</span>
+              </div>
+
+              <button
+                onClick={() => {
+                  setCurrentView('customer');
+                  if (typeof window !== 'undefined' && (window.location.pathname.startsWith('/admin') || window.location.pathname.startsWith('/owner'))) {
+                    window.history.pushState({}, '', '/');
+                  }
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-[#FF6A00] to-amber-600 hover:from-amber-600 hover:to-[#FF6A00] text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-md active:scale-95 cursor-pointer"
+              >
+                <span>← Live Player View</span>
+              </button>
+            </div>
+          </div>
+        </header>
+      ) : (
+        <Navbar
+          customerTab={customerTab}
+          onSelectTab={(tab) => {
+            setCustomerTab(tab);
+            if (tab === 'booking') scrollToSlots();
+            if (tab === 'matchfinder') scrollToMatchFinder();
+          }}
+          selectedSlotsCount={selectedSlotIds.length}
+          onOpenCheckout={() => setCheckoutOpen(true)}
+          onOpenMyBookings={() => setMyBookingsOpen(true)}
+          settings={settings}
+          onResetData={handleResetData}
+          onScrollToSlots={scrollToSlots}
+        />
+      )}
 
       {/* Main Content */}
       <main className="flex-1">
@@ -562,18 +585,20 @@ const TurfAppContent: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="space-y-3">
               <div className="flex items-center gap-2">
-                <Shield className="w-5 h-5 text-[#FF6A00]" />
+                <div className="w-6 h-6 rounded-lg bg-[#FF6A00] flex items-center justify-center text-white font-black text-xs">
+                  ⚡
+                </div>
                 <span className="font-display font-black text-xl text-white uppercase italic tracking-wider">
-                  BATTLE<span className="text-[#FF6A00]">GROUNDS</span>
+                  SONAWANE'S <span className="text-[#FF6A00]">TURF</span>
                 </span>
               </div>
               <p className="text-slate-400 text-xs leading-relaxed">
-                Premier floodlit box cricket arena with heavy-gauge ceiling netting, certified bounce for tennis ball cricket, wooden stumps, and instant online slot booking.
+                Premier box cricket & football arena in Rane Nagar, Nashik. 50mm heavy astroturf with shockpad cushioning, high ceiling nets, 500-lux floodlights, and zero-convenience-fee booking.
               </p>
               <div className="flex items-center gap-3 text-slate-300 pt-1 font-semibold">
-                <span>⚡ 06:00 – 01:00 Daily</span>
+                <span>⚡ 06:00 AM – 11:00 PM Daily</span>
                 <span>•</span>
-                <span>🏏 50mm Cricket Astroturf</span>
+                <span>🏏 Box Cricket & Football</span>
               </div>
             </div>
 

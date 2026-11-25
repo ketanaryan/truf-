@@ -11,7 +11,9 @@ import {
   Ticket, 
   ArrowRight,
   Filter,
-  Image as ImageIcon
+  Image as ImageIcon,
+  DollarSign,
+  AlertCircle
 } from 'lucide-react';
 import { Booking } from '../../types';
 import { getTodayString } from '../../data/mockTurfData';
@@ -61,295 +63,240 @@ export const BookingsLedger: React.FC<BookingsLedgerProps> = ({
     window.print();
   };
 
-  const todayCount = bookings.filter(b => b.date === todayStr).length;
+  const todayCount = bookings.filter(b => b.date === todayStr && b.status !== 'cancelled').length;
   const balanceDueCount = bookings.filter(b => b.balanceDue > 0 && b.status !== 'cancelled').length;
   const upiPendingCount = bookings.filter(b => b.paymentStatus === 'upi_pending' && b.status !== 'cancelled').length;
-  const checkedInCount = bookings.filter(b => b.isCheckedIn).length;
+  const checkedInCount = bookings.filter(b => b.isCheckedIn && b.status !== 'cancelled').length;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5 font-sans">
       
-      {/* Search & Filter Toolbar */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-[#0c1810] border-2 border-[#1f3d28] flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-mono shadow-xl">
+      {/* Search & Filter Toolbar (Hatrick Grounds Style White Card) */}
+      <div className="p-5 rounded-3xl bg-white border border-slate-200/90 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
         
         {/* Search */}
-        <div className="relative w-full md:w-88">
-          <Search className="w-4 h-4 text-emerald-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+        <div className="relative w-full md:w-96">
+          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
-            placeholder="Search captain name, phone, or #BG Ref..."
+            placeholder="Search captain name, phone, or #SMT ref..."
             value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#09140d] border border-[#204229] text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-400 shadow-inner"
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-[#FF6A00] transition-colors"
           />
         </div>
 
-        {/* Filter Pills */}
-        <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
-          <button
-            onClick={() => setStatusFilter('all')}
-            className={`px-3 py-1.5 rounded-xl transition-all font-bold ${
-              statusFilter === 'all'
-                ? 'bg-emerald-500 text-black shadow-md'
-                : 'bg-[#122417] text-zinc-300 hover:text-white border border-[#21422a]'
-            }`}
-          >
-            All Bookings ({bookings.length})
-          </button>
-          
-          <button
-            onClick={() => setStatusFilter('today')}
-            className={`px-3 py-1.5 rounded-xl transition-all font-bold ${
-              statusFilter === 'today'
-                ? 'bg-emerald-500 text-black shadow-md'
-                : 'bg-[#122417] text-zinc-300 hover:text-white border border-[#21422a]'
-            }`}
-          >
-            Today ({todayCount})
-          </button>
-
-          <button
-            onClick={() => setStatusFilter('pending_balance')}
-            className={`px-3 py-1.5 rounded-xl transition-all font-bold ${
-              statusFilter === 'pending_balance'
-                ? 'bg-amber-400 text-black shadow-md'
-                : 'bg-[#221c10] text-amber-300 hover:text-white border border-amber-500/30'
-            }`}
-          >
-            Balance Due ({balanceDueCount})
-          </button>
-
-          <button
-            onClick={() => setStatusFilter('upi_pending')}
-            className={`px-3 py-1.5 rounded-xl transition-all font-bold ${
-              statusFilter === 'upi_pending'
-                ? 'bg-amber-400 text-black shadow-md'
-                : upiPendingCount > 0
-                ? 'bg-[#2b1f09] text-amber-300 hover:text-white border border-amber-500/60 animate-pulse'
-                : 'bg-[#122417] text-zinc-300 hover:text-white border border-[#21422a]'
-            }`}
-          >
-            UPI Pending ({upiPendingCount})
-          </button>
-
-          <button
-            onClick={() => setStatusFilter('checked_in')}
-            className={`px-3 py-1.5 rounded-xl transition-all font-bold ${
-              statusFilter === 'checked_in'
-                ? 'bg-emerald-400 text-black shadow-md'
-                : 'bg-[#122417] text-zinc-300 hover:text-white border border-[#21422a]'
-            }`}
-          >
-            On Turf ({checkedInCount})
-          </button>
+        {/* Filter Tabs & Print */}
+        <div className="flex items-center gap-2 w-full md:w-auto overflow-x-auto">
+          {[
+            { id: 'all', label: `All (${bookings.length})` },
+            { id: 'today', label: `Today (${todayCount})` },
+            { id: 'upi_pending', label: `Pending UPI (${upiPendingCount})` },
+            { id: 'pending_balance', label: `Due (${balanceDueCount})` },
+            { id: 'checked_in', label: `On Turf (${checkedInCount})` }
+          ].map(f => (
+            <button
+              key={f.id}
+              onClick={() => setStatusFilter(f.id as any)}
+              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+                statusFilter === f.id
+                  ? 'bg-[#0B1D2D] text-white shadow-sm'
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+              }`}
+            >
+              {f.label}
+            </button>
+          ))}
 
           <button
             onClick={handlePrintManifest}
-            className="px-3.5 py-1.5 rounded-xl bg-[#122417] hover:bg-[#1a3523] text-zinc-300 hover:text-white flex items-center gap-1.5 ml-auto border border-[#21422a] font-bold"
+            className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors shrink-0"
+            title="Print Manifest"
           >
-            <Printer className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Print Manifest</span>
+            <Printer className="w-4 h-4" />
           </button>
         </div>
       </div>
 
-      {/* Bookings CRM Table */}
-      <div id="printable-manifest" className="bg-[#0c1810] border-2 border-[#1f3d28] rounded-3xl overflow-hidden shadow-2xl">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs font-mono">
-            <thead className="bg-[#09140d] border-b-2 border-[#1f3d28] uppercase text-zinc-400 text-[10px] tracking-wider font-bold">
-              <tr>
-                <th className="p-4">Ref & Date</th>
-                <th className="p-4">Player / Captain</th>
-                <th className="p-4">Court & Slot Time</th>
-                <th className="p-4">Payment & Financials</th>
-                <th className="p-4">Gate Status</th>
-                <th className="p-4 text-right">Actions</th>
-              </tr>
-            </thead>
-            
-            <tbody className="divide-y divide-[#172c1c]">
-              {filtered.length === 0 ? (
-                <tr>
-                  <td colSpan={6} className="text-center py-12 text-zinc-400">
-                    <p className="font-bold text-sm text-white mb-1">No bookings match your filter criteria.</p>
-                    <span className="text-zinc-500 text-xs">Try clearing search or choosing another filter tab.</span>
-                  </td>
-                </tr>
-              ) : (
-                filtered.map(booking => {
-                  const isCancelled = booking.status === 'cancelled';
-                  const isCleared = booking.balanceDue <= 0;
+      {/* Bookings List Cards */}
+      <div className="space-y-3.5">
+        {filtered.map(b => {
+          const isCancelled = b.status === 'cancelled';
+          const isToday = b.date === todayStr;
 
-                  return (
-                    <tr 
-                      key={booking.id} 
-                      className={`hover:bg-[#0e1e13] transition-colors ${
-                        isCancelled ? 'opacity-50 bg-[#160e0e]' : ''
-                      }`}
+          return (
+            <div
+              key={b.id}
+              className={`p-5 rounded-3xl bg-white border transition-all shadow-sm hover:shadow-md flex flex-col lg:flex-row lg:items-center justify-between gap-4 ${
+                isCancelled
+                  ? 'opacity-60 border-slate-200 bg-slate-50/50'
+                  : b.paymentStatus === 'upi_pending'
+                  ? 'border-amber-300 ring-2 ring-amber-400/20'
+                  : 'border-slate-200/90 hover:border-[#FF6A00]/50'
+              }`}
+            >
+              {/* Left Column: Booking Info */}
+              <div className="space-y-2 max-w-xl">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="font-mono font-black text-sm text-[#FF6A00]">
+                    #{b.bookingRef}
+                  </span>
+                  
+                  {isToday && (
+                    <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold">
+                      Today's Match
+                    </span>
+                  )}
+
+                  <span className="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 font-bold text-[10px] uppercase">
+                    {b.sport}
+                  </span>
+
+                  <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-500 text-[10px] font-mono">
+                    {b.source.replace('_', ' ')}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-3 text-slate-900 font-extrabold text-sm sm:text-base">
+                  <div className="flex items-center gap-1.5">
+                    <User className="w-4 h-4 text-slate-400" />
+                    <span>Captain {b.captainName}</span>
+                  </div>
+                  <span className="text-slate-400 font-normal">•</span>
+                  <span className="text-slate-600 font-semibold text-xs sm:text-sm">
+                    {b.teamName}
+                  </span>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600">
+                  <span className="flex items-center gap-1 font-semibold text-slate-800">
+                    <Calendar className="w-3.5 h-3.5 text-[#FF6A00]" />
+                    <span>{b.date}</span>
+                  </span>
+                  <span>•</span>
+                  <span className="flex items-center gap-1 font-semibold text-slate-800">
+                    <Clock className="w-3.5 h-3.5 text-[#00B6C8]" />
+                    <span>{b.timeRange}</span>
+                  </span>
+                  <span>•</span>
+                  <a 
+                    href={`tel:${b.captainPhone}`} 
+                    className="flex items-center gap-1 text-[#0D6EFD] font-mono font-bold hover:underline"
+                  >
+                    <PhoneCall className="w-3.5 h-3.5" />
+                    <span>{b.captainPhone}</span>
+                  </a>
+                </div>
+
+                {b.notes && (
+                  <p className="text-[11px] text-slate-500 italic bg-slate-50 p-2 rounded-xl border border-slate-100">
+                    Note: "{b.notes}"
+                  </p>
+                )}
+              </div>
+
+              {/* Middle: Financial & Payment Status */}
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 space-y-2 min-w-[220px]">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-slate-500">Total Turf Fee:</span>
+                  <strong className="text-slate-900 font-black text-sm">₹{b.totalAmount}</strong>
+                </div>
+
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-slate-500">Paid / Advance:</span>
+                  <strong className="text-emerald-600 font-black">₹{b.advancePaid}</strong>
+                </div>
+
+                {b.balanceDue > 0 && (
+                  <div className="flex items-center justify-between text-xs pt-1 border-t border-slate-200">
+                    <span className="text-amber-700 font-bold">Counter Due:</span>
+                    <strong className="text-amber-600 font-black">₹{b.balanceDue}</strong>
+                  </div>
+                )}
+
+                {/* Screenshot proof preview if available */}
+                {b.paymentScreenshot && (
+                  <div 
+                    onClick={() => onInspectScreenshot?.(b)}
+                    className="pt-1.5 flex items-center gap-2 cursor-pointer text-[11px] text-amber-700 hover:text-amber-900 font-bold"
+                  >
+                    <img 
+                      src={b.paymentScreenshot} 
+                      alt="Receipt" 
+                      className="w-7 h-7 rounded-md object-cover border border-amber-300"
+                    />
+                    <span>Inspect Receipt Screenshot 🔍</span>
+                  </div>
+                )}
+
+                {b.upiUtr && (
+                  <div className="text-[10px] text-slate-500 font-mono">
+                    UTR: <strong className="text-slate-800">{b.upiUtr}</strong>
+                  </div>
+                )}
+              </div>
+
+              {/* Right: Actions */}
+              <div className="flex flex-col sm:flex-row lg:flex-col gap-2 justify-center shrink-0">
+                {b.paymentStatus === 'upi_pending' && onApproveUpi && !isCancelled && (
+                  <button
+                    onClick={() => onApproveUpi(b.id)}
+                    className="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-black font-extrabold text-xs uppercase shadow-sm transition-all"
+                  >
+                    Approve UPI
+                  </button>
+                )}
+
+                {b.balanceDue > 0 && !isCancelled && (
+                  <button
+                    onClick={() => onCollectBalance(b.id)}
+                    className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs uppercase shadow-sm transition-all flex items-center justify-center gap-1.5"
+                  >
+                    <DollarSign className="w-3.5 h-3.5" />
+                    <span>Collect ₹{b.balanceDue}</span>
+                  </button>
+                )}
+
+                {!b.isCheckedIn && !isCancelled && (
+                  <button
+                    onClick={() => onCheckIn(b.id)}
+                    className="px-4 py-2 rounded-xl bg-[#0B1D2D] hover:bg-slate-800 text-white font-extrabold text-xs uppercase shadow-sm transition-all flex items-center justify-center gap-1.5"
+                  >
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Check In</span>
+                  </button>
+                )}
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => onSelectBooking(b)}
+                    className="flex-1 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition-colors"
+                  >
+                    View Pass
+                  </button>
+
+                  {!isCancelled && (
+                    <button
+                      onClick={() => onCancelBooking(b.id)}
+                      className="px-2.5 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 font-bold text-xs transition-colors"
+                      title="Cancel Booking"
                     >
-                      
-                      {/* Ref & Date */}
-                      <td className="p-4">
-                        <div className="flex items-center gap-2">
-                          <span className="font-extrabold text-emerald-400 text-sm block">
-                            #{booking.bookingRef}
-                          </span>
-                          {booking.source && (
-                            <span className="px-1.5 py-0.5 rounded text-[9px] uppercase font-bold bg-[#14281a] text-zinc-300 border border-[#204029]">
-                              {booking.source === 'online' ? 'Online' : booking.source === 'phone_call' ? 'Phone' : 'Walk-in'}
-                            </span>
-                          )}
-                        </div>
-                        <span className="text-zinc-300 text-[11px] block mt-0.5">{booking.date}</span>
-                      </td>
+                      <XCircle className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          );
+        })}
 
-                      {/* Captain & Squad */}
-                      <td className="p-4">
-                        <div className="font-bold text-white text-sm block">
-                          {booking.captainName}
-                        </div>
-                        <div className="text-zinc-400 text-[11px]">
-                          Squad: <span className="text-zinc-200">{booking.teamName}</span>
-                        </div>
-                        <a 
-                          href={`tel:${booking.captainPhone}`} 
-                          className="text-emerald-400 hover:text-emerald-300 text-[11px] flex items-center gap-1 mt-0.5"
-                        >
-                          <PhoneCall className="w-3 h-3 text-emerald-400" />
-                          <span>{booking.captainPhone}</span>
-                        </a>
-                      </td>
-
-                      {/* Pitch & Time */}
-                      <td className="p-4">
-                        <span className="text-white font-bold block">{booking.pitchName}</span>
-                        <span className="text-amber-400 font-bold text-[11px] block">{booking.timeRange}</span>
-                        <span className="text-emerald-300 text-[10px] uppercase font-semibold">{booking.sport}</span>
-                      </td>
-
-                      {/* Financials */}
-                      <td className="p-4">
-                        <div className="text-zinc-200 text-xs">
-                          Total: <strong className="text-white">₹{booking.totalAmount}</strong>
-                        </div>
-                        <div className="text-zinc-400 text-[11px]">
-                          Paid: ₹{booking.advancePaid}
-                        </div>
-                        {booking.paymentStatus === 'upi_pending' ? (
-                          <div className="mt-1 space-y-1">
-                            <span className="inline-block px-2 py-0.5 rounded-md bg-amber-400/20 border border-amber-400/40 text-amber-300 font-extrabold text-[10px]">
-                              🟡 Verification Pending
-                            </span>
-                            {booking.paymentScreenshot ? (
-                              <button
-                                type="button"
-                                onClick={() => onInspectScreenshot?.(booking)}
-                                className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-[#20180b] hover:bg-[#2e2311] border border-amber-500/40 text-amber-300 text-[10px] font-bold transition-all"
-                              >
-                                <ImageIcon className="w-3 h-3 text-amber-400" />
-                                <span>View Receipt Photo 🔍</span>
-                              </button>
-                            ) : booking.upiUtr ? (
-                              <span className="block text-[10px] text-zinc-400 font-mono">
-                                UTR: <strong className="text-amber-200">{booking.upiUtr}</strong>
-                              </span>
-                            ) : null}
-                          </div>
-                        ) : booking.balanceDue > 0 ? (
-                          <span className="inline-block mt-1 px-2 py-0.5 rounded-md bg-amber-400/20 border border-amber-400/30 text-amber-300 font-extrabold text-[11px]">
-                            Counter Due: ₹{booking.balanceDue}
-                          </span>
-                        ) : (
-                          <span className="inline-block mt-1 px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 font-bold text-[10px]">
-                            Fully Cleared ✓
-                          </span>
-                        )}
-                      </td>
-
-                      {/* Gate Status */}
-                      <td className="p-4">
-                        {booking.isCheckedIn ? (
-                          <div className="flex items-center gap-1.5 text-emerald-400 font-bold">
-                            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                            <span>Checked In</span>
-                          </div>
-                        ) : isCancelled ? (
-                          <span className="text-red-400 font-bold uppercase text-[10px]">
-                            Cancelled
-                          </span>
-                        ) : (
-                          <button
-                            onClick={() => onCheckIn(booking.id)}
-                            className="px-3 py-1.5 rounded-xl bg-[#14281a] hover:bg-emerald-500 hover:text-black border border-[#21422a] text-zinc-200 font-bold text-[11px] transition-colors active:scale-95 shadow-sm"
-                          >
-                            Check In
-                          </button>
-                        )}
-                      </td>
-
-                      {/* Actions */}
-                      <td className="p-4 text-right space-x-2">
-                        {booking.paymentScreenshot && (
-                          <button
-                            type="button"
-                            onClick={() => onInspectScreenshot?.(booking)}
-                            className="px-2.5 py-1.5 rounded-xl bg-[#20180b] hover:bg-[#2e2311] text-amber-300 border border-amber-500/40 text-[11px] font-bold transition-colors inline-flex items-center gap-1"
-                            title="View Receipt Photo"
-                          >
-                            <ImageIcon className="w-3.5 h-3.5" />
-                            <span>Proof</span>
-                          </button>
-                        )}
-
-                        {booking.paymentStatus === 'upi_pending' && !isCancelled && (
-                          <button
-                            onClick={() => onApproveUpi?.(booking.id)}
-                            className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-400 to-green-500 hover:from-emerald-300 hover:to-green-400 text-black font-extrabold text-[11px] shadow-sm active:scale-95 inline-flex items-center gap-1"
-                          >
-                            <CheckCircle2 className="w-3.5 h-3.5 stroke-[3]" />
-                            <span>Approve UPI</span>
-                          </button>
-                        )}
-
-                        {booking.balanceDue > 0 && booking.paymentStatus !== 'upi_pending' && !isCancelled && (
-                          <button
-                            onClick={() => onCollectBalance(booking.id)}
-                            className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-black font-extrabold text-[11px] shadow-sm active:scale-95"
-                          >
-                            Collect ₹{booking.balanceDue}
-                          </button>
-                        )}
-
-                        <button
-                          onClick={() => onSelectBooking(booking)}
-                          className="px-3 py-1.5 rounded-xl bg-[#122417] hover:bg-[#1a3523] text-emerald-300 hover:text-white border border-[#21422a] text-[11px] font-bold transition-colors"
-                        >
-                          Pass
-                        </button>
-
-                        {!isCancelled && (
-                          <button
-                            onClick={() => {
-                              if (window.confirm(`Are you sure you want to cancel booking #${booking.bookingRef} for Captain ${booking.captainName}?`)) {
-                                onCancelBooking(booking.id);
-                              }
-                            }}
-                            className="p-1.5 rounded-lg text-zinc-500 hover:text-red-400 hover:bg-red-950/30 transition-colors"
-                            title="Cancel Booking"
-                          >
-                            <XCircle className="w-4 h-4" />
-                          </button>
-                        )}
-                      </td>
-
-                    </tr>
-                  );
-                })
-              )}
-            </tbody>
-          </table>
-        </div>
+        {filtered.length === 0 && (
+          <div className="py-16 text-center rounded-3xl bg-white border border-slate-200 p-8">
+            <Filter className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+            <h4 className="text-base font-bold text-slate-800">No Bookings Found</h4>
+            <p className="text-xs text-slate-500 mt-1">Try changing the status filter or search query</p>
+          </div>
+        )}
       </div>
 
     </div>

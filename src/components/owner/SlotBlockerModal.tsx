@@ -1,24 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   X, 
   Lock, 
   Unlock, 
-  AlertTriangle, 
-  CloudRain, 
-  Wrench, 
-  Trophy 
+  Clock, 
+  Calendar, 
+  Ban, 
+  AlertCircle,
+  Wrench,
+  CloudRain
 } from 'lucide-react';
 import { Pitch } from '../../types';
-import { BlockedSlotRecord } from '../../data/storage';
-import { OPERATING_HOURS, formatDisplayTime } from '../../data/storage';
+import { BlockedSlotRecord, OPERATING_HOURS, formatDisplayTime } from '../../data/storage';
 
 interface SlotBlockerModalProps {
   isOpen: boolean;
   onClose: () => void;
   pitches: Pitch[];
+  selectedDate: string;
   initialPitchId?: string;
   initialTime?: string;
-  selectedDate: string;
   blockedSlots: BlockedSlotRecord[];
   onToggleBlock: (date: string, pitchId: string, time: string, reason: string) => void;
 }
@@ -27,24 +28,16 @@ export const SlotBlockerModal: React.FC<SlotBlockerModalProps> = ({
   isOpen,
   onClose,
   pitches,
+  selectedDate,
   initialPitchId,
   initialTime,
-  selectedDate,
   blockedSlots,
   onToggleBlock
 }) => {
   const [pitchId, setPitchId] = useState(initialPitchId || pitches[0].id);
   const [date, setDate] = useState(selectedDate);
   const [time, setTime] = useState(initialTime || '15:00');
-  const [reason, setReason] = useState('Groundskeeping / Turf Grooming');
-
-  useEffect(() => {
-    if (isOpen) {
-      setPitchId(initialPitchId || pitches[0].id);
-      setDate(selectedDate);
-      setTime(initialTime || '15:00');
-    }
-  }, [isOpen, initialPitchId, initialTime, selectedDate, pitches]);
+  const [reason, setReason] = useState('Groundskeeping / Turf Grooming & Infill');
 
   if (!isOpen) return null;
 
@@ -67,16 +60,16 @@ export const SlotBlockerModal: React.FC<SlotBlockerModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
-      <div className="bg-[#0c1810] border-2 border-[#1f3d28] rounded-3xl w-full max-w-md shadow-2xl relative overflow-hidden animate-in fade-in zoom-in-95 text-xs font-mono">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-sm overflow-y-auto font-sans">
+      <div className="bg-white border border-slate-200 rounded-3xl w-full max-w-md shadow-2xl relative overflow-hidden animate-in fade-in zoom-in-95 text-xs text-slate-800">
         
         {/* Header */}
-        <div className="p-5 sm:p-6 border-b border-[#1b3623] bg-[#0e1d13] flex items-center justify-between">
+        <div className="p-5 sm:p-6 border-b border-white/10 bg-[#0B1D2D] text-white flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+            <div className={`w-10 h-10 rounded-2xl flex items-center justify-center ${
               isCurrentlyBlocked 
-                ? 'bg-amber-400/20 text-amber-300 border border-amber-400/30' 
-                : 'bg-red-500/20 text-red-400 border border-red-500/30'
+                ? 'bg-amber-500 text-white' 
+                : 'bg-red-500 text-white'
             }`}>
               {isCurrentlyBlocked ? <Unlock className="w-5 h-5" /> : <Lock className="w-5 h-5" />}
             </div>
@@ -84,55 +77,41 @@ export const SlotBlockerModal: React.FC<SlotBlockerModalProps> = ({
               <h3 className="text-base font-extrabold text-white uppercase tracking-wider">
                 {isCurrentlyBlocked ? 'Unlock Court Slot' : 'Lock Slot from Booking'}
               </h3>
-              <p className="text-zinc-400 text-xs">
-                {isCurrentlyBlocked ? 'Restore this slot back to public availability' : 'Hold slot for maintenance, rain, or private event'}
+              <p className="text-slate-300 text-xs">
+                {isCurrentlyBlocked ? 'Restore slot back to public availability' : 'Hold slot for maintenance, rain, or private match'}
               </p>
             </div>
           </div>
 
           <button
             onClick={onClose}
-            className="w-9 h-9 rounded-xl bg-[#14281a] hover:bg-[#1a3523] text-zinc-300 hover:text-white flex items-center justify-center border border-[#21422a]"
+            className="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Form */}
+        {/* Body */}
         <form onSubmit={handleToggle} className="p-5 sm:p-6 space-y-4">
           
-          {isCurrentlyBlocked && (
-            <div className="p-3.5 rounded-2xl bg-[#221313] border border-red-500/40 text-red-200 space-y-1">
-              <span className="font-bold text-xs uppercase block text-red-300">Currently Blocked</span>
-              <p className="text-[11px] text-zinc-300">
-                Reason: <strong>{existingBlock?.reason}</strong>
-              </p>
-              <p className="text-[10px] text-zinc-400">
-                Clicking confirm below will release this slot immediately.
-              </p>
-            </div>
-          )}
-
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-zinc-300 font-bold block mb-1">Court / Pitch</label>
-              <select
-                value={pitchId}
-                onChange={e => setPitchId(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl bg-[#09140d] border border-[#204229] text-white focus:outline-none focus:border-emerald-400"
-              >
-                {pitches.map(p => (
-                  <option key={p.id} value={p.id}>{p.name}</option>
-                ))}
-              </select>
+              <label className="text-slate-600 font-bold block mb-1">Target Date</label>
+              <input
+                type="date"
+                value={date}
+                onChange={e => setDate(e.target.value)}
+                className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 font-mono text-xs focus:outline-none focus:border-[#FF6A00]"
+                required
+              />
             </div>
 
             <div>
-              <label className="text-zinc-300 font-bold block mb-1">Time Slot</label>
+              <label className="text-slate-600 font-bold block mb-1">Target Time Slot</label>
               <select
                 value={time}
                 onChange={e => setTime(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl bg-[#09140d] border border-[#204229] text-white focus:outline-none focus:border-emerald-400"
+                className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-[#FF6A00]"
               >
                 {OPERATING_HOURS.map(t => (
                   <option key={t} value={t}>{formatDisplayTime(t)}</option>
@@ -141,26 +120,16 @@ export const SlotBlockerModal: React.FC<SlotBlockerModalProps> = ({
             </div>
           </div>
 
-          <div>
-            <label className="text-zinc-300 font-bold block mb-1">Target Date</label>
-            <input
-              type="date"
-              required
-              value={date}
-              onChange={e => setDate(e.target.value)}
-              className="w-full px-3 py-2.5 rounded-xl bg-[#09140d] border border-[#204229] text-white focus:outline-none focus:border-emerald-400"
-            />
-          </div>
-
-          {!isCurrentlyBlocked && (
+          {!isCurrentlyBlocked ? (
             <div className="space-y-2">
-              <label className="text-zinc-300 font-bold block mb-1">Reason for Hold</label>
+              <label className="text-slate-600 font-bold block mb-1">Reason for Lockout</label>
               <input
                 type="text"
-                required
                 value={reason}
                 onChange={e => setReason(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl bg-[#09140d] border border-[#204229] text-white focus:outline-none focus:border-emerald-400"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-xs focus:outline-none focus:border-[#FF6A00]"
+                placeholder="Enter maintenance reason..."
+                required
               />
 
               <div className="flex flex-wrap gap-1.5 pt-1">
@@ -169,33 +138,42 @@ export const SlotBlockerModal: React.FC<SlotBlockerModalProps> = ({
                     key={p}
                     type="button"
                     onClick={() => setReason(p)}
-                    className="text-[10px] px-2.5 py-1 rounded-lg bg-[#122417] text-zinc-300 hover:text-white border border-[#204229] transition-colors"
+                    className="text-[11px] px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition-colors"
                   >
                     {p}
                   </button>
                 ))}
               </div>
             </div>
+          ) : (
+            <div className="p-4 rounded-2xl bg-amber-50 border border-amber-300 text-amber-900 space-y-1">
+              <span className="font-extrabold uppercase text-xs block">Slot is Currently Locked</span>
+              <p className="text-xs">
+                Reason: <strong>{existingBlock?.reason}</strong>
+              </p>
+              <span className="text-[11px] text-amber-700 block mt-1">
+                Click below to unlock and reopen this slot on the player booking portal.
+              </span>
+            </div>
           )}
 
-          <div className="pt-3 border-t border-[#172c1c] flex items-center justify-end gap-3">
+          <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
             <button
               type="button"
               onClick={onClose}
-              className="px-5 py-2.5 rounded-xl bg-[#122417] text-zinc-300 hover:text-white font-bold"
+              className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs"
             >
               Cancel
             </button>
-
             <button
               type="submit"
-              className={`px-6 py-2.5 rounded-xl font-extrabold uppercase tracking-wider text-black shadow-lg active:scale-95 transition-all ${
-                isCurrentlyBlocked
-                  ? 'bg-gradient-to-r from-emerald-400 to-green-500 hover:from-emerald-300 hover:to-green-400'
-                  : 'bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400'
+              className={`px-6 py-2.5 rounded-xl font-extrabold text-xs uppercase tracking-wider text-white shadow-md active:scale-95 transition-all ${
+                isCurrentlyBlocked 
+                  ? 'bg-amber-600 hover:bg-amber-500 shadow-amber-600/30' 
+                  : 'bg-red-600 hover:bg-red-500 shadow-red-600/30'
               }`}
             >
-              {isCurrentlyBlocked ? 'Release / Unblock Slot' : 'Lock Slot Now'}
+              {isCurrentlyBlocked ? 'Confirm Slot Unlock' : 'Confirm Slot Lock'}
             </button>
           </div>
 
