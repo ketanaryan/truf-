@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { Pitch } from '../../types';
 import { PitchVisualizer } from './PitchVisualizer';
+import { SpotlightCard, SlidingTabs, AnimatedCounter, SpringButton } from '../motion/MotionPrimitives';
 
 interface HeroBannerProps {
   onScrollToSlots: () => void;
@@ -94,23 +95,23 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
               </div>
             </div>
 
-            {/* Action Buttons (Hatrick Grounds Orange Theme) */}
+            {/* Action Buttons (Hatrick Grounds Orange Theme with Motion Primitives) */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-2">
-              <button
+              <SpringButton
                 onClick={onScrollToSlots}
-                className="flex items-center justify-center gap-2 px-7 py-4 rounded-2xl bg-[#FF6A00] hover:bg-[#E65F00] text-white font-extrabold text-sm uppercase tracking-wider shadow-xl shadow-orange-500/30 transition-all duration-200 active:scale-95"
+                className="flex items-center justify-center gap-2 px-7 py-4 rounded-2xl bg-[#FF6A00] hover:bg-[#E65F00] text-white font-extrabold text-sm uppercase tracking-wider shadow-xl shadow-orange-500/30 animate-glow-orange cursor-pointer"
               >
                 <Calendar className="w-4 h-4" />
                 <span>BOOK A SLOT NOW →</span>
-              </button>
+              </SpringButton>
 
-              <button
+              <SpringButton
                 onClick={onOpenMatchFinder}
-                className="flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-white hover:bg-slate-50 text-[#1F2937] font-bold text-sm border border-slate-300 shadow-sm transition-all duration-200 active:scale-95"
+                className="flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-white hover:bg-slate-50 text-[#1F2937] font-bold text-sm border border-slate-300 shadow-sm cursor-pointer"
               >
                 <Users className="w-4 h-4 text-[#FF6A00]" />
                 <span>FIND PLAYERS (BATTLE BOARD)</span>
-              </button>
+              </SpringButton>
             </div>
 
             {/* Quick Feature Tickers */}
@@ -131,29 +132,28 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
 
           </div>
 
-          {/* Right Column: Hatrick Grounds Inspired Showcase Ground Card */}
+          {/* Right Column: Hatrick Grounds Inspired Showcase Ground Card with Kokonut UI Spotlight */}
           <div className="lg:col-span-5">
-            <div className="bg-white rounded-3xl p-5 sm:p-6 shadow-2xl border border-slate-200/80 space-y-4 relative">
+            <SpotlightCard
+              spotlightColor="rgba(255, 106, 0, 0.12)"
+              className="bg-white rounded-3xl p-5 sm:p-6 shadow-2xl border border-slate-200/90 space-y-4 relative"
+            >
               
-              {/* Pitch Switcher Tabs */}
-              <div className="flex items-center p-1 rounded-2xl bg-slate-100 border border-slate-200 text-xs font-bold">
-                {pitches.map((p, idx) => (
-                  <button
-                    key={p.id}
-                    onClick={() => {
-                      setSelectedPitchIdx(idx);
-                      onSelectPitch?.(p.id);
-                    }}
-                    className={`flex-1 py-2 rounded-xl transition-all ${
-                      selectedPitchIdx === idx
-                        ? 'bg-[#0B1D2D] text-white shadow-md font-extrabold'
-                        : 'text-slate-600 hover:text-[#111827]'
-                    }`}
-                  >
-                    {idx === 0 ? 'Pitch A • 7v7 Arena' : 'Pitch B • 5v5 Court'}
-                  </button>
-                ))}
-              </div>
+              {/* Pitch Switcher Tabs (Motion Primitives Spring Pill) */}
+              <SlidingTabs
+                tabs={[
+                  { id: '0', label: 'Pitch A • 7v7 Arena' },
+                  { id: '1', label: 'Pitch B • 5v5 Court' }
+                ]}
+                activeId={String(selectedPitchIdx)}
+                onChange={(id) => {
+                  const idx = parseInt(id, 10);
+                  setSelectedPitchIdx(idx);
+                  if (pitches[idx]) onSelectPitch?.(pitches[idx].id);
+                }}
+                activeColor="bg-[#0B1D2D] text-white"
+                layoutGroupId="hero-pitch-switcher"
+              />
 
               {/* Real Full-Bleed Ground Photo Banner (With Floating Badges) */}
               <div className="relative rounded-2xl overflow-hidden h-48 sm:h-52 border border-slate-200 bg-[#0B1D2D]">
@@ -179,8 +179,8 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                     <span className="px-2.5 py-0.5 rounded-full bg-[#00B6C8] text-white font-black text-[11px] tracking-wider uppercase shadow">
                       NEW
                     </span>
-                    <span className="px-3 py-1 rounded-full bg-white text-[#1F2937] text-xs font-bold shadow-md flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                    <span className="px-3 py-1 rounded-full bg-white text-[#1F2937] text-xs font-bold shadow-md flex items-center gap-2">
+                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-radar-beacon"></span>
                       <span>Live Availability</span>
                     </span>
                   </div>
@@ -193,8 +193,8 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                   </div>
                 </div>
 
-                {/* Floating '98% Happy Players' badge (Hatrick Grounds signature) */}
-                <div className="absolute bottom-3 right-3 bg-white px-3 py-1.5 rounded-xl shadow-lg border-l-4 border-[#FF6A00] flex items-center gap-2 text-xs font-bold text-[#1F2937]">
+                {/* Floating '98% Happy Players' badge (Hatrick Grounds signature + Micro-float motion) */}
+                <div className="absolute bottom-3 right-3 bg-white px-3 py-1.5 rounded-xl shadow-lg border-l-4 border-[#FF6A00] flex items-center gap-2 text-xs font-bold text-[#1F2937] animate-float-subtle">
                   <span className="text-sm">⚡</span>
                   <div>
                     <div className="text-[#FF6A00] leading-none font-extrabold">98%</div>
@@ -203,7 +203,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                 </div>
               </div>
 
-              {/* Title & Blue Pricing Format (Exact Hatrick Grounds Style) */}
+              {/* Title & Blue Pricing Format with Animated Numbers */}
               <div className="flex items-center justify-between pt-1">
                 <div>
                   <h4 className="text-base font-black text-[#111827] uppercase tracking-wide">
@@ -212,8 +212,8 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                   <p className="text-xs text-slate-500">{currentPitch.surface}</p>
                 </div>
                 <div className="text-right whitespace-nowrap shrink-0">
-                  <span className="text-lg font-black text-[#0D6EFD]">
-                    ₹{currentPitch.baseWeekdayPrice}.00
+                  <span className="text-xl font-black text-[#0D6EFD]">
+                    <AnimatedCounter value={currentPitch.baseWeekdayPrice} prefix="₹" suffix=".00" />
                   </span>
                   <span className="text-xs text-slate-500 font-medium"> / hr</span>
                 </div>
@@ -252,24 +252,24 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowPitchModal(true)}
-                  className="px-2.5 py-1 rounded-xl bg-orange-100/60 border border-orange-300 text-[#E65F00] font-bold hover:bg-orange-200/60 transition-colors"
+                  className="px-2.5 py-1 rounded-xl bg-orange-100/60 border border-orange-300 text-[#E65F00] font-bold hover:bg-orange-200/60 transition-colors cursor-pointer"
                 >
                   👁️ 2D Layout
                 </button>
               </div>
 
-              {/* Primary Card CTA */}
-              <button
+              {/* Primary Card CTA with Spring Micro-Bounce */}
+              <SpringButton
                 onClick={() => {
                   onSelectPitch?.(currentPitch.id);
                   onScrollToSlots();
                 }}
-                className="w-full py-3.5 rounded-2xl bg-[#FF6A00] hover:bg-[#E65F00] text-white font-extrabold text-sm uppercase tracking-wider shadow-lg shadow-orange-500/25 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+                className="w-full py-4 rounded-2xl bg-[#FF6A00] hover:bg-[#E65F00] text-white font-extrabold text-sm uppercase tracking-wider shadow-lg shadow-orange-500/30 flex items-center justify-center gap-2 cursor-pointer"
               >
                 <span>BOOK {currentPitch.name.toUpperCase()} NOW →</span>
-              </button>
+              </SpringButton>
 
-            </div>
+            </SpotlightCard>
           </div>
 
         </div>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import { 
   Shield, 
   Ticket, 
@@ -13,6 +14,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { OwnerSettings } from '../../types';
+import { SpringButton } from '../motion/MotionPrimitives';
 
 interface NavbarProps {
   customerTab: 'booking' | 'matchfinder' | 'facilities' | 'reviews';
@@ -105,58 +107,40 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
 
-        {/* Center Navigation Links (Clean & Customer Facing) */}
+        {/* Center Navigation Links (Motion Primitives Sliding Indicator) */}
         <nav className="hidden lg:flex items-center gap-1 bg-[#061320] p-1.5 rounded-2xl border border-white/10">
-          <button
-            onClick={() => {
-              onSelectTab('booking');
-              onScrollToSlots();
-            }}
-            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all duration-200 ${
-              customerTab === 'booking'
-                ? 'bg-[#FF6A00] text-white shadow-md font-extrabold'
-                : 'text-slate-300 hover:text-white hover:bg-white/10'
-            }`}
-          >
-            <Calendar className="w-3.5 h-3.5" />
-            <span>Book a Slot</span>
-          </button>
-
-          <button
-            onClick={() => onSelectTab('facilities')}
-            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all duration-200 ${
-              customerTab === 'facilities'
-                ? 'bg-[#FF6A00] text-white shadow-md font-extrabold'
-                : 'text-slate-300 hover:text-white hover:bg-white/10'
-            }`}
-          >
-            <Zap className="w-3.5 h-3.5" />
-            <span>Pitches & Specs</span>
-          </button>
-
-          <button
-            onClick={() => onSelectTab('matchfinder')}
-            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all duration-200 ${
-              customerTab === 'matchfinder'
-                ? 'bg-[#FF6A00] text-white shadow-md font-extrabold'
-                : 'text-slate-300 hover:text-white hover:bg-white/10'
-            }`}
-          >
-            <Users className="w-3.5 h-3.5" />
-            <span>Battle Board</span>
-          </button>
-
-          <button
-            onClick={() => onSelectTab('reviews')}
-            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all duration-200 ${
-              customerTab === 'reviews'
-                ? 'bg-[#FF6A00] text-white shadow-md font-extrabold'
-                : 'text-slate-300 hover:text-white hover:bg-white/10'
-            }`}
-          >
-            <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-            <span>Reviews</span>
-          </button>
+          {[
+            { id: 'booking', label: 'Book a Slot', icon: <Calendar className="w-3.5 h-3.5" /> },
+            { id: 'facilities', label: 'Pitches & Specs', icon: <Zap className="w-3.5 h-3.5" /> },
+            { id: 'matchfinder', label: 'Battle Board', icon: <Users className="w-3.5 h-3.5" /> },
+            { id: 'reviews', label: 'Reviews', icon: <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" /> }
+          ].map((tab) => {
+            const isActive = customerTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => {
+                  onSelectTab(tab.id as any);
+                  if (tab.id === 'booking') onScrollToSlots();
+                }}
+                className={`relative px-4 py-2 rounded-xl text-xs font-bold transition-colors duration-200 flex items-center gap-1.5 ${
+                  isActive ? 'text-white' : 'text-slate-300 hover:text-white'
+                }`}
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="navbar-active-pill"
+                    className="absolute inset-0 rounded-xl bg-[#FF6A00] shadow-md"
+                    transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                  />
+                )}
+                <span className="relative z-10 flex items-center gap-1.5">
+                  {tab.icon}
+                  <span>{tab.label}</span>
+                </span>
+              </button>
+            );
+          })}
         </nav>
 
         {/* Right side actions */}
@@ -170,21 +154,21 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           {selectedSlotsCount > 0 ? (
-            <button
+            <SpringButton
               onClick={onOpenCheckout}
-              className="relative flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-[#FF6A00] to-[#E65F00] hover:from-orange-500 hover:to-orange-600 text-white font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-orange-950/50 transition-all duration-200 active:scale-95 animate-pulse"
+              className="relative flex items-center gap-2 px-5 py-2 rounded-xl bg-gradient-to-r from-[#FF6A00] to-[#E65F00] text-white font-extrabold text-xs uppercase tracking-wider shadow-lg shadow-orange-950/50 animate-glow-orange"
             >
               <span>Confirm ({selectedSlotsCount})</span>
               <ArrowRight className="w-3.5 h-3.5" />
-            </button>
+            </SpringButton>
           ) : (
-            <button
+            <SpringButton
               onClick={onScrollToSlots}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#FF6A00] hover:bg-[#E65F00] text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-orange-950/40 transition-all active:scale-95"
+              className="flex items-center gap-1.5 px-5 py-2 rounded-xl bg-[#FF6A00] text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-orange-950/40"
             >
               <span>BOOK SLOT</span>
               <ArrowRight className="w-3.5 h-3.5" />
-            </button>
+            </SpringButton>
           )}
         </div>
 

@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
   Calendar as CalendarIcon, 
   Clock, 
@@ -15,6 +16,7 @@ import {
 import { Pitch, Slot, SportType, OwnerSettings } from '../../types';
 import { getOffsetDateString } from '../../data/mockTurfData';
 import { isWeekend } from '../../data/storage';
+import { SpotlightCard, SpringButton } from '../motion/MotionPrimitives';
 
 interface SlotBookingMatrixProps {
   pitches: Pitch[];
@@ -126,7 +128,7 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
           </span>
         </div>
 
-        {/* Pitch Selection Cards (Side-by-side) */}
+        {/* Pitch Selection Cards (Side-by-side with Motion Primitives Spotlight) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {pitches.map(pitch => {
             const isSelected = pitch.id === selectedPitchId;
@@ -134,8 +136,9 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
             const peakRate = weekend ? pitch.peakHourWeekendPrice : pitch.peakHourWeekdayPrice;
 
             return (
-              <div
+              <SpotlightCard
                 key={pitch.id}
+                spotlightColor="rgba(255, 106, 0, 0.12)"
                 onClick={() => {
                   onPitchChange(pitch.id);
                   if (!pitch.sports.includes(selectedSport)) {
@@ -149,9 +152,14 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
                 }`}
               >
                 {isSelected && (
-                  <div className="absolute top-4 right-4 w-6 h-6 rounded-full bg-[#FF6A00] text-white flex items-center justify-center font-black text-xs shadow-md">
+                  <motion.div 
+                    initial={{ scale: 0, rotate: -25 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+                    className="absolute top-4 right-4 w-6 h-6 rounded-full bg-[#FF6A00] text-white flex items-center justify-center font-black text-xs shadow-md"
+                  >
                     <Check className="w-4 h-4 stroke-[3]" />
-                  </div>
+                  </motion.div>
                 )}
 
                 <div>
@@ -177,7 +185,7 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
                     ₹{baseRate} – ₹{peakRate} <span className="text-slate-500 text-xs font-normal">/ hr</span>
                   </span>
                 </div>
-              </div>
+              </SpotlightCard>
             );
           })}
         </div>
@@ -367,18 +375,21 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
             const isAvailable = slot.status === 'available';
 
             return (
-              <button
+              <motion.button
                 key={slot.id}
                 type="button"
+                whileHover={isAvailable ? { scale: 1.03 } : undefined}
+                whileTap={isAvailable ? { scale: 0.96 } : undefined}
+                transition={{ type: 'spring', stiffness: 450, damping: 25 }}
                 onClick={() => {
                   if (isAvailable || isSelected) {
                     onToggleSlot(slot.id);
                   }
                 }}
                 disabled={isBooked || isBlocked || isPast}
-                className={`p-3.5 rounded-2xl border-2 transition-all text-left flex flex-col justify-between select-none active:scale-[0.98] ${
+                className={`p-3.5 rounded-2xl border-2 transition-all text-left flex flex-col justify-between select-none ${
                   isSelected
-                    ? 'bg-[#FF6A00] border-[#E65F00] text-white font-bold shadow-lg transform -translate-y-0.5 cursor-pointer'
+                    ? 'bg-[#FF6A00] border-[#E65F00] text-white font-bold shadow-lg transform -translate-y-0.5 cursor-pointer ring-2 ring-[#FF6A00]/25'
                     : isBooked
                     ? 'bg-slate-100 border-slate-200 opacity-70 cursor-not-allowed text-slate-400'
                     : isBlocked
@@ -440,54 +451,61 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
                     </>
                   )}
                 </div>
-              </button>
+              </motion.button>
             );
           })}
         </div>
       </div>
 
-      {/* Floating Bottom Drawer when slots are selected (Hatrick Grounds Deep Navy + Orange) */}
-      {selectedSlotIds.length > 0 && (
-        <div className="sticky bottom-5 z-40 p-4 sm:p-5 rounded-3xl bg-[#0B1D2D] border-2 border-[#FF6A00] shadow-2xl backdrop-blur-xl flex flex-col sm:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-bottom-4">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-[#FF6A00] text-white flex items-center justify-center font-black text-xl shadow-lg">
-              {isFullDaySelected ? '19h' : selectedSlotIds.length}
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs uppercase tracking-wider text-[#FF6A00] font-black">
-                  {isFullDaySelected ? 'Full Day Turf Pass' : `${selectedSlotIds.length} ${selectedSlotIds.length === 1 ? 'Hour Selected' : 'Hours Selected'}`}
-                </span>
-                <span className="text-slate-400">•</span>
-                <span className="text-xs font-bold text-white">
-                  {currentPitch.name} ({selectedSport})
-                </span>
+      {/* Floating Bottom Drawer when slots are selected (Hatrick Grounds Deep Navy + Orange + AnimatePresence) */}
+      <AnimatePresence>
+        {selectedSlotIds.length > 0 && (
+          <motion.div 
+            initial={{ opacity: 0, y: 50, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 30, scale: 0.95 }}
+            transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+            className="sticky bottom-5 z-40 p-4 sm:p-5 rounded-3xl bg-[#0B1D2D] border-2 border-[#FF6A00] shadow-2xl backdrop-blur-xl flex flex-col sm:flex-row items-center justify-between gap-4"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-[#FF6A00] text-white flex items-center justify-center font-black text-xl shadow-lg animate-glow-orange">
+                {isFullDaySelected ? '19h' : selectedSlotIds.length}
               </div>
-              <p className="text-xs text-slate-300 mt-0.5">
-                Date: <strong className="text-white">{selectedDate}</strong> | Total: <strong className="text-white text-base font-black">₹{totalBasePrice}</strong>
-              </p>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs uppercase tracking-wider text-[#FF6A00] font-black">
+                    {isFullDaySelected ? 'Full Day Turf Pass' : `${selectedSlotIds.length} ${selectedSlotIds.length === 1 ? 'Hour Selected' : 'Hours Selected'}`}
+                  </span>
+                  <span className="text-slate-400">•</span>
+                  <span className="text-xs font-bold text-white">
+                    {currentPitch.name} ({selectedSport})
+                  </span>
+                </div>
+                <p className="text-xs text-slate-300 mt-0.5">
+                  Date: <strong className="text-white">{selectedDate}</strong> | Total: <strong className="text-white text-base font-black">₹{totalBasePrice}</strong>
+                </p>
+              </div>
             </div>
-          </div>
 
-          <div className="flex items-center gap-3 w-full sm:w-auto">
-            <button
-              type="button"
-              onClick={onClearSelectedSlots}
-              className="px-4 py-3 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-slate-200 text-xs font-bold uppercase transition-colors"
-            >
-              Clear
-            </button>
-            <button
-              type="button"
-              onClick={onProceedToCheckout}
-              className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-[#FF6A00] hover:bg-[#E65F00] text-white font-extrabold text-xs uppercase tracking-wider shadow-xl shadow-orange-950/40 transition-all active:scale-95"
-            >
-              <span>Confirm & Book Match</span>
-              <ArrowRight className="w-4 h-4 stroke-[3]" />
-            </button>
-          </div>
-        </div>
-      )}
+            <div className="flex items-center gap-3 w-full sm:w-auto">
+              <button
+                type="button"
+                onClick={onClearSelectedSlots}
+                className="px-4 py-3 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-slate-200 text-xs font-bold uppercase transition-colors"
+              >
+                Clear
+              </button>
+              <SpringButton
+                onClick={onProceedToCheckout}
+                className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-[#FF6A00] hover:bg-[#E65F00] text-white font-extrabold text-xs uppercase tracking-wider shadow-xl shadow-orange-950/40 cursor-pointer"
+              >
+                <span>Confirm & Book Match</span>
+                <ArrowRight className="w-4 h-4 stroke-[3]" />
+              </SpringButton>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
     </div>
   );
