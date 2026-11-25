@@ -147,64 +147,99 @@ export const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({
     if (!validate()) return;
     setIsProcessing(true);
 
-    setTimeout(() => {
-      const randomRef = 'BG-' + Math.floor(1000 + Math.random() * 9000);
-      const timeRange = isFullDayActive
-        ? '06:00 AM - 01:00 AM (Full Day)'
-        : chosenSlots.length > 0
-        ? `${chosenSlots[0].displayTime.split('-')[0].trim()} - ${chosenSlots[chosenSlots.length - 1].displayTime.split('-')[1].trim()}`
-        : '06:00 PM - 07:00 PM';
+    const randomRef = 'BG-' + Math.floor(1000 + Math.random() * 9000);
+    const timeRange = isFullDayActive
+      ? '06:00 AM - 01:00 AM (Full Day)'
+      : chosenSlots.length > 0
+      ? `${chosenSlots[0].displayTime.split('-')[0].trim()} - ${chosenSlots[chosenSlots.length - 1].displayTime.split('-')[1].trim()}`
+      : '06:00 PM - 07:00 PM';
 
-      let statusPayment: PaymentStatus = 'paid_full';
-      if (paymentPlan === 'upi_direct') statusPayment = 'upi_pending';
-      if (paymentPlan === 'advance_token') statusPayment = 'upi_pending';
-      if (paymentPlan === 'pay_at_venue') statusPayment = 'pay_at_venue';
+    let statusPayment: PaymentStatus = 'paid_full';
+    if (paymentPlan === 'upi_direct') statusPayment = 'upi_pending';
+    if (paymentPlan === 'advance_token') statusPayment = 'upi_pending';
+    if (paymentPlan === 'pay_at_venue') statusPayment = 'pay_at_venue';
 
-      const methodPayment: PaymentMethod = 
-        paymentPlan === 'pay_at_venue' ? 'cash' : 'upi';
+    const methodPayment: PaymentMethod = 
+      paymentPlan === 'pay_at_venue' ? 'cash' : 'upi';
 
-      const newBooking: Booking = {
-        id: randomRef,
-        bookingRef: randomRef,
-        pitchId: currentPitch.id,
-        pitchName: 'Box Cricket Turf',
-        date: selectedDate,
-        slotIds: isFullDayActive ? slots.map(s => s.id) : selectedSlotIds,
-        timeRange,
-        durationHours,
-        sport: 'Box Cricket',
-        isFullDayBooking: isFullDayActive,
-        captainName: captainName.trim(),
-        captainPhone: captainPhone.trim(),
-        teamName: teamName.trim() || `${captainName.trim()}'s Squad`,
-        notes: notes.trim(),
-        baseAmount,
-        addonsAmount: 0,
-        totalAmount,
-        advancePaid: amountToPayNow,
-        balanceDue,
-        paymentStatus: statusPayment,
-        paymentMethod: methodPayment,
-        source: 'online',
-        upiUtr: upiUtr.trim() || undefined,
-        paymentScreenshot: paymentScreenshot || undefined,
-        isUpiVerified: false,
-        createdAt: new Date().toISOString(),
-        isCheckedIn: false,
-        status: 'confirmed'
-      };
+    const newBooking: Booking = {
+      id: randomRef,
+      bookingRef: randomRef,
+      pitchId: currentPitch.id,
+      pitchName: 'Box Cricket Turf',
+      date: selectedDate,
+      slotIds: isFullDayActive ? slots.map(s => s.id) : selectedSlotIds,
+      timeRange,
+      durationHours,
+      sport: 'Box Cricket',
+      isFullDayBooking: isFullDayActive,
+      captainName: captainName.trim(),
+      captainPhone: captainPhone.trim(),
+      teamName: teamName.trim() || `${captainName.trim()}'s Squad`,
+      notes: notes.trim(),
+      baseAmount,
+      addonsAmount: 0,
+      totalAmount,
+      advancePaid: amountToPayNow,
+      balanceDue,
+      paymentStatus: statusPayment,
+      paymentMethod: methodPayment,
+      source: 'online',
+      upiUtr: upiUtr.trim() || undefined,
+      paymentScreenshot: paymentScreenshot || undefined,
+      isUpiVerified: false,
+      createdAt: new Date().toISOString(),
+      isCheckedIn: false,
+      status: 'confirmed'
+    };
 
-      try {
-        confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 }
-        });
-      } catch (e) {}
+    // Open Turf Owner's WhatsApp directly with complete booking details pre-filled
+    try {
+      const rawOwnerPhone = (settings.whatsapp || settings.phone || '9820477123').replace(/\D/g, '');
+      const cleanOwnerPhone = rawOwnerPhone.length === 10 ? `91${rawOwnerPhone}` : rawOwnerPhone;
 
-      setIsProcessing(false);
-      onBookingConfirmed(newBooking);
-    }, 700);
+      const paymentPlanLabel = 
+        paymentPlan === 'upi_direct'
+          ? (upiUtr.trim() ? `100% UPI Paid (UTR: ${upiUtr.trim()})` : '100% UPI Paid (Receipt Screenshot Uploaded)')
+          : paymentPlan === 'advance_token'
+          ? (upiUtr.trim() ? `30% Advance Token ₹${amountToPayNow} Paid (UTR: ${upiUtr.trim()})` : `30% Advance Token ₹${amountToPayNow} Paid (Receipt Uploaded)`)
+          : `Pay at Turf Counter on Arrival (Due ₹${totalAmount})`;
+
+      const waText = 
+        `🏏 *NEW BOX CRICKET RESERVATION*\n` +
+        `-----------------------------------------\n` +
+        `🎫 *Pass Ref:* #${randomRef}\n` +
+        `🏟️ *Turf:* Box Cricket Turf (120 ft Rebound Cage)\n` +
+        `📅 *Date:* ${selectedDate}\n` +
+        `⏰ *Time Slot:* ${timeRange}\n` +
+        `👤 *Captain:* ${captainName.trim()}\n` +
+        `📱 *Contact:* ${captainPhone.trim()}\n` +
+        `👥 *Squad Name:* ${teamName.trim() || `${captainName.trim()}'s Squad`}\n` +
+        (notes.trim() ? `📝 *Match Notes:* ${notes.trim()}\n` : '') +
+        `-----------------------------------------\n` +
+        `💰 *Total Turf Fee:* ₹${totalAmount}\n` +
+        `✅ *Paid Online/Advance:* ₹${amountToPayNow}\n` +
+        (balanceDue > 0 ? `⏳ *Balance Due at Turf:* ₹${balanceDue}\n` : '') +
+        `💳 *Payment Status:* ${paymentPlanLabel}\n` +
+        `-----------------------------------------\n` +
+        `Hello Turf Owner, I have submitted my match reservation on your website. Please check and confirm my slot!`;
+
+      const waUrl = `https://api.whatsapp.com/send?phone=${cleanOwnerPhone}&text=${encodeURIComponent(waText)}`;
+      window.open(waUrl, '_blank');
+    } catch (err) {
+      console.error('Failed to open WhatsApp', err);
+    }
+
+    try {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+    } catch (e) {}
+
+    setIsProcessing(false);
+    onBookingConfirmed(newBooking);
   };
 
   const upiIntentUri = `upi://pay?pa=${encodeURIComponent(settings.upiId || 'battlegroundsturf@icici')}&pn=${encodeURIComponent(settings.turfName || 'Battlegrounds Turf')}&am=${amountToPayNow}&tn=PassBooking&cu=INR`;
@@ -658,24 +693,29 @@ export const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({
           </div>
 
           {/* Action Buttons */}
-          <div className="pt-2 flex items-center justify-end gap-3 border-t border-slate-100">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition-colors cursor-pointer"
-            >
-              Cancel
-            </button>
+          <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 border-t border-slate-100">
+            <span className="text-[11px] text-slate-500 font-medium">
+              📲 Generates Digital Pass & forwards details to Owner WhatsApp
+            </span>
 
-            <button
-              type="button"
-              disabled={isProcessing}
-              onClick={handleSubmitBooking}
-              className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-8 py-3.5 rounded-2xl bg-[#FF6A00] hover:bg-[#E65F00] text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-orange-500/30 active:scale-95 transition-all cursor-pointer"
-            >
-              <span>{isProcessing ? 'Confirming...' : 'Confirm Reservation & Get Pass'}</span>
-              <ArrowRight className="w-4 h-4 stroke-[3]" />
-            </button>
+            <div className="flex items-center gap-2.5 justify-end">
+              <button
+                type="button"
+                onClick={onClose}
+                className="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+
+              <button
+                type="button"
+                disabled={isProcessing}
+                onClick={handleSubmitBooking}
+                className="flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl bg-[#FF6A00] hover:bg-[#E65F00] text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-orange-500/30 active:scale-95 transition-all cursor-pointer"
+              >
+                <span>{isProcessing ? 'Confirming...' : 'Confirm & Open WhatsApp Pass →'}</span>
+              </button>
+            </div>
           </div>
 
         </div>

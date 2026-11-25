@@ -597,13 +597,16 @@ const TurfAppContent: React.FC = () => {
           <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
             <p>© {new Date().getFullYear()} BATTLEGROUNDS ARENA. All Rights Reserved.</p>
             <div className="flex items-center gap-4">
-              <p>Premier Sports Turf Booking & Venue Management</p>
+              <p>Premier Box Cricket Turf Booking & Venue Management</p>
               <button
-                onClick={() => setCurrentView('owner')}
-                className="text-slate-600 hover:text-slate-400 transition-colors text-[10px]"
-                title="Staff login"
+                onClick={() => {
+                  setCurrentView('owner');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white transition-all text-xs font-semibold border border-white/15 cursor-pointer shadow-sm"
+                title="Turf Owner Admin Workstation"
               >
-                Staff Portal
+                <span>🔐 Admin / Owner Desk</span>
               </button>
             </div>
           </div>
