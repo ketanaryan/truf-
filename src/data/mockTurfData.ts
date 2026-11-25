@@ -27,6 +27,8 @@ export const PITCHES: Pitch[] = [
 ];
 
 // No bulky equipment add-ons per user request
+export const SONAWANE_GOOGLE_REVIEW_URL = "https://www.google.com/maps/place/Sonawane's+Multi+Sport+Turf/@19.9602879,73.7707331,17z/data=!4m8!3m7!1s0x3bddebed03becdf1:0x868ac5e0f1c6c8bf!8m2!3d19.9602879!4d73.7707331!9m1!1b1!16s%2Fg%2F11k4jz57b_";
+
 export const ADDONS: AddonItem[] = [];
 
 export const DEFAULT_SETTINGS: OwnerSettings = {
@@ -46,7 +48,7 @@ export const DEFAULT_SETTINGS: OwnerSettings = {
   isRainHalted: false,
   cancellationAllowedHours: 6,
   refundPercentage: 80,
-  googleReviewUrl: 'https://search.google.com/local/writereview?placeid=sonawane-multisports-turf-nashik'
+  googleReviewUrl: SONAWANE_GOOGLE_REVIEW_URL
 };
 
 // Generate today's date formatted as YYYY-MM-DD in local time

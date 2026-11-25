@@ -232,28 +232,29 @@ export const TicketPassModal: React.FC<TicketPassModalProps> = ({
               </div>
             </div>
 
-            {/* Google Review Prompt */}
-            <div className="p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200 flex items-center justify-between gap-2.5">
+            {/* Google Review Prompt (Direct Google Maps Reviews Link) */}
+            <a
+              href={settings.googleReviewUrl || "https://www.google.com/maps/place/Sonawane's+Multi+Sport+Turf/@19.9602879,73.7707331,17z/data=!4m8!3m7!1s0x3bddebed03becdf1:0x868ac5e0f1c6c8bf!8m2!3d19.9602879!4d73.7707331!9m1!1b1!16s%2Fg%2F11k4jz57b_"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-3.5 rounded-2xl bg-amber-50/80 hover:bg-amber-100/90 border border-amber-200 hover:border-amber-300 flex items-center justify-between gap-2.5 transition-all group cursor-pointer shadow-sm"
+              title="Rate 5★ on Google Maps for Sonawane's Multi Sport Turf"
+            >
               <div className="space-y-0.5">
-                <div className="flex items-center gap-1 text-amber-500 font-bold text-xs">
+                <div className="flex items-center gap-1.5 text-amber-500 font-bold text-xs">
                   <span>★★★★★</span>
-                  <span className="text-slate-800 ml-1 font-bold">Review on Google</span>
+                  <span className="text-slate-900 group-hover:text-[#FF6A00] transition-colors font-extrabold">Review on Google</span>
                 </div>
-                <p className="text-[10px] text-slate-500">
+                <p className="text-[10px] text-slate-600">
                   Help fellow cricket & football squads discover Sonawane's Turf!
                 </p>
               </div>
 
-              <a
-                href={settings.googleReviewUrl || `https://www.google.com/search?q=sonawane+multisports+turf+nashik+reviews`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-white text-[11px] font-black uppercase tracking-wider shrink-0 shadow-sm transition-all active:scale-95 cursor-pointer"
-              >
+              <div className="flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-amber-500 group-hover:bg-[#FF6A00] text-white text-[11px] font-black uppercase tracking-wider shrink-0 shadow-sm transition-all active:scale-95">
                 <span>5★ Review</span>
                 <ExternalLink className="w-3 h-3" />
-              </a>
-            </div>
+              </div>
+            </a>
 
             {/* Venue Address & Instructions */}
             <div className="text-xs text-slate-500 space-y-1 pt-1 border-t border-slate-100">

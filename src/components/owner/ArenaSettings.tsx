@@ -384,6 +384,19 @@ export const ArenaSettings: React.FC<ArenaSettingsProps> = ({
               required
             />
           </div>
+
+          <div className="md:col-span-2">
+            <label className="text-slate-600 block mb-1 text-xs font-semibold">
+              Official Google Maps / Review Link (Used on Match Passes & Reviews)
+            </label>
+            <input
+              type="url"
+              value={formData.googleReviewUrl || ''}
+              onChange={e => setFormData({ ...formData, googleReviewUrl: e.target.value })}
+              placeholder="https://www.google.com/maps/place/..."
+              className="w-full px-3.5 py-2 rounded-xl bg-slate-50 border border-slate-200 font-mono text-xs text-slate-900"
+            />
+          </div>
         </div>
       </div>
 

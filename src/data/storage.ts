@@ -104,7 +104,13 @@ export const getStoredSettings = (): OwnerSettings => {
       localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(DEFAULT_SETTINGS));
       return DEFAULT_SETTINGS;
     }
-    return { ...DEFAULT_SETTINGS, ...JSON.parse(data) };
+    const parsed = JSON.parse(data);
+    // Auto-migrate invalid or legacy review url
+    if (!parsed.googleReviewUrl || parsed.googleReviewUrl.includes('writereview?placeid=') || parsed.googleReviewUrl.includes('sonawane-multisports-turf-nashik')) {
+      parsed.googleReviewUrl = DEFAULT_SETTINGS.googleReviewUrl;
+      localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify({ ...DEFAULT_SETTINGS, ...parsed }));
+    }
+    return { ...DEFAULT_SETTINGS, ...parsed };
   } catch (e) {
     return DEFAULT_SETTINGS;
   }

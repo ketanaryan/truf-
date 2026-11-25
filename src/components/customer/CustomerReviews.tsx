@@ -17,7 +17,7 @@ export const CustomerReviews: React.FC<CustomerReviewsProps> = ({ settings }) =>
   const [comment, setComment] = useState('');
   const [showGooglePrompt, setShowGooglePrompt] = useState(false);
 
-  const googleReviewUrl = settings?.googleReviewUrl || 'https://www.google.com/search?q=sonawane+multisports+turf+nashik+reviews';
+  const googleReviewUrl = settings?.googleReviewUrl || "https://www.google.com/maps/place/Sonawane's+Multi+Sport+Turf/@19.9602879,73.7707331,17z/data=!4m8!3m7!1s0x3bddebed03becdf1:0x868ac5e0f1c6c8bf!8m2!3d19.9602879!4d73.7707331!9m1!1b1!16s%2Fg%2F11k4jz57b_";
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
