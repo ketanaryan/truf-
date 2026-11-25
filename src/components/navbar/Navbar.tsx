@@ -44,21 +44,21 @@ export const Navbar: React.FC<NavbarProps> = ({
       
       {/* Top Telemetry micro-bar with venue hotline and live status */}
       <div className="bg-[#061320] border-b border-white/5 px-3 sm:px-6 py-1.5 text-[11px] text-slate-300">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <span className="relative flex h-2 w-2">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 truncate">
+            <span className="relative flex h-2 w-2 shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
             </span>
-            <span className="text-[#00B6C8] font-bold uppercase tracking-wider text-[10px] hidden xs:inline">
+            <span className="text-[#00B6C8] font-bold uppercase tracking-wider text-[10px] hidden sm:inline shrink-0">
               Arena Status:
             </span>
-            <span className="text-white font-medium truncate max-w-[220px] xs:max-w-none">
-              {settings.isRainHalted ? '⚠️ Inclement Weather Hold' : 'Open 06:00 AM – 11:00 PM • Multi-Sport Cricket & Football Turf'}
+            <span className="text-white font-medium truncate text-[11px]">
+              {settings.isRainHalted ? '⚠️ Rain Hold' : 'Open 6:00 AM – 11:00 PM • Rane Nagar, Nashik'}
             </span>
           </div>
 
-          <div className="flex items-center gap-3 sm:gap-4 text-slate-400">
+          <div className="flex items-center gap-2 sm:gap-4 text-slate-400 shrink-0">
             <div className="hidden md:flex items-center gap-1.5">
               <MapPin className="w-3.5 h-3.5 text-[#FF6A00] shrink-0" />
               <span className="truncate max-w-[200px] text-slate-300">{settings.address.split(',')[0]}</span>
@@ -66,19 +66,19 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span className="hidden md:inline text-slate-600">•</span>
             <a 
               href={`tel:${settings.phone}`} 
-              className="flex items-center gap-1.5 text-slate-200 hover:text-white transition-colors font-medium active:scale-95"
+              className="flex items-center gap-1.5 text-slate-200 hover:text-white transition-colors font-medium active:scale-95 whitespace-nowrap"
             >
-              <PhoneCall className="w-3.5 h-3.5 text-[#FF6A00]" />
-              <span>Desk: <strong className="text-white font-mono">{settings.phone}</strong></span>
+              <PhoneCall className="w-3 h-3 text-[#FF6A00] shrink-0" />
+              <span className="text-white font-mono text-[11px] font-bold">{settings.phone}</span>
             </a>
           </div>
         </div>
       </div>
 
       {/* Hatrick Grounds Inspired High-Energy Announcement Ribbon */}
-      <div className="bg-gradient-to-r from-[#E65F00] via-[#FF6A00] to-[#E65F00] border-b-2 border-[#00B6C8] px-3 py-1.5 text-[12px] text-white font-bold tracking-wide text-center shadow-md flex items-center justify-center gap-2 overflow-x-auto whitespace-nowrap">
-        <span className="bg-[#0B1D2D] text-amber-300 px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider">SPECIAL OFFER</span>
-        <span>Offer: Weekdays — Book 2 hrs, pay for 1 | Weekends — Flat Tournament Package • 0% UPI Fees</span>
+      <div className="bg-gradient-to-r from-[#E65F00] via-[#FF6A00] to-[#E65F00] border-b-2 border-[#00B6C8] px-3 py-1 text-[11px] sm:text-[12px] text-white font-bold tracking-wide text-center shadow-md flex items-center justify-center gap-2 overflow-x-auto whitespace-nowrap scrollbar-none">
+        <span className="bg-[#0B1D2D] text-amber-300 px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-black uppercase tracking-wider shrink-0">SPECIAL OFFER</span>
+        <span className="truncate sm:whitespace-normal">Weekdays: ₹600/hr | Weekends: ₹700/hr | Prime Lights: ₹800/hr • 0% UPI Fees</span>
       </div>
 
       {/* Main Navigation Bar */}
