@@ -33,7 +33,10 @@ export const MyBookingsModal: React.FC<MyBookingsModalProps> = ({
   const filtered = bookings.filter(b => {
     if (!searchTerm.trim()) return true;
     const term = searchTerm.toLowerCase();
+    const cleanDigits = term.replace(/\D/g, '');
+    const bookingDigits = b.captainPhone.replace(/\D/g, '');
     return (
+      (cleanDigits.length >= 3 && bookingDigits.includes(cleanDigits)) ||
       b.captainPhone.includes(term) ||
       b.captainName.toLowerCase().includes(term) ||
       b.bookingRef.toLowerCase().includes(term) ||
@@ -142,11 +145,23 @@ export const MyBookingsModal: React.FC<MyBookingsModalProps> = ({
 
                   <div className="flex items-center gap-3">
                     <div className="text-right font-mono">
-                      <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-md block ${
-                        isPaid ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-400/20 text-amber-300'
-                      }`}>
-                        {isPaid ? 'PAID' : `DUE ₹${booking.balanceDue}`}
-                      </span>
+                      {booking.status === 'cancelled' ? (
+                        <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-md block bg-red-500/20 text-red-300">
+                          CANCELLED
+                        </span>
+                      ) : isPaid ? (
+                        <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-md block bg-emerald-500/20 text-emerald-300">
+                          PAID IN FULL
+                        </span>
+                      ) : booking.paymentStatus === 'upi_pending' ? (
+                        <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-md block bg-amber-400/20 text-amber-300">
+                          {booking.balanceDue > 0 ? `TOKEN (DUE ₹${booking.balanceDue})` : 'UPI VERIFYING'}
+                        </span>
+                      ) : (
+                        <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-md block bg-amber-400/20 text-amber-300">
+                          DUE ₹{booking.balanceDue}
+                        </span>
+                      )}
                       <span className="text-xs font-bold text-white mt-1 block">
                         ₹{booking.totalAmount}
                       </span>

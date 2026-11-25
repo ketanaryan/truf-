@@ -19,6 +19,8 @@ import {
   addBooking, 
   updateBooking,
   approveUpiBooking,
+  getStoredPitches,
+  savePitches,
   getStoredSettings, 
   saveSettings, 
   getStoredBlockedSlots, 
@@ -37,7 +39,7 @@ const TurfAppContent: React.FC = () => {
   const [currentView, setCurrentView] = useState<'customer' | 'owner'>('customer');
   const [customerTab, setCustomerTab] = useState<'booking' | 'matchfinder' | 'facilities' | 'reviews'>('booking');
 
-  const [pitches, setPitches] = useState<Pitch[]>(PITCHES);
+  const [pitches, setPitches] = useState<Pitch[]>(getStoredPitches());
   const [settings, setSettings] = useState<OwnerSettings>(getStoredSettings());
   const [bookings, setBookings] = useState<Booking[]>(getStoredBookings());
   const [blockedSlots, setBlockedSlots] = useState<BlockedSlotRecord[]>(getStoredBlockedSlots());
@@ -47,6 +49,16 @@ const TurfAppContent: React.FC = () => {
   const [selectedPitchId, setSelectedPitchId] = useState<string>(PITCHES[0].id);
   const [selectedSport, setSelectedSport] = useState<SportType>('Football 7v7');
   const [selectedSlotIds, setSelectedSlotIds] = useState<string[]>([]);
+
+  const handlePitchChange = (pitchId: string) => {
+    setSelectedPitchId(pitchId);
+    setSelectedSlotIds([]); // Prevent orphaned slot selections from other pitches
+  };
+
+  const handleDateChange = (date: string) => {
+    setSelectedDate(date);
+    setSelectedSlotIds([]); // Prevent orphaned slot selections from previous date
+  };
 
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [activeTicketBooking, setActiveTicketBooking] = useState<Booking | null>(null);
@@ -103,6 +115,18 @@ const TurfAppContent: React.FC = () => {
     });
   };
 
+  const handleSelectBatchSlots = (slotIds: string[]) => {
+    setSelectedSlotIds(slotIds);
+    if (slotIds.length > 0) {
+      showToast({
+        title: 'Full Day Package Selected! 🏆',
+        message: `${slotIds.length} slots reserved under flat package rate.`,
+        type: 'success',
+        duration: 3000
+      });
+    }
+  };
+
   const handleBookingConfirmed = (newBooking: Booking) => {
     const updated = addBooking(newBooking);
     setBookings(updated);
@@ -154,10 +178,13 @@ const TurfAppContent: React.FC = () => {
     const updated = approveUpiBooking(bookingId);
     setBookings(updated);
     const target = updated.find(b => b.id === bookingId);
+    const isToken = target && target.balanceDue > 0;
 
     showToast({
       title: 'UPI Payment Approved! ✅',
-      message: `Booking #${target?.bookingRef} marked fully paid (0% gateway commission).`,
+      message: isToken
+        ? `Token ₹${target?.advancePaid} verified. Remaining ₹${target?.balanceDue} due at turf counter.`
+        : `Booking #${target?.bookingRef} marked fully paid (0% gateway commission).`,
       type: 'success',
       duration: 4000
     });
@@ -167,7 +194,8 @@ const TurfAppContent: React.FC = () => {
     const target = bookings.find(b => b.id === bookingId);
     const updated = updateBooking(bookingId, {
       status: 'cancelled',
-      paymentStatus: 'refunded'
+      paymentStatus: 'refunded',
+      balanceDue: 0
     });
     setBookings(updated);
 
@@ -201,7 +229,11 @@ const TurfAppContent: React.FC = () => {
   };
 
   const handleUpdatePitchPricing = (pitchId: string, updates: Partial<Pitch>) => {
-    setPitches(prev => prev.map(p => (p.id === pitchId ? { ...p, ...updates } : p)));
+    setPitches(prev => {
+      const updated = prev.map(p => (p.id === pitchId ? { ...p, ...updates } : p));
+      savePitches(updated);
+      return updated;
+    });
   };
 
   const handleAddCommunityPost = (post: CommunityLobbyPost) => {
@@ -274,6 +306,7 @@ const TurfAppContent: React.FC = () => {
               onScrollToSlots={scrollToSlots}
               onOpenMatchFinder={scrollToMatchFinder}
               pitches={pitches}
+              onSelectPitch={handlePitchChange}
             />
 
             {/* Customer Section Navigation Bar */}
@@ -346,15 +379,16 @@ const TurfAppContent: React.FC = () => {
                 <SlotBookingMatrix
                   pitches={pitches}
                   selectedDate={selectedDate}
-                  onDateChange={setSelectedDate}
+                  onDateChange={handleDateChange}
                   selectedPitchId={selectedPitchId}
-                  onPitchChange={setSelectedPitchId}
+                  onPitchChange={handlePitchChange}
                   selectedSport={selectedSport}
                   onSportChange={setSelectedSport}
                   slots={slots}
                   selectedSlotIds={selectedSlotIds}
                   onToggleSlot={handleToggleSlot}
                   onClearSelectedSlots={handleClearSelectedSlots}
+                  onSelectBatchSlots={handleSelectBatchSlots}
                   onProceedToCheckout={() => setCheckoutOpen(true)}
                   settings={settings}
                 />

@@ -19,12 +19,14 @@ interface HeroBannerProps {
   onScrollToSlots: () => void;
   onOpenMatchFinder: () => void;
   pitches: Pitch[];
+  onSelectPitch?: (pitchId: string) => void;
 }
 
 export const HeroBanner: React.FC<HeroBannerProps> = ({
   onScrollToSlots,
   onOpenMatchFinder,
-  pitches
+  pitches,
+  onSelectPitch
 }) => {
   const [selectedPitchIdx, setSelectedPitchIdx] = useState(0);
   const [showPitchModal, setShowPitchModal] = useState(false);
@@ -133,7 +135,10 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                 {pitches.map((p, idx) => (
                   <button
                     key={p.id}
-                    onClick={() => setSelectedPitchIdx(idx)}
+                    onClick={() => {
+                      setSelectedPitchIdx(idx);
+                      onSelectPitch?.(p.id);
+                    }}
                     className={`flex-1 py-2 rounded-xl text-xs font-bold font-mono transition-all duration-200 active:scale-95 ${
                       selectedPitchIdx === idx
                         ? 'bg-gradient-to-r from-emerald-400 to-green-500 text-black shadow-md font-extrabold'
@@ -192,7 +197,10 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
 
               {/* Direct Booking CTA */}
               <button
-                onClick={onScrollToSlots}
+                onClick={() => {
+                  onSelectPitch?.(currentPitch.id);
+                  onScrollToSlots();
+                }}
                 className="w-full py-3 rounded-xl bg-[#13281a] hover:bg-[#1a3824] border border-[#22482e] hover:border-emerald-500/50 text-emerald-300 hover:text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all"
               >
                 <span>Select Date & Time Slots Below</span>
@@ -234,6 +242,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
               <button
                 onClick={() => {
                   setShowPitchModal(false);
+                  onSelectPitch?.(currentPitch.id);
                   onScrollToSlots();
                 }}
                 className="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-400 to-green-500 text-black font-extrabold uppercase"

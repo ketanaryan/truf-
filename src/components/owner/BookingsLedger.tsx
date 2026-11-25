@@ -41,7 +41,7 @@ export const BookingsLedger: React.FC<BookingsLedgerProps> = ({
 
   const filtered = bookings.filter(b => {
     if (statusFilter === 'today' && b.date !== todayStr) return false;
-    if (statusFilter === 'pending_balance' && b.balanceDue <= 0) return false;
+    if (statusFilter === 'pending_balance' && (b.balanceDue <= 0 || b.status === 'cancelled')) return false;
     if (statusFilter === 'upi_pending' && b.paymentStatus !== 'upi_pending') return false;
     if (statusFilter === 'checked_in' && !b.isCheckedIn) return false;
 
@@ -154,7 +154,7 @@ export const BookingsLedger: React.FC<BookingsLedgerProps> = ({
       </div>
 
       {/* Bookings CRM Table */}
-      <div className="bg-[#0c1810] border-2 border-[#1f3d28] rounded-3xl overflow-hidden shadow-2xl">
+      <div id="printable-manifest" className="bg-[#0c1810] border-2 border-[#1f3d28] rounded-3xl overflow-hidden shadow-2xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs font-mono">
             <thead className="bg-[#09140d] border-b-2 border-[#1f3d28] uppercase text-zinc-400 text-[10px] tracking-wider font-bold">

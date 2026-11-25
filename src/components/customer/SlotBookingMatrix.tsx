@@ -28,6 +28,7 @@ interface SlotBookingMatrixProps {
   selectedSlotIds: string[];
   onToggleSlot: (slotId: string) => void;
   onClearSelectedSlots: () => void;
+  onSelectBatchSlots?: (slotIds: string[]) => void;
   onProceedToCheckout: () => void;
   settings: OwnerSettings;
 }
@@ -44,6 +45,7 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
   selectedSlotIds,
   onToggleSlot,
   onClearSelectedSlots,
+  onSelectBatchSlots,
   onProceedToCheckout,
   settings
 }) => {
@@ -80,7 +82,8 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
     return slots.filter(s => selectedSlotIds.includes(s.id));
   }, [slots, selectedSlotIds]);
 
-  const isFullDaySelected = selectedSlotIds.length >= 18;
+  const availableSlots = useMemo(() => slots.filter(s => s.status === 'available'), [slots]);
+  const isFullDaySelected = availableSlots.length > 0 && availableSlots.every(s => selectedSlotIds.includes(s.id));
   const weekend = isWeekend(selectedDate);
   const fullDayPrice = weekend 
     ? (currentPitch.fullDayWeekendPrice || 20000) 
@@ -97,13 +100,13 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
     if (isFullDaySelected) {
       onClearSelectedSlots();
     } else {
-      const availableIds = slots
-        .filter(s => s.status === 'available')
-        .map(s => s.id);
-      
-      onClearSelectedSlots();
-      // Select all slots
-      availableIds.forEach(id => onToggleSlot(id));
+      const availableIds = availableSlots.map(s => s.id);
+      if (onSelectBatchSlots) {
+        onSelectBatchSlots(availableIds);
+      } else {
+        onClearSelectedSlots();
+        availableIds.forEach(id => onToggleSlot(id));
+      }
     }
   };
 

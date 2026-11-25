@@ -188,15 +188,21 @@ export const MatchFinderBoard: React.FC<MatchFinderBoardProps> = ({
                     </span>
                   </div>
 
-                  <a
-                    href={`https://api.whatsapp.com/send?phone=${post.whatsappContact.replace(/\D/g, '')}&text=${encodeURIComponent(`Hi Captain ${post.captainName}, saw your Battlegrounds match post for ${post.sport} on ${post.date} (${post.timeSlot}). I would like to join!`)}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#122e1b] hover:bg-emerald-500 hover:text-black text-emerald-300 text-xs font-bold border border-[#245431] transition-all active:scale-95"
-                  >
-                    <MessageCircle className="w-3.5 h-3.5 stroke-[2.5]" />
-                    <span>Join Squad</span>
-                  </a>
+                  {(() => {
+                    const rawDigits = post.whatsappContact.replace(/\D/g, '');
+                    const cleanPhone = rawDigits.length === 10 ? `91${rawDigits}` : rawDigits;
+                    return (
+                      <a
+                        href={`https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(`Hi Captain ${post.captainName}, saw your Battlegrounds match post for ${post.sport} on ${post.date} (${post.timeSlot}). I would like to join!`)}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#122e1b] hover:bg-emerald-500 hover:text-black text-emerald-300 text-xs font-bold border border-[#245431] transition-all active:scale-95"
+                      >
+                        <MessageCircle className="w-3.5 h-3.5 stroke-[2.5]" />
+                        <span>Join Squad</span>
+                      </a>
+                    );
+                  })()}
                 </div>
               </div>
             );

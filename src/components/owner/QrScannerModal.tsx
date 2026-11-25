@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   X, 
   QrCode, 
@@ -10,7 +10,9 @@ import {
   Clock, 
   ShieldCheck, 
   Sparkles,
-  AlertCircle
+  AlertCircle,
+  CheckSquare,
+  Square
 } from 'lucide-react';
 import { Booking } from '../../types';
 
@@ -20,6 +22,7 @@ interface QrScannerModalProps {
   bookings: Booking[];
   onCheckIn: (bookingId: string) => void;
   onCollectBalance: (bookingId: string) => void;
+  onApproveUpi?: (bookingId: string) => void;
 }
 
 export const QrScannerModal: React.FC<QrScannerModalProps> = ({
@@ -27,11 +30,22 @@ export const QrScannerModal: React.FC<QrScannerModalProps> = ({
   onClose,
   bookings,
   onCheckIn,
-  onCollectBalance
+  onCollectBalance,
+  onApproveUpi
 }) => {
   const [query, setQuery] = useState('');
   const [matchedBooking, setMatchedBooking] = useState<Booking | null>(null);
   const [searchAttempted, setSearchAttempted] = useState(false);
+  const [equipmentIssued, setEquipmentIssued] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setQuery('');
+      setMatchedBooking(null);
+      setSearchAttempted(false);
+      setEquipmentIssued(false);
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -39,13 +53,18 @@ export const QrScannerModal: React.FC<QrScannerModalProps> = ({
     const val = (codeToSearch || query).trim().toLowerCase();
     setSearchAttempted(true);
 
-    const cleanVal = val.replace('#', '');
-    const found = bookings.find(b => 
-      b.bookingRef.toLowerCase() === cleanVal || 
-      b.bookingRef.toLowerCase() === val || 
-      b.id.toLowerCase() === val ||
-      b.captainPhone.includes(cleanVal)
-    );
+    const cleanVal = val.replace('#', '').trim();
+    const cleanDigits = cleanVal.replace(/\D/g, '');
+    const found = bookings.find(b => {
+      const bDigits = b.captainPhone.replace(/\D/g, '');
+      return (
+        b.bookingRef.toLowerCase() === cleanVal || 
+        b.bookingRef.toLowerCase() === val || 
+        b.id.toLowerCase() === val ||
+        (cleanDigits.length >= 4 && bDigits.includes(cleanDigits)) ||
+        b.captainName.toLowerCase().includes(cleanVal)
+      );
+    });
 
     setMatchedBooking(found || null);
   };
@@ -176,9 +195,15 @@ export const QrScannerModal: React.FC<QrScannerModalProps> = ({
                 <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase ${
                   matchedBooking.paymentStatus === 'paid_full' 
                     ? 'bg-emerald-500 text-black' 
+                    : matchedBooking.paymentStatus === 'upi_pending'
+                    ? 'bg-amber-400 text-black'
                     : 'bg-amber-400 text-black'
                 }`}>
-                  {matchedBooking.paymentStatus === 'paid_full' ? '100% PAID' : `DUE ₹${matchedBooking.balanceDue}`}
+                  {matchedBooking.paymentStatus === 'paid_full' 
+                    ? '100% PAID' 
+                    : matchedBooking.paymentStatus === 'upi_pending'
+                    ? (matchedBooking.balanceDue > 0 ? `UPI TOKEN (DUE ₹${matchedBooking.balanceDue})` : 'UPI VERIFICATION PENDING')
+                    : `DUE ₹${matchedBooking.balanceDue}`}
                 </span>
               </div>
 
@@ -197,8 +222,43 @@ export const QrScannerModal: React.FC<QrScannerModalProps> = ({
                 </div>
               </div>
 
+              {/* Equipment Checklist */}
+              <button
+                type="button"
+                onClick={() => setEquipmentIssued(prev => !prev)}
+                className="w-full flex items-center justify-between p-2.5 rounded-xl bg-[#07130a] border border-[#1c3924] text-xs text-left hover:border-emerald-500/40 transition-colors"
+              >
+                <span className="text-zinc-300 flex items-center gap-2">
+                  {equipmentIssued ? (
+                    <CheckSquare className="w-4 h-4 text-emerald-400" />
+                  ) : (
+                    <Square className="w-4 h-4 text-zinc-500" />
+                  )}
+                  <span>Match Ball & Team Bibs Issued at Gate</span>
+                </span>
+                <span className={`text-[10px] font-bold uppercase ${equipmentIssued ? 'text-emerald-400' : 'text-zinc-500'}`}>
+                  {equipmentIssued ? 'Issued ✓' : 'Pending'}
+                </span>
+              </button>
+
               {/* Action Buttons */}
               <div className="pt-2 flex flex-col sm:flex-row items-center gap-2">
+                {matchedBooking.paymentStatus === 'upi_pending' && onApproveUpi && (
+                  <button
+                    onClick={() => {
+                      onApproveUpi(matchedBooking.id);
+                      setMatchedBooking(prev => prev ? {
+                        ...prev,
+                        isUpiVerified: true,
+                        paymentStatus: prev.balanceDue > 0 ? 'advance_deposit' : 'paid_full'
+                      } : null);
+                    }}
+                    className="w-full sm:flex-1 py-2.5 rounded-xl bg-gradient-to-r from-emerald-400 to-green-500 hover:from-emerald-300 hover:to-green-400 text-black font-extrabold uppercase tracking-wider text-xs shadow-md active:scale-95"
+                  >
+                    ✓ Verify UPI ({matchedBooking.balanceDue > 0 ? `₹${matchedBooking.advancePaid} Token` : `₹${matchedBooking.totalAmount} Full`})
+                  </button>
+                )}
+
                 {matchedBooking.balanceDue > 0 && (
                   <button
                     onClick={() => {

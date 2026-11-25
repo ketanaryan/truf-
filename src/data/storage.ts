@@ -6,6 +6,7 @@ const STORAGE_KEYS = {
   SETTINGS: 'battlegrounds_turf_settings_v1',
   BLOCKED_SLOTS: 'battlegrounds_turf_blocked_slots_v1',
   COMMUNITY_POSTS: 'battlegrounds_turf_community_posts_v1',
+  PITCHES: 'battlegrounds_turf_pitches_v1',
 };
 
 // Initialize or get bookings
@@ -59,18 +60,43 @@ export const approveUpiBooking = (bookingId: string): Booking[] => {
   const current = getStoredBookings();
   const updated = current.map(b => {
     if (b.id === bookingId) {
+      const isAdvanceOnly = b.balanceDue > 0 && b.advancePaid < b.totalAmount;
       return {
         ...b,
         isUpiVerified: true,
-        paymentStatus: 'paid_full' as const,
-        advancePaid: b.totalAmount,
-        balanceDue: 0
+        paymentStatus: isAdvanceOnly ? ('advance_deposit' as const) : ('paid_full' as const)
       };
     }
     return b;
   });
   saveBookings(updated);
   return updated;
+};
+
+// Pitches persistence
+export const getStoredPitches = (): Pitch[] => {
+  try {
+    const data = localStorage.getItem(STORAGE_KEYS.PITCHES);
+    if (!data) {
+      localStorage.setItem(STORAGE_KEYS.PITCHES, JSON.stringify(PITCHES));
+      return PITCHES;
+    }
+    const parsed: Pitch[] = JSON.parse(data);
+    return parsed.map(p => ({
+      ...p,
+      name: p.id === 'pitch-2' ? 'Pitch B' : 'Pitch A'
+    }));
+  } catch (e) {
+    return PITCHES;
+  }
+};
+
+export const savePitches = (pitches: Pitch[]) => {
+  try {
+    localStorage.setItem(STORAGE_KEYS.PITCHES, JSON.stringify(pitches));
+  } catch (e) {
+    console.error('Failed to save pitches', e);
+  }
 };
 
 // Settings
@@ -178,6 +204,7 @@ export const resetDemoData = () => {
   localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(DEFAULT_SETTINGS));
   localStorage.removeItem(STORAGE_KEYS.BLOCKED_SLOTS);
   localStorage.setItem(STORAGE_KEYS.COMMUNITY_POSTS, JSON.stringify(SEED_COMMUNITY_POSTS));
+  localStorage.setItem(STORAGE_KEYS.PITCHES, JSON.stringify(PITCHES));
 };
 
 // Slot Generation Engine
@@ -212,9 +239,12 @@ export const isPeakHour = (timeStr: string, settings: OwnerSettings): boolean =>
   const [startH] = settings.peakHourStart.split(':').map(Number);
   const [endH] = settings.peakHourEnd.split(':').map(Number);
   
-  if (h >= startH && h <= endH) return true;
-  if (h === 0) return true; // Midnight floodlight is high demand
-  return false;
+  if (startH <= endH) {
+    return (h >= startH && h <= endH) || h === 0;
+  } else {
+    // Crosses midnight (e.g., 17:00 to 01:00)
+    return h >= startH || h <= endH || h === 0;
+  }
 };
 
 export const getSlotPrice = (

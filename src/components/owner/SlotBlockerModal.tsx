@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   X, 
   Lock, 
@@ -37,6 +37,14 @@ export const SlotBlockerModal: React.FC<SlotBlockerModalProps> = ({
   const [date, setDate] = useState(selectedDate);
   const [time, setTime] = useState(initialTime || '15:00');
   const [reason, setReason] = useState('Groundskeeping / Turf Grooming');
+
+  useEffect(() => {
+    if (isOpen) {
+      setPitchId(initialPitchId || pitches[0].id);
+      setDate(selectedDate);
+      setTime(initialTime || '15:00');
+    }
+  }, [isOpen, initialPitchId, initialTime, selectedDate, pitches]);
 
   if (!isOpen) return null;
 

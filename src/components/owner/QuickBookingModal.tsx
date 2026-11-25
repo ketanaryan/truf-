@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   X, 
   PhoneCall, 
@@ -8,10 +8,11 @@ import {
   CircleDollarSign, 
   Sparkles,
   ShieldCheck,
-  Check
+  Check,
+  AlertTriangle
 } from 'lucide-react';
 import { Pitch, SportType, Booking, OwnerSettings, PaymentMethod, PaymentStatus, BookingSource } from '../../types';
-import { OPERATING_HOURS, formatDisplayTime, getSlotPrice } from '../../data/storage';
+import { OPERATING_HOURS, formatDisplayTime, getSlotPrice, BlockedSlotRecord } from '../../data/storage';
 
 interface QuickBookingModalProps {
   isOpen: boolean;
@@ -22,6 +23,8 @@ interface QuickBookingModalProps {
   selectedDate: string;
   settings: OwnerSettings;
   onSaveBooking: (newBooking: Booking) => void;
+  existingBookings?: Booking[];
+  blockedSlots?: BlockedSlotRecord[];
 }
 
 export const QuickBookingModal: React.FC<QuickBookingModalProps> = ({
@@ -32,11 +35,14 @@ export const QuickBookingModal: React.FC<QuickBookingModalProps> = ({
   initialTime,
   selectedDate,
   settings,
-  onSaveBooking
+  onSaveBooking,
+  existingBookings = [],
+  blockedSlots = []
 }) => {
   const [pitchId, setPitchId] = useState(initialPitchId || pitches[0].id);
   const [date, setDate] = useState(selectedDate);
   const [startTime, setStartTime] = useState(initialTime || '18:00');
+  const [sport, setSport] = useState<SportType>(pitches[0]?.sports[0] || 'Football 7v7');
   const [captainName, setCaptainName] = useState('');
   const [captainPhone, setCaptainPhone] = useState('');
   const [teamName, setTeamName] = useState('');
@@ -45,13 +51,48 @@ export const QuickBookingModal: React.FC<QuickBookingModalProps> = ({
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('cash');
   const [notes, setNotes] = useState('');
 
+  // Sync state whenever modal opens with new target pitch, time or date
+  useEffect(() => {
+    if (isOpen) {
+      const activePitchId = initialPitchId || pitches[0].id;
+      setPitchId(activePitchId);
+      setDate(selectedDate);
+      setStartTime(initialTime || '18:00');
+      const cur = pitches.find(p => p.id === activePitchId) || pitches[0];
+      setSport(cur.sports[0]);
+      setCaptainName('');
+      setCaptainPhone('');
+      setTeamName('');
+      setNotes('');
+      setAdvancePaid(500);
+      setPaymentMethod('cash');
+      setSource('phone_call');
+    }
+  }, [isOpen, initialPitchId, initialTime, selectedDate, pitches]);
+
+  // When pitchId changes inside modal, ensure selected sport is valid for that pitch
+  useEffect(() => {
+    const cur = pitches.find(p => p.id === pitchId) || pitches[0];
+    if (cur && !cur.sports.includes(sport)) {
+      setSport(cur.sports[0]);
+    }
+  }, [pitchId, pitches]);
+
   if (!isOpen) return null;
 
   const currentPitch = pitches.find(p => p.id === pitchId) || pitches[0];
-  const [sport, setSport] = useState<SportType>(currentPitch.sports[0]);
-
   const slotPrice = getSlotPrice(pitchId, date, startTime, settings, pitches);
   const balanceDue = Math.max(0, slotPrice - advancePaid);
+
+  // Check collision with existing bookings or blocked slots
+  const targetSlotKey = `slot-${pitchId}-${date}-${startTime}`;
+  const isAlreadyBooked = existingBookings.some(
+    b => b.date === date && b.pitchId === pitchId && b.status !== 'cancelled' &&
+    (b.isFullDayBooking || (b.slotIds && b.slotIds.includes(targetSlotKey)))
+  );
+  const isAlreadyBlocked = blockedSlots.some(
+    b => b.date === date && b.pitchId === pitchId && b.time === startTime
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -126,6 +167,20 @@ export const QuickBookingModal: React.FC<QuickBookingModalProps> = ({
 
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="p-5 sm:p-6 space-y-4">
+          
+          {(isAlreadyBooked || isAlreadyBlocked) && (
+            <div className="p-3.5 rounded-2xl bg-amber-950/60 border border-amber-500/50 flex items-start gap-3 text-amber-200">
+              <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+              <div className="text-xs">
+                <span className="font-bold uppercase tracking-wider block">⚠️ Slot Collision Alert</span>
+                <span>
+                  {isAlreadyBooked
+                    ? `This slot (${date} at ${startTime}) already has an active booking! Please verify before registering another squad.`
+                    : `This slot (${date} at ${startTime}) is currently locked under maintenance/private hold.`}
+                </span>
+              </div>
+            </div>
+          )}
           
           {/* Source Selector */}
           <div>

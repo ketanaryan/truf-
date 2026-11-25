@@ -78,11 +78,23 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({
   const todayBookings = bookings.filter(b => b.date === todayStr && b.status !== 'cancelled');
 
   const todayGross = todayBookings.reduce((sum, b) => sum + b.totalAmount, 0);
-  const todayCollected = todayBookings.reduce((sum, b) => sum + b.advancePaid, 0);
+  const todayCollected = todayBookings.reduce((sum, b) => {
+    // Only count as collected in bank/cash if verified or paid at venue/advance
+    if (b.paymentStatus === 'paid_full' || b.paymentStatus === 'advance_deposit' || b.isUpiVerified) {
+      return sum + b.advancePaid;
+    }
+    return sum;
+  }, 0);
   const todayPendingDue = todayBookings.reduce((sum, b) => sum + b.balanceDue, 0);
-  const occupancyPercent = Math.min(100, Math.round((todayBookings.length / 38) * 100));
+  
+  // Accurate occupancy: count total slots booked (multi-hour matches & full day count 19)
+  const totalSlotsBookedToday = todayBookings.reduce((sum, b) => {
+    return sum + (b.isFullDayBooking ? 19 : (b.slotIds ? b.slotIds.length : b.durationHours || 1));
+  }, 0);
+  const occupancyPercent = Math.min(100, Math.round((totalSlotsBookedToday / 38) * 100));
 
   const pendingUpiBookings = bookings.filter(b => b.paymentStatus === 'upi_pending' && b.status !== 'cancelled');
+  const pendingUpiAmount = pendingUpiBookings.reduce((sum, b) => sum + b.advancePaid, 0);
 
   const handleOpenQuickFromGrid = (pitchId: string, time: string) => {
     setTargetQuickPitch(pitchId);
@@ -243,7 +255,9 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({
                     className="flex-1 py-2 px-3 rounded-xl bg-gradient-to-r from-emerald-400 to-green-500 hover:from-emerald-300 hover:to-green-400 text-black font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all"
                   >
                     <CheckCircle2 className="w-3.5 h-3.5 stroke-[3]" />
-                    <span>Approve ₹{b.totalAmount}</span>
+                    <span>
+                      {b.balanceDue > 0 ? `Approve ₹${b.advancePaid} Token` : `Approve ₹${b.totalAmount} Full`}
+                    </span>
                   </button>
 
                   {b.paymentScreenshot && (
@@ -429,6 +443,8 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({
         selectedDate={selectedDate}
         settings={settings}
         onSaveBooking={onSaveBooking}
+        existingBookings={bookings}
+        blockedSlots={blockedSlots}
       />
 
       <SlotBlockerModal
@@ -448,6 +464,7 @@ export const OwnerDashboard: React.FC<OwnerDashboardProps> = ({
         bookings={bookings}
         onCheckIn={onCheckIn}
         onCollectBalance={onCollectBalance}
+        onApproveUpi={onApproveUpi}
       />
 
       <PaymentScreenshotModal

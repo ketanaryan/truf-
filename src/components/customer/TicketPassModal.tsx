@@ -43,7 +43,15 @@ export const TicketPassModal: React.FC<TicketPassModalProps> = ({
       `Date: *${booking.date}*\n` +
       `Slot: *${booking.timeRange}*\n` +
       `Captain: *${booking.captainName}* (${booking.teamName})\n` +
-      `Payment: *${booking.paymentStatus === 'paid_full' ? '100% FULLY PAID' : booking.paymentStatus === 'upi_pending' ? 'UPI SUBMITTED (UTR ' + booking.upiUtr + ')' : 'Token Paid (Counter Balance ₹' + booking.balanceDue + ')'}*\n` +
+      `Payment: *${
+        booking.paymentStatus === 'paid_full' 
+          ? '100% FULLY PAID' 
+          : booking.paymentStatus === 'upi_pending' 
+          ? (booking.upiUtr ? `UPI SUBMITTED (UTR ${booking.upiUtr})` : 'UPI RECEIPT ATTACHED (Pending Verification)') 
+          : booking.paymentStatus === 'pay_at_venue'
+          ? `Pay at Turf (Counter Due ₹${booking.balanceDue})`
+          : `Advance Token Paid (Counter Balance Due ₹${booking.balanceDue})`
+      }*\n` +
       `Venue: ${settings.address}\n\n` +
       `Please arrive 15 minutes before kick-off!`
     );
