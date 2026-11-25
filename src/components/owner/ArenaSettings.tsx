@@ -11,7 +11,9 @@ import {
   MapPin,
   PhoneCall,
   QrCode,
-  ShieldCheck
+  ShieldCheck,
+  Star,
+  ExternalLink
 } from 'lucide-react';
 import { OwnerSettings, Pitch } from '../../types';
 
@@ -253,6 +255,65 @@ export const ArenaSettings: React.FC<ArenaSettingsProps> = ({
               When a player books a slot online, they scan your arena's UPI QR code and attach a photo/screenshot of their payment receipt from Google Pay, PhonePe, or Paytm. You can inspect the payment proof image directly in your dashboard and approve it in 1 click. Zero payment gateway commission deducted!
             </p>
           </div>
+        </div>
+      </div>
+
+      {/* Google Business Profile & Player Reviews */}
+      <div className="p-6 rounded-3xl bg-[#0c1810] border-2 border-[#1f3d28] space-y-4 shadow-xl">
+        <div className="flex items-center justify-between border-b border-[#1b3623] pb-3">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg bg-amber-400/20 text-amber-400 flex items-center justify-center">
+              <Star className="w-4 h-4 fill-amber-400" />
+            </div>
+            <div>
+              <span className="text-sm font-extrabold text-white uppercase block">
+                Google Business Reviews Integration
+              </span>
+              <p className="text-[11px] text-zinc-400 font-normal">
+                Boost your turf's ranking & footfall on Google Maps by directing happy players to rate you 5 stars.
+              </p>
+            </div>
+          </div>
+
+          {formData.googleReviewUrl && (
+            <a
+              href={formData.googleReviewUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#122417] hover:bg-[#1a3823] text-emerald-300 hover:text-white border border-[#21422a] text-xs font-bold transition-all"
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
+              <span>Test Google Link</span>
+            </a>
+          )}
+        </div>
+
+        <div>
+          <label className="text-zinc-300 font-bold block mb-1">
+            Google Maps / Google My Business Review URL
+          </label>
+          <div className="flex gap-2">
+            <input
+              type="url"
+              value={formData.googleReviewUrl || ''}
+              onChange={e => setFormData({ ...formData, googleReviewUrl: e.target.value })}
+              placeholder="e.g. https://g.page/r/.../review or https://search.google.com/local/writereview?placeid=..."
+              className="flex-1 px-3.5 py-2.5 rounded-xl bg-[#09140d] border border-[#204229] text-white focus:outline-none focus:border-amber-400 font-mono text-xs"
+            />
+            {formData.googleReviewUrl && (
+              <a
+                href={formData.googleReviewUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="sm:hidden px-3 py-2 rounded-xl bg-[#122417] text-emerald-400 border border-[#21422a] flex items-center justify-center"
+              >
+                <ExternalLink className="w-4 h-4" />
+              </a>
+            )}
+          </div>
+          <span className="text-[10px] text-zinc-500 mt-1.5 block leading-relaxed">
+            Players are shown interactive 5-star review prompts on their <strong>Digital Match Pass</strong> and on the <strong>Reviews page</strong>. When they click, it immediately opens your arena's Google review form on mobile or desktop!
+          </span>
         </div>
       </div>
 

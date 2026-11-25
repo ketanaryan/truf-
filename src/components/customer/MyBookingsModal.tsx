@@ -178,8 +178,19 @@ export const MyBookingsModal: React.FC<MyBookingsModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="p-4 bg-[#09130d] border-t border-[#1b3623] flex items-center justify-between text-xs font-mono text-zinc-400">
-          <span>Need help? Contact turf desk: {settings.phone}</span>
+        <div className="p-4 bg-[#09130d] border-t border-[#1b3623] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono text-zinc-400">
+          <div className="flex items-center gap-2">
+            <span className="text-zinc-400">Desk: {settings.phone}</span>
+            <span className="text-zinc-600">•</span>
+            <a
+              href={settings.googleReviewUrl || `https://search.google.com/local/writereview?placeid=battlegrounds-arena`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-amber-400 hover:text-amber-300 font-bold flex items-center gap-1"
+            >
+              <span>⭐ Rate 5★ on Google</span>
+            </a>
+          </div>
           <button
             onClick={onClose}
             className="px-4 py-1.5 rounded-xl bg-[#14281a] hover:bg-[#1b3623] text-white font-bold transition-colors"

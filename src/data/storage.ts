@@ -1,5 +1,5 @@
-import { Booking, OwnerSettings, Slot, SlotStatus, CommunityLobbyPost, Pitch } from '../types';
-import { PITCHES, DEFAULT_SETTINGS, SEED_BOOKINGS, SEED_COMMUNITY_POSTS, getTodayString } from './mockTurfData';
+import { Booking, OwnerSettings, Slot, SlotStatus, CommunityLobbyPost, Pitch, CustomerReview } from '../types';
+import { PITCHES, DEFAULT_SETTINGS, SEED_BOOKINGS, SEED_COMMUNITY_POSTS, SEED_REVIEWS, getTodayString } from './mockTurfData';
 
 const STORAGE_KEYS = {
   BOOKINGS: 'battlegrounds_turf_bookings_v1',
@@ -7,6 +7,7 @@ const STORAGE_KEYS = {
   BLOCKED_SLOTS: 'battlegrounds_turf_blocked_slots_v1',
   COMMUNITY_POSTS: 'battlegrounds_turf_community_posts_v1',
   PITCHES: 'battlegrounds_turf_pitches_v1',
+  REVIEWS: 'battlegrounds_turf_reviews_v1',
 };
 
 // Initialize or get bookings
@@ -198,6 +199,35 @@ export const addCommunityPost = (post: CommunityLobbyPost): CommunityLobbyPost[]
   return updated;
 };
 
+// Customer & Google Reviews Persistence
+export const getStoredReviews = (): CustomerReview[] => {
+  try {
+    const data = localStorage.getItem(STORAGE_KEYS.REVIEWS);
+    if (!data) {
+      localStorage.setItem(STORAGE_KEYS.REVIEWS, JSON.stringify(SEED_REVIEWS));
+      return SEED_REVIEWS;
+    }
+    return JSON.parse(data);
+  } catch (e) {
+    return SEED_REVIEWS;
+  }
+};
+
+export const saveReviews = (reviews: CustomerReview[]) => {
+  try {
+    localStorage.setItem(STORAGE_KEYS.REVIEWS, JSON.stringify(reviews));
+  } catch (e) {
+    console.error('Failed to save reviews', e);
+  }
+};
+
+export const addCustomerReview = (review: CustomerReview): CustomerReview[] => {
+  const current = getStoredReviews();
+  const updated = [review, ...current];
+  saveReviews(updated);
+  return updated;
+};
+
 // Reset demo data
 export const resetDemoData = () => {
   localStorage.setItem(STORAGE_KEYS.BOOKINGS, JSON.stringify(SEED_BOOKINGS));
@@ -205,6 +235,7 @@ export const resetDemoData = () => {
   localStorage.removeItem(STORAGE_KEYS.BLOCKED_SLOTS);
   localStorage.setItem(STORAGE_KEYS.COMMUNITY_POSTS, JSON.stringify(SEED_COMMUNITY_POSTS));
   localStorage.setItem(STORAGE_KEYS.PITCHES, JSON.stringify(PITCHES));
+  localStorage.setItem(STORAGE_KEYS.REVIEWS, JSON.stringify(SEED_REVIEWS));
 };
 
 // Slot Generation Engine

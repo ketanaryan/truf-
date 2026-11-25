@@ -442,7 +442,7 @@ const TurfAppContent: React.FC = () => {
 
             {customerTab === 'reviews' && (
               <div className="animate-in fade-in duration-200">
-                <CustomerReviews />
+                <CustomerReviews settings={settings} />
               </div>
             )}
 

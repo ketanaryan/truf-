@@ -11,7 +11,9 @@ import {
   Sparkles,
   Award,
   CircleDollarSign,
-  AlertCircle
+  AlertCircle,
+  Star,
+  ExternalLink
 } from 'lucide-react';
 import { Booking, OwnerSettings } from '../../types';
 
@@ -241,6 +243,31 @@ export const TicketPassModal: React.FC<TicketPassModalProps> = ({
                   </span>
                 )}
               </div>
+            </div>
+
+            {/* Google Review Call to Action */}
+            <div className="p-3 rounded-2xl bg-gradient-to-r from-[#12281a] to-[#0c1c12] border border-amber-500/40 flex items-center justify-between gap-2.5">
+              <div className="space-y-0.5">
+                <div className="flex items-center gap-1 text-amber-400 font-bold text-[11px]">
+                  {'★★★★★'.split('').map((s, idx) => (
+                    <span key={idx}>{s}</span>
+                  ))}
+                  <span className="text-zinc-300 ml-1 font-semibold">Rate us on Google</span>
+                </div>
+                <p className="text-[10px] text-zinc-400">
+                  Loved your game? Drop a quick 5★ review!
+                </p>
+              </div>
+
+              <a
+                href={settings.googleReviewUrl || `https://search.google.com/local/writereview?placeid=battlegrounds-arena`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 text-black text-[11px] font-black uppercase tracking-wider shrink-0 shadow transition-all active:scale-95"
+              >
+                <span>5★ Review</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
             </div>
 
             {/* Venue Address */}

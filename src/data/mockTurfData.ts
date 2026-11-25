@@ -1,4 +1,4 @@
-import { Pitch, AddonItem, OwnerSettings, Booking, CommunityLobbyPost } from '../types';
+import { Pitch, AddonItem, OwnerSettings, Booking, CommunityLobbyPost, CustomerReview } from '../types';
 
 export const PITCHES: Pitch[] = [
   {
@@ -66,7 +66,8 @@ export const DEFAULT_SETTINGS: OwnerSettings = {
   peakHourEnd: '23:00',
   isRainHalted: false,
   cancellationAllowedHours: 6,
-  refundPercentage: 80
+  refundPercentage: 80,
+  googleReviewUrl: 'https://search.google.com/local/writereview?placeid=battlegrounds-arena'
 };
 
 // Generate today's date formatted as YYYY-MM-DD in local time
@@ -275,5 +276,48 @@ export const SEED_COMMUNITY_POSTS: CommunityLobbyPost[] = [
     whatsappContact: '+91 99300 98765',
     notes: 'Looking for a 4th player for mixed doubles fun rally. Paddles available at reception!',
     createdAt: '5 hours ago'
+  }
+];
+
+export const SEED_REVIEWS: CustomerReview[] = [
+  {
+    id: 'rev-1',
+    name: 'Karan Mehra',
+    team: 'Viper FC (7v7)',
+    sport: 'Football 7v7',
+    rating: 5,
+    date: 'Played 2 days ago',
+    comment: 'Best turf in the western corridor. The floodlights have zero blind spots or glare, and the 50mm grass with rubber infill protects your knees during high-speed cuts.',
+    verified: true
+  },
+  {
+    id: 'rev-2',
+    name: 'Vikram Rajput',
+    team: 'Gully Blasters Box Cricket',
+    sport: 'Box Cricket',
+    rating: 5,
+    date: 'Played yesterday',
+    comment: 'Booked Pitch A for 2 hours cricket derby. High perimeter nets mean not a single tennis ball is lost. Chilled water and clean dugouts were top notch!',
+    verified: true
+  },
+  {
+    id: 'rev-3',
+    name: 'Sneha Rao',
+    team: 'Smash Masters Pickleball',
+    sport: 'Pickleball',
+    rating: 5,
+    date: 'Weekly Regular',
+    comment: 'The rebound cage on Pitch B makes fast 5v5 football and pickleball so much fun. Booking online with token deposit was seamless. Scannable match pass worked instantly at the counter.',
+    verified: true
+  },
+  {
+    id: 'rev-4',
+    name: 'Aman Sharma',
+    team: 'Sunrise Strikers',
+    sport: 'Football 7v7',
+    rating: 5,
+    date: '3 days ago',
+    comment: 'Early morning 7 AM slot booking worked like a charm. Changing rooms and hot showers were spotless. Direct UPI payment without extra transaction charges is a huge plus.',
+    verified: true
   }
 ];

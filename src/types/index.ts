@@ -117,6 +117,18 @@ export interface OwnerSettings {
   isRainHalted: boolean;
   cancellationAllowedHours: number; // 6 hours before match
   refundPercentage: number; // 80%
+  googleReviewUrl?: string; // Direct Google Maps / My Business review link
+}
+
+export interface CustomerReview {
+  id: string;
+  name: string;
+  team: string;
+  sport: SportType;
+  rating: number;
+  date: string;
+  comment: string;
+  verified: boolean;
 }
 
 export interface CommunityLobbyPost {
