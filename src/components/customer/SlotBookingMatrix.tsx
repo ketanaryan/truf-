@@ -110,9 +110,9 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
   };
 
   return (
-    <div id="booking-matrix-section" className="space-y-6 scroll-mt-28 font-sans">
+    <div id="booking-matrix-section" className="space-y-6 scroll-mt-24 font-sans">
       
-      {/* Step 1: Arena Specifications & Rates */}
+      {/* Step 1: Choose Match Date */}
       <div className="p-5 sm:p-7 rounded-3xl bg-white border border-slate-200/90 shadow-xl space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
           <div className="flex items-center gap-2.5">
@@ -120,82 +120,17 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
               1
             </span>
             <h3 className="text-base sm:text-lg font-display font-black uppercase text-[#111827] tracking-wide">
-              Box Cricket Turf Specs & Rates
-            </h3>
-          </div>
-          <span className="text-xs font-semibold text-[#0D6EFD] bg-blue-50 px-3 py-1 rounded-full border border-blue-200">
-            🏏 Dedicated Box Cricket Arena
-          </span>
-        </div>
-
-        {/* Single Premier Ground Highlight Card */}
-        <SpotlightCard
-          spotlightColor="rgba(255, 106, 0, 0.12)"
-          className="p-5 sm:p-6 rounded-2xl bg-orange-50/40 border-2 border-[#FF6A00]/40 shadow-sm relative flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
-        >
-          <div className="space-y-3 max-w-xl">
-            <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded-full bg-[#FF6A00] text-white text-[10px] font-black uppercase tracking-wider">
-                MAIN ARENA
-              </span>
-              <span className="text-xs font-bold text-slate-700">120 ft × 65 ft Enclosed Rebound Cage</span>
-            </div>
-
-            <h4 className="text-xl font-black text-[#111827] uppercase tracking-wide">
-              {currentPitch.name}
-            </h4>
-
-            <p className="text-xs text-slate-600 leading-relaxed font-normal">
-              50mm dense monofilament astroturf with shockpad cushioning. High-tension ceiling and 360° boundary nets ensure zero ball loss. Regulation wooden stumps, bails and umpire gear provided free with every booking.
-            </p>
-
-            <div className="flex flex-wrap gap-2 text-xs text-slate-700 pt-1">
-              <span className="px-3 py-1 rounded-xl bg-white border border-slate-200 font-semibold">
-                🏏 Wooden Stumps Provided
-              </span>
-              <span className="px-3 py-1 rounded-xl bg-white border border-slate-200 font-semibold">
-                🎾 Hard Tennis & Tape Ball
-              </span>
-              <span className="px-3 py-1 rounded-xl bg-white border border-slate-200 font-semibold">
-                🔆 500-Lux Anti-Glare Floodlights
-              </span>
-              <span className="px-3 py-1 rounded-xl bg-white border border-slate-200 font-semibold">
-                🚹 Dugout Seating (12/side)
-              </span>
-            </div>
-          </div>
-
-          <div className="w-full md:w-auto p-4 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-3 min-w-[240px]">
-            <div className="flex items-center justify-between text-xs pb-2 border-b border-slate-100">
-              <span className="text-slate-500 font-medium">Day Slots (6 AM - 5 PM)</span>
-              <span className="text-[#0D6EFD] font-black text-sm">₹{weekend ? currentPitch.baseWeekendPrice : currentPitch.baseWeekdayPrice} / hr</span>
-            </div>
-            <div className="flex items-center justify-between text-xs pb-2 border-b border-slate-100">
-              <span className="text-slate-500 font-medium">Night Floodlit (5 PM+)</span>
-              <span className="text-[#FF6A00] font-black text-sm">₹{weekend ? currentPitch.peakHourWeekendPrice : currentPitch.peakHourWeekdayPrice} / hr</span>
-            </div>
-            <div className="flex items-center justify-between text-xs pt-1 text-emerald-700 font-bold">
-              <span>0% Gateway Fee</span>
-              <span>Direct UPI</span>
-            </div>
-          </div>
-        </SpotlightCard>
-      </div>
-
-      {/* Step 2: Choose Date */}
-      <div className="p-5 sm:p-7 rounded-3xl bg-white border border-slate-200/90 shadow-xl space-y-4">
-        <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-          <div className="flex items-center gap-2.5">
-            <span className="w-7 h-7 rounded-full bg-[#FF6A00] text-white font-black flex items-center justify-center text-xs shadow-sm">
-              2
-            </span>
-            <h3 className="text-base sm:text-lg font-display font-black uppercase text-[#111827] tracking-wide">
               Select Match Date
             </h3>
           </div>
-          <span className="text-xs font-semibold text-slate-500">
-            {weekend ? '🔥 Weekend Prime Pricing Active' : '⚡ Regular Weekday Pricing'}
-          </span>
+          <div className="flex items-center gap-2 text-xs font-semibold">
+            <span className="px-2.5 py-1 rounded-full bg-blue-50 text-[#0D6EFD] border border-blue-200">
+              Day: ₹{weekend ? currentPitch.baseWeekendPrice : currentPitch.baseWeekdayPrice}/hr
+            </span>
+            <span className="px-2.5 py-1 rounded-full bg-orange-50 text-[#FF6A00] border border-orange-200">
+              Floodlights: ₹{weekend ? currentPitch.peakHourWeekendPrice : currentPitch.peakHourWeekdayPrice}/hr
+            </span>
+          </div>
         </div>
 
         {/* Date Carousel Strip */}
@@ -287,10 +222,10 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-3 pt-2">
           <div className="flex items-center gap-2.5">
             <span className="w-7 h-7 rounded-full bg-[#FF6A00] text-white font-black flex items-center justify-center text-xs shadow-sm">
-              3
+              2
             </span>
             <h3 className="text-base sm:text-lg font-display font-black uppercase text-[#111827] tracking-wide">
-              Or Pick Hourly Slot(s)
+              Pick Time Slot(s)
             </h3>
           </div>
 
@@ -300,7 +235,7 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
               { id: 'all', label: 'All Slots' },
               { id: 'morning', label: 'Morning (6-12)' },
               { id: 'afternoon', label: 'Afternoon (12-5)' },
-              { id: 'night', label: '⚡ Floodlights (5-1 AM)' },
+              { id: 'night', label: '⚡ Floodlights (5-11 PM)' },
             ].map(f => (
               <button
                 key={f.id}
