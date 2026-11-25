@@ -300,40 +300,7 @@ export const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({
             </div>
           </div>
 
-          {/* Full Day Turf Booking Option */}
-          {!isFullDayAlready && (
-            <div 
-              onClick={() => setIsFullDayUpgrade(!isFullDayUpgrade)}
-              className={`p-3.5 rounded-2xl border-2 transition-all cursor-pointer flex items-center justify-between gap-3 ${
-                isFullDayUpgrade
-                  ? 'bg-orange-50/60 border-[#FF6A00] shadow-sm'
-                  : 'bg-slate-50 border-slate-200 hover:border-slate-300'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-orange-100 text-[#FF6A00] border border-orange-200 flex items-center justify-center font-bold text-lg">
-                  🏆
-                </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-extrabold text-slate-900 text-xs">Full Day Turf Booking</span>
-                    <span className="text-[9px] bg-[#0B1D2D] text-amber-300 px-2 py-0.5 rounded font-bold uppercase">
-                      Tournament Package
-                    </span>
-                  </div>
-                  <p className="text-[11px] text-slate-500">
-                    Book all 19 operating hours (06:00 AM to 01:00 AM) for flat ₹{fullDayPackageRate}
-                  </p>
-                </div>
-              </div>
 
-              <div className={`w-5 h-5 rounded-md border flex items-center justify-center ${
-                isFullDayUpgrade ? 'bg-[#FF6A00] border-[#FF6A00] text-white' : 'border-slate-300 bg-white'
-              }`}>
-                {isFullDayUpgrade && <Check className="w-3.5 h-3.5 stroke-[3]" />}
-              </div>
-            </div>
-          )}
 
           {/* Captain Contact Information */}
           <div className="space-y-3 pt-1 border-t border-slate-100">

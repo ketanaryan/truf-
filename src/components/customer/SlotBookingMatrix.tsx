@@ -168,58 +168,10 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
         </div>
       </div>
 
-      {/* Step 3: Choose Time Slot */}
+      {/* Step 2: Choose Time Slot */}
       <div className="p-5 sm:p-7 rounded-3xl bg-white border border-slate-200/90 shadow-xl space-y-4">
-        
-        {/* Full Day Booking Option Card (Hatrick Grounds Style Mint-Teal Tint) */}
-        <div className={`p-5 rounded-2xl border-2 transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${
-          isFullDaySelected
-            ? 'bg-orange-50 border-[#FF6A00] shadow-md'
-            : 'bg-gradient-to-r from-teal-50/70 to-emerald-50/50 border-teal-200 hover:border-teal-300'
-        }`}>
-          <div className="flex items-center gap-3.5">
-            <div className="w-12 h-12 rounded-2xl bg-[#00B6C8]/15 text-[#00B6C8] border border-[#00B6C8]/30 flex items-center justify-center font-bold text-2xl">
-              🏆
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-extrabold text-[#111827] text-base">Full Day Turf Booking</span>
-                <span className="px-2.5 py-0.5 rounded text-[10px] font-black uppercase bg-[#0B1D2D] text-amber-300">
-                  Tournament Package
-                </span>
-              </div>
-              <p className="text-xs text-slate-600 mt-0.5">
-                Reserve entire {currentPitch.name} for all operating hours (06:00 AM – 11:00 PM) at flat package rate
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3 self-end sm:self-center">
-            <div className="text-right">
-              <span className="text-xs text-slate-400 block line-through">
-                ₹{slots.reduce((sum, s) => sum + s.price, 0)}
-              </span>
-              <span className="text-lg font-black text-[#0D6EFD]">
-                ₹{fullDayPrice}
-              </span>
-            </div>
-
-            <button
-              type="button"
-              onClick={handleToggleFullDay}
-              className={`px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all active:scale-95 shadow-sm ${
-                isFullDaySelected
-                  ? 'bg-[#FF6A00] text-white font-extrabold shadow-md'
-                  : 'bg-[#0B1D2D] hover:bg-slate-800 text-white'
-              }`}
-            >
-              {isFullDaySelected ? '✓ Full Day Reserved' : 'Reserve Full Day'}
-            </button>
-          </div>
-        </div>
-
         {/* Regular Slots Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-3 pt-2">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-3 pt-1">
           <div className="flex items-center gap-2.5">
             <span className="w-7 h-7 rounded-full bg-[#FF6A00] text-white font-black flex items-center justify-center text-xs shadow-sm">
               2
