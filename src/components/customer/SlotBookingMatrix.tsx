@@ -110,7 +110,7 @@ export const SlotBookingMatrix: React.FC<SlotBookingMatrixProps> = ({
   };
 
   return (
-    <div id="booking-matrix-section" className="space-y-6 scroll-mt-24 font-sans">
+    <div id="booking-matrix-section" className="space-y-6 scroll-mt-44 font-sans">
       
       {/* Step 1: Choose Match Date */}
       <div className="p-5 sm:p-7 rounded-3xl bg-white border border-slate-200/90 shadow-xl space-y-4">
