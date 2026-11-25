@@ -58,7 +58,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
             {/* Subtitle - Authentic Indian Box Cricket details without AI slop */}
             <p className="text-[#4B5563] text-sm sm:text-base leading-relaxed max-w-xl font-normal">
               Located at Plot No. 1, Sonawane Mala, Chetana Nagar, Rane Nagar, Nashik. 
-              Open daily 6:00 AM – 11:00 PM with floodlights, high-density astroturf, ceiling net protection, and starting rates around ₹500 – ₹800/hr. Direct Google Pay & WhatsApp confirmation managed by Kiran Sonawane.
+              Open daily 6:00 AM – 11:00 PM with sports floodlights, high-density astroturf, and heavy-gauge ceiling net protection.
             </p>
 
             {/* Social Proof Cluster */}
@@ -86,7 +86,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                   <span className="text-[#FF6A00] font-bold">•</span>
                   <span className="text-emerald-700 font-semibold">Verified Venue</span>
                 </div>
-                <span className="text-[#6B7280]">Managed by Kiran Sonawane • Desk: +91 94035 64779</span>
+                <span className="text-[#6B7280]">Plot No. 1, Sonawane Mala, Nashik • Desk: +91 94035 64779</span>
               </div>
             </div>
 
@@ -168,7 +168,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                     <h3 className="text-xl font-display font-black text-white uppercase tracking-wide">
                       SONAWANE'S TURF
                     </h3>
-                    <p className="text-xs text-orange-300 font-semibold">{currentPitch.dimensions} • High Netting • ₹500-₹800/hr</p>
+                    <p className="text-xs text-orange-300 font-semibold">{currentPitch.dimensions} • High Netting</p>
                   </div>
                 </div>
 
