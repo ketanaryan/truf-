@@ -627,7 +627,7 @@ export const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({
           {/* Action Buttons */}
           <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 border-t border-slate-100">
             <span className="text-[11px] text-slate-500 font-medium">
-              📲 Generates Digital Pass & forwards details to Owner WhatsApp
+              🎟️ Generates official match pass with scannable gate QR
             </span>
 
             <div className="flex items-center gap-2.5 justify-end">
@@ -645,7 +645,7 @@ export const CheckoutDrawer: React.FC<CheckoutDrawerProps> = ({
                 onClick={handleSubmitBooking}
                 className="flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl bg-[#FF6A00] hover:bg-[#E65F00] text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-orange-500/30 active:scale-95 transition-all cursor-pointer"
               >
-                <span>{isProcessing ? 'Confirming...' : 'Confirm & Open WhatsApp Pass →'}</span>
+                <span>{isProcessing ? 'Confirming...' : 'Confirm Reservation & Get Pass →'}</span>
               </button>
             </div>
           </div>
