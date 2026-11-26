@@ -4,7 +4,9 @@ import { Eye, ShieldCheck, Zap } from 'lucide-react';
 
 interface PitchVisualizerProps {
   pitch: Pitch;
-  sport: SportType;
+  sport?: SportType;
+  onClose?: () => void;
+  onBookPitch?: () => void;
 }
 
 export const PitchVisualizer: React.FC<PitchVisualizerProps> = ({ pitch }) => {

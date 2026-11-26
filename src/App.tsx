@@ -10,6 +10,11 @@ import { CustomerReviews } from './components/customer/CustomerReviews';
 import { ArenaFacilities } from './components/customer/ArenaFacilities';
 import { OwnerDashboard } from './components/owner/OwnerDashboard';
 import { ToastProvider, useToast } from './components/common/ToastContext';
+import { NovaTournamentBanner } from './components/customer/NovaTournamentBanner';
+import { NovaFeaturesGrid } from './components/customer/NovaFeaturesGrid';
+import { NovaActivityHeatmap } from './components/customer/NovaActivityHeatmap';
+import { NovaGalleryBento } from './components/customer/NovaGalleryBento';
+import { NovaTierSystem } from './components/customer/NovaTierSystem';
 
 import { Pitch, Booking, OwnerSettings, SportType, CommunityLobbyPost } from './types';
 import { PITCHES, getTodayString } from './data/mockTurfData';
@@ -299,26 +304,26 @@ const TurfAppContent: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F2F4F7] text-[#1F2937] flex flex-col font-sans selection:bg-[#FF6A00] selection:text-white">
+    <div className="min-h-screen bg-[#16181b] text-white flex flex-col font-body selection:bg-[#ff7a00] selection:text-black">
       
       {/* Header: Dedicated Venue Operations Top Header for Owner, or Customer Navbar for Players */}
       {currentView === 'owner' ? (
-        <header className="sticky top-0 z-50 bg-[#0B1D2D] border-b border-white/10 shadow-lg font-sans">
+        <header className="sticky top-0 z-50 bg-[#111317] border-b border-white/10 shadow-2xl font-body">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-[#FF6A00] to-amber-500 flex items-center justify-center text-white font-black text-xl shadow-md border border-white/20">
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-[#ff7a00] to-amber-500 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-orange-500/20 border border-white/20">
                 ⚡
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-white font-black text-base sm:text-xl tracking-tight uppercase">
+                  <span className="text-white font-black text-base sm:text-xl tracking-tight uppercase font-headline">
                     SONAWANE'S TURF
                   </span>
-                  <span className="px-2 py-0.5 rounded-md bg-[#FF6A00]/20 border border-[#FF6A00]/30 text-[#FF6A00] text-[10px] font-black uppercase tracking-wider">
+                  <span className="px-2 py-0.5 rounded-md bg-[#ff7a00]/20 border border-[#ff7a00]/30 text-[#ff7a00] text-[10px] font-black uppercase tracking-wider">
                     Owner Desk
                   </span>
                 </div>
-                <p className="text-slate-400 text-[11px] font-medium hidden sm:block">
+                <p className="text-neutral-400 text-[11px] font-medium hidden sm:block">
                   Venue Operations & Management Suite • Rane Nagar, Nashik
                 </p>
               </div>
@@ -327,10 +332,10 @@ const TurfAppContent: React.FC = () => {
             <div className="flex items-center gap-2 sm:gap-4">
               <div className="hidden lg:flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span className="text-slate-300 font-medium">Turf Manager:</span>
+                <span className="text-neutral-400 font-medium">Turf Manager:</span>
                 <span className="text-white font-bold">Kiran Sonawane</span>
-                <span className="text-slate-500">•</span>
-                <span className="text-[#FF6A00] font-mono font-bold">+91 94035 64779</span>
+                <span className="text-neutral-600">•</span>
+                <span className="text-[#ff7a00] font-mono font-bold">+91 94035 64779</span>
               </div>
 
               <button
@@ -341,7 +346,7 @@ const TurfAppContent: React.FC = () => {
                   }
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-[#FF6A00] to-amber-600 hover:from-amber-600 hover:to-[#FF6A00] text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-md active:scale-95 cursor-pointer"
+                className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#ff7a00] to-amber-600 hover:from-amber-600 hover:to-[#ff7a00] text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-[0_4px_16px_rgba(255,122,0,0.3)] active:scale-95 cursor-pointer"
               >
                 <span>← Live Player View</span>
               </button>
@@ -376,8 +381,14 @@ const TurfAppContent: React.FC = () => {
               onSelectPitch={handlePitchChange}
             />
 
-            {/* Customer Section Navigation Bar (Hatrick Grounds Clean White Theme) */}
-            <div className="sticky top-[108px] z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 py-3 shadow-sm">
+            {/* The Nova Club Tournament Highlight Banner */}
+            <NovaTournamentBanner onRegisterClick={scrollToSlots} />
+
+            {/* The Nova Club 4-Pillars Luxury Feature Bento Grid */}
+            <NovaFeaturesGrid />
+
+            {/* Customer Section Navigation Bar (The Nova Club Dark Glass Island Ribbon) */}
+            <div className="sticky top-[76px] z-30 bg-[#16181b]/95 backdrop-blur-xl border-y border-white/10 py-3 shadow-2xl">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3 overflow-x-auto scrollbar-none">
                 <div className="flex items-center gap-2">
                   <button
@@ -385,13 +396,13 @@ const TurfAppContent: React.FC = () => {
                       setCustomerTab('booking');
                       scrollToSlots();
                     }}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all active:scale-95 whitespace-nowrap ${
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all active:scale-95 whitespace-nowrap cursor-pointer ${
                       customerTab === 'booking'
-                        ? 'bg-[#FF6A00] text-white shadow-md font-extrabold'
-                        : 'bg-slate-100 text-slate-700 hover:text-black border border-slate-200 hover:bg-slate-200'
+                        ? 'bg-[#ff7a00] text-white shadow-[0_0_24px_rgba(255,122,0,0.4)] font-extrabold'
+                        : 'bg-white/5 text-neutral-300 hover:text-white border border-white/10 hover:bg-white/10'
                     }`}
                   >
-                    <span>🏏 Book Box Cricket Slot</span>
+                    <span>⚡ Book Match Slot</span>
                   </button>
 
                   <button
@@ -399,94 +410,109 @@ const TurfAppContent: React.FC = () => {
                       setCustomerTab('matchfinder');
                       scrollToMatchFinder();
                     }}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all active:scale-95 whitespace-nowrap ${
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all active:scale-95 whitespace-nowrap cursor-pointer ${
                       customerTab === 'matchfinder'
-                        ? 'bg-[#FF6A00] text-white shadow-md font-extrabold'
-                        : 'bg-slate-100 text-slate-700 hover:text-black border border-slate-200 hover:bg-slate-200'
+                        ? 'bg-[#ff7a00] text-white shadow-[0_0_24px_rgba(255,122,0,0.4)] font-extrabold'
+                        : 'bg-white/5 text-neutral-300 hover:text-white border border-white/10 hover:bg-white/10'
                     }`}
                   >
-                    <span>👥 Players Board ({communityPosts.length})</span>
+                    <span>👥 Players Lobby ({communityPosts.length})</span>
                   </button>
 
                   <button
                     onClick={() => setCustomerTab('facilities')}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all active:scale-95 whitespace-nowrap ${
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all active:scale-95 whitespace-nowrap cursor-pointer ${
                       customerTab === 'facilities'
-                        ? 'bg-[#FF6A00] text-white shadow-md font-extrabold'
-                        : 'bg-slate-100 text-slate-700 hover:text-black border border-slate-200 hover:bg-slate-200'
+                        ? 'bg-[#ff7a00] text-white shadow-[0_0_24px_rgba(255,122,0,0.4)] font-extrabold'
+                        : 'bg-white/5 text-neutral-300 hover:text-white border border-white/10 hover:bg-white/10'
                     }`}
                   >
-                    <span>🏟️ Turf Specs & Amenities</span>
+                    <span>🏟️ Specs & Amenities</span>
                   </button>
 
                   <button
                     onClick={() => setCustomerTab('reviews')}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all active:scale-95 whitespace-nowrap ${
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all active:scale-95 whitespace-nowrap cursor-pointer ${
                       customerTab === 'reviews'
-                        ? 'bg-[#FF6A00] text-white shadow-md font-extrabold'
-                        : 'bg-slate-100 text-slate-700 hover:text-black border border-slate-200 hover:bg-slate-200'
+                        ? 'bg-[#ff7a00] text-white shadow-[0_0_24px_rgba(255,122,0,0.4)] font-extrabold'
+                        : 'bg-white/5 text-neutral-300 hover:text-white border border-white/10 hover:bg-white/10'
                     }`}
                   >
-                    <span>⭐ Reviews (4.9★)</span>
+                    <span>⭐ Reviews (4.0★)</span>
                   </button>
                 </div>
 
-                <div className="hidden lg:flex items-center gap-3 text-xs text-slate-500 font-semibold">
-                  <span className="flex items-center gap-1.5 text-slate-700">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span>Instant Pass Confirmation</span>
+                <div className="hidden lg:flex items-center gap-3 text-xs text-neutral-400 font-semibold">
+                  <span className="flex items-center gap-1.5 text-neutral-300">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>Instant Digital Match Pass</span>
                   </span>
+                  <span className="text-neutral-600">•</span>
+                  <span className="text-orange-400 font-mono">0% UPI Surcharge</span>
                 </div>
               </div>
             </div>
 
             {/* Tabbed Content View */}
             {customerTab === 'booking' && (
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-10">
-                <SlotBookingMatrix
-                  pitches={pitches}
-                  selectedDate={selectedDate}
-                  onDateChange={handleDateChange}
-                  selectedPitchId={selectedPitchId}
-                  onPitchChange={handlePitchChange}
-                  selectedSport={selectedSport}
-                  onSportChange={setSelectedSport}
-                  slots={slots}
-                  selectedSlotIds={selectedSlotIds}
-                  onToggleSlot={handleToggleSlot}
-                  onClearSelectedSlots={handleClearSelectedSlots}
-                  onSelectBatchSlots={handleSelectBatchSlots}
-                  onProceedToCheckout={() => setCheckoutOpen(true)}
-                  settings={settings}
-                />
+              <div className="space-y-16 py-8 sm:py-12">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+                  <SlotBookingMatrix
+                    pitches={pitches}
+                    selectedDate={selectedDate}
+                    onDateChange={handleDateChange}
+                    selectedPitchId={selectedPitchId}
+                    onPitchChange={handlePitchChange}
+                    selectedSport={selectedSport}
+                    onSportChange={setSelectedSport}
+                    slots={slots}
+                    selectedSlotIds={selectedSlotIds}
+                    onToggleSlot={handleToggleSlot}
+                    onClearSelectedSlots={handleClearSelectedSlots}
+                    onSelectBatchSlots={handleSelectBatchSlots}
+                    onProceedToCheckout={() => setCheckoutOpen(true)}
+                    settings={settings}
+                  />
+                </div>
 
-                {/* Quick explore footer cards (Hatrick Grounds Style) */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-slate-200">
-                  <div 
-                    onClick={() => setCustomerTab('matchfinder')}
-                    className="p-5 rounded-2xl bg-white border border-slate-200 hover:border-[#FF6A00] cursor-pointer transition-all space-y-1 shadow-sm hover:shadow-md"
-                  >
-                    <span className="text-[10px] uppercase font-bold text-[#FF6A00] tracking-wider block">Community Lobby</span>
-                    <h4 className="text-[#111827] font-bold text-sm">Need players for your squad?</h4>
-                    <p className="text-slate-500 text-xs">Join or post match requests on the Battle Board →</p>
-                  </div>
+                {/* Customer Analytics & Activity Heatmap (The Nova Club Standard) */}
+                <NovaActivityHeatmap />
 
-                  <div 
-                    onClick={() => setCustomerTab('facilities')}
-                    className="p-5 rounded-2xl bg-white border border-slate-200 hover:border-[#FF6A00] cursor-pointer transition-all space-y-1 shadow-sm hover:shadow-md"
-                  >
-                    <span className="text-[10px] uppercase font-bold text-amber-600 tracking-wider block">Turf Specifications</span>
-                    <h4 className="text-[#111827] font-bold text-sm">50mm Astroturf & 500-Lux Floodlights</h4>
-                    <p className="text-slate-500 text-xs">Ceiling nets, wooden stumps, dugouts & lockers →</p>
-                  </div>
+                {/* Visual Gallery Bento (The Nova Club 01-06 Numbered Cards) */}
+                <NovaGalleryBento />
 
-                  <div 
-                    onClick={() => setCustomerTab('reviews')}
-                    className="p-5 rounded-2xl bg-white border border-slate-200 hover:border-[#FF6A00] cursor-pointer transition-all space-y-1 shadow-sm hover:shadow-md"
-                  >
-                    <span className="text-[10px] uppercase font-bold text-emerald-600 tracking-wider block">Player Rating</span>
-                    <h4 className="text-[#111827] font-bold text-sm">4.9 / 5.0 Star Rating</h4>
-                    <p className="text-slate-500 text-xs">Read 1,480+ reviews from verified captains →</p>
+                {/* Membership & Match Pass Tier System */}
+                <NovaTierSystem onSelectBooking={scrollToSlots} />
+
+                {/* Quick explore footer cards (Nova Dark Obsidian Style) */}
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-white/10">
+                    <div 
+                      onClick={() => setCustomerTab('matchfinder')}
+                      className="p-6 rounded-3xl bg-[#1e2023] border border-white/10 hover:border-[#ff7a00]/50 cursor-pointer transition-all space-y-2 group shadow-xl"
+                    >
+                      <span className="text-[10px] uppercase font-bold text-[#ff7a00] tracking-wider block">Community Lobby</span>
+                      <h4 className="text-white font-bold text-base group-hover:text-orange-400 transition-colors">Need players for your squad?</h4>
+                      <p className="text-neutral-400 text-xs">Join or post match requests on the Battle Board →</p>
+                    </div>
+
+                    <div 
+                      onClick={() => setCustomerTab('facilities')}
+                      className="p-6 rounded-3xl bg-[#1e2023] border border-white/10 hover:border-amber-500/50 cursor-pointer transition-all space-y-2 group shadow-xl"
+                    >
+                      <span className="text-[10px] uppercase font-bold text-amber-400 tracking-wider block">Turf Specifications</span>
+                      <h4 className="text-white font-bold text-base group-hover:text-amber-400 transition-colors">50mm Astroturf & 500-Lux Floodlights</h4>
+                      <p className="text-neutral-400 text-xs">Ceiling nets, wooden stumps, dugouts & lockers →</p>
+                    </div>
+
+                    <div 
+                      onClick={() => setCustomerTab('reviews')}
+                      className="p-6 rounded-3xl bg-[#1e2023] border border-white/10 hover:border-emerald-500/50 cursor-pointer transition-all space-y-2 group shadow-xl"
+                    >
+                      <span className="text-[10px] uppercase font-bold text-emerald-400 tracking-wider block">Player Rating</span>
+                      <h4 className="text-white font-bold text-base group-hover:text-emerald-400 transition-colors">4.0 / 5.0 Google Rating</h4>
+                      <p className="text-neutral-400 text-xs">Read 22+ verified reviews on Google Maps →</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -579,59 +605,62 @@ const TurfAppContent: React.FC = () => {
         settings={settings}
       />
 
-      {/* Footer (Hatrick Grounds Deep Navy) */}
-      <footer className="border-t border-slate-200 bg-[#0B1D2D] py-14 text-slate-400 text-xs font-sans">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded-lg bg-[#FF6A00] flex items-center justify-center text-white font-black text-xs">
+      {/* Footer (The Nova Club Dark Luxury Minimalist Design) */}
+      <footer className="border-t border-white/10 bg-[#111317] py-16 text-neutral-400 text-xs font-body">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+            <div className="space-y-4">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#ff7a00] to-amber-500 flex items-center justify-center text-white font-black text-sm shadow-[0_4px_16px_rgba(255,122,0,0.3)]">
                   ⚡
                 </div>
-                <span className="font-display font-black text-xl text-white uppercase italic tracking-wider">
-                  SONAWANE'S <span className="text-[#FF6A00]">TURF</span>
+                <span className="font-headline font-black text-xl text-white uppercase italic tracking-wider">
+                  SONAWANE'S <span className="text-[#ff7a00]">TURF</span>
                 </span>
               </div>
-              <p className="text-slate-400 text-xs leading-relaxed">
-                Premier box cricket & football arena in Rane Nagar, Nashik. 50mm heavy astroturf with shockpad cushioning, high ceiling nets, 500-lux floodlights, and zero-convenience-fee booking.
+              <p className="text-neutral-400 text-xs leading-relaxed">
+                Premier box cricket & football arena in Rane Nagar, Nashik. 50mm shockpad-cushioned astroturf, ceiling rebound net engineering, 500-lux anti-glare floodlights, and direct zero-gateway-fee slot passes.
               </p>
-              <div className="flex items-center gap-3 text-slate-300 pt-1 font-semibold">
-                <span>⚡ 06:00 AM – 11:00 PM Daily</span>
-                <span>•</span>
-                <span>🏏 Box Cricket & Football</span>
+              <div className="flex flex-wrap items-center gap-3 text-neutral-300 pt-1 font-semibold text-[11px]">
+                <span className="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-[#ff7a00]">⚡ Open 06:00 AM – 11:00 PM</span>
+                <span className="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-emerald-400">🏏 Box Cricket & Football</span>
               </div>
             </div>
 
-            <div className="space-y-2">
-              <span className="text-white font-bold uppercase tracking-wider block">Arena Location</span>
-              <p className="text-slate-300">{settings.address}</p>
-              <p className="text-slate-300">Desk Phone: {settings.phone}</p>
-              <p className="text-slate-300">WhatsApp: {settings.whatsapp}</p>
+            <div className="space-y-3">
+              <span className="text-white font-bold uppercase tracking-wider text-xs block font-headline">Arena Location</span>
+              <p className="text-neutral-300 leading-relaxed">{settings.address}</p>
+              <p className="text-neutral-300">Desk Phone: <span className="text-white font-bold">{settings.phone}</span></p>
+              <p className="text-neutral-300">WhatsApp: <span className="text-[#ff7a00] font-bold">{settings.whatsapp}</span></p>
+              <p className="text-neutral-400 text-[11px]">Turf Manager: <span className="text-white">Kiran Sonawane</span></p>
             </div>
 
-            <div className="space-y-2">
-              <span className="text-white font-bold uppercase tracking-wider block">Turf Rules</span>
-              <p>• Clean rubber studs or flat trainers only</p>
-              <p>• Arrive 15 minutes prior to match time</p>
-              <p>• Zero food or chewing gum on artificial grass</p>
-              <p>• Free secure lockers & RO drinking water</p>
+            <div className="space-y-3">
+              <span className="text-white font-bold uppercase tracking-wider text-xs block font-headline">Turf Guidelines</span>
+              <ul className="space-y-1.5 text-neutral-400">
+                <li className="flex items-center gap-2"><span className="text-[#ff7a00]">•</span> Clean rubber studs or flat sneakers only</li>
+                <li className="flex items-center gap-2"><span className="text-[#ff7a00]">•</span> Arrive 15 minutes prior to match schedule</li>
+                <li className="flex items-center gap-2"><span className="text-[#ff7a00]">•</span> Zero chewing gum or food inside arena turf</li>
+                <li className="flex items-center gap-2"><span className="text-[#ff7a00]">•</span> Free secure lockers & chilled RO drinking water</li>
+              </ul>
             </div>
 
-            <div className="space-y-2">
-              <span className="text-white font-bold uppercase tracking-wider block">Direct Turf Pay</span>
-              <p className="text-slate-400 leading-relaxed">
-                Direct UPI to arena account. Zero intermediary gateway charges, instant slot generation & verified digital match passes.
+            <div className="space-y-3">
+              <span className="text-white font-bold uppercase tracking-wider text-xs block font-headline">Direct Venue Booking</span>
+              <p className="text-neutral-400 leading-relaxed text-xs">
+                Direct UPI to arena merchant account. Zero convenience surcharges, automated WhatsApp match pass dispatch & instant gate check-in pass.
               </p>
-              <div className="pt-2 text-[#FF6A00] font-mono text-[11px] font-bold">
-                UPI ID: {settings.upiId}
+              <div className="p-3 rounded-2xl bg-white/5 border border-white/10 text-[#ff7a00] font-mono text-xs font-bold flex items-center justify-between">
+                <span>UPI: {settings.upiId}</span>
+                <span className="text-[10px] uppercase px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-sans">0% Fee</span>
               </div>
             </div>
           </div>
 
-          <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
-            <p>© {new Date().getFullYear()} SONAWANE'S MULTI SPORT TURF (NASHIK). All Rights Reserved.</p>
+          <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-neutral-500">
+            <p>© {new Date().getFullYear()} SONAWANE'S MULTI SPORT TURF (NASHIK). WHERE NASHIK PLAYS CRICKET & FOOTBALL.</p>
             <div className="flex items-center gap-4">
-              <p>Cricket & Football Turf • Rane Nagar, Nashik</p>
+              <p className="hidden md:block">Plot No. 1, Sonawane Mala, Chetana Nagar, Rane Nagar, Nashik</p>
               <button
                 onClick={() => {
                   setCurrentView('owner');
@@ -640,7 +669,7 @@ const TurfAppContent: React.FC = () => {
                   }
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white transition-all text-xs font-semibold border border-white/15 cursor-pointer shadow-sm"
+                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-neutral-300 hover:text-white transition-all text-xs font-semibold border border-white/10 cursor-pointer shadow-sm active:scale-95"
                 title="Turf Owner Admin Workstation"
               >
                 <span>🔐 Admin / Owner Desk</span>

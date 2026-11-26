@@ -69,28 +69,28 @@ export const MatchFinderBoard: React.FC<MatchFinderBoardProps> = ({
   });
 
   return (
-    <section id="community-match-finder" className="py-16 border-t border-slate-200 bg-[#F2F4F7] font-sans">
+    <section id="community-match-finder" className="py-16 border-t border-white/10 bg-[#16181b] font-body text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-5">
           <div className="space-y-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/10 border border-[#FF6A00]/30 text-[#E65F00] text-xs font-bold uppercase tracking-wider">
-              <Sparkles className="w-3.5 h-3.5 text-[#FF6A00]" />
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/10 border border-[#ff7a00]/30 text-[#ff7a00] text-xs font-bold uppercase tracking-wider font-headline">
+              <Sparkles className="w-3.5 h-3.5 text-[#ff7a00]" />
               <span>COMMUNITY PLAYER LOBBY</span>
             </span>
 
-            <h2 className="text-3xl sm:text-4xl font-black font-display text-[#111827] uppercase tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-black font-headline text-white uppercase tracking-tight">
               Players Board & Match Challenges
             </h2>
-            <p className="text-slate-600 text-sm max-w-xl font-normal leading-relaxed">
+            <p className="text-neutral-400 text-sm max-w-xl font-normal leading-relaxed">
               Looking for extra players for your box cricket team? Or want to challenge another squad to a friendly weekend derby? Post your match or join open teams below.
             </p>
           </div>
 
           <button
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl bg-[#FF6A00] hover:bg-[#E65F00] text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-orange-500/30 transition-all active:scale-95 self-start md:self-auto cursor-pointer"
+            className="flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full bg-gradient-to-r from-[#ff7a00] to-amber-600 hover:from-amber-600 hover:to-[#ff7a00] text-white font-black text-xs uppercase tracking-wider shadow-[0_4px_16px_rgba(255,122,0,0.3)] transition-all active:scale-95 self-start md:self-auto cursor-pointer"
           >
             <Plus className="w-4 h-4 stroke-[3]" />
             <span>Post Match Request</span>
@@ -108,10 +108,10 @@ export const MatchFinderBoard: React.FC<MatchFinderBoardProps> = ({
             <button
               key={tab.id}
               onClick={() => setLevelFilter(tab.id)}
-              className={`px-4 py-2 rounded-xl transition-all font-bold whitespace-nowrap active:scale-95 cursor-pointer ${
+              className={`px-4 py-2 rounded-full transition-all font-bold whitespace-nowrap active:scale-95 cursor-pointer ${
                 levelFilter === tab.id
-                  ? 'bg-[#FF6A00] text-white shadow-md'
-                  : 'bg-white text-slate-700 hover:text-black border border-slate-200 hover:bg-slate-50'
+                  ? 'bg-[#ff7a00] text-white shadow-[0_0_20px_rgba(255,122,0,0.4)]'
+                  : 'bg-white/5 text-neutral-300 hover:text-white border border-white/10 hover:bg-white/10'
               }`}
             >
               {tab.label}
@@ -125,54 +125,54 @@ export const MatchFinderBoard: React.FC<MatchFinderBoardProps> = ({
             return (
               <div
                 key={post.id}
-                className="p-5 sm:p-6 rounded-3xl bg-white border border-slate-200/90 hover:border-[#FF6A00] shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-4 group"
+                className="p-5 sm:p-6 rounded-3xl bg-[#1e2023] border border-white/10 hover:border-[#ff7a00]/50 shadow-xl transition-all flex flex-col justify-between space-y-4 group"
               >
                 <div className="space-y-3.5">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="px-2.5 py-0.5 rounded-lg border font-bold uppercase tracking-wider bg-orange-50 text-[#E65F00] border-orange-200">
+                    <span className="px-2.5 py-0.5 rounded-lg border font-bold uppercase tracking-wider bg-orange-500/10 text-orange-400 border-orange-500/30">
                       🏏 Box Cricket
                     </span>
-                    <span className="text-slate-400">{post.createdAt}</span>
+                    <span className="text-neutral-500">{post.createdAt}</span>
                   </div>
 
                   <div>
-                    <h3 className="text-lg font-black text-[#111827] mb-0.5 group-hover:text-[#FF6A00] transition-colors">
+                    <h3 className="text-lg font-black text-white mb-0.5 group-hover:text-[#ff7a00] transition-colors font-headline">
                       {post.teamName}
                     </h3>
-                    <p className="text-xs text-slate-500">
-                      Captain: <strong className="text-slate-800">{post.captainName}</strong> • {post.skillLevel}
+                    <p className="text-xs text-neutral-400">
+                      Captain: <strong className="text-white">{post.captainName}</strong> • {post.skillLevel}
                     </p>
                   </div>
 
-                  <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-1.5 text-xs text-slate-700">
+                  <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 space-y-1.5 text-xs text-neutral-300">
                     <div className="flex items-center gap-2">
-                      <Calendar className="w-3.5 h-3.5 text-[#FF6A00] shrink-0" />
+                      <Calendar className="w-3.5 h-3.5 text-[#ff7a00] shrink-0" />
                       <span>{post.date}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Clock className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                      <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0" />
                       <span>{post.timeSlot}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-slate-500 text-[11px] pt-0.5">
-                      <MapPin className="w-3 h-3 text-slate-400 shrink-0" />
+                    <div className="flex items-center gap-2 text-neutral-400 text-[11px] pt-0.5">
+                      <MapPin className="w-3 h-3 text-neutral-500 shrink-0" />
                       <span className="truncate">{post.pitchName} (120 ft)</span>
                     </div>
                   </div>
 
                   {post.notes && (
-                    <p className="text-xs text-slate-600 italic bg-slate-50/80 p-3 rounded-xl border border-slate-200/80 leading-relaxed">
+                    <p className="text-xs text-neutral-300 italic bg-white/5 p-3 rounded-xl border border-white/10 leading-relaxed">
                       "{post.notes}"
                     </p>
                   )}
                 </div>
 
                 {/* Card Footer */}
-                <div className="pt-3.5 border-t border-slate-100 flex items-center justify-between">
+                <div className="pt-3.5 border-t border-white/10 flex items-center justify-between">
                   <div>
-                    <span className="text-[10px] uppercase text-slate-400 block font-bold">
+                    <span className="text-[10px] uppercase text-neutral-500 block font-bold">
                       Open Spots:
                     </span>
-                    <span className="text-xs font-black text-[#0D6EFD]">
+                    <span className="text-xs font-black text-amber-400 font-mono">
                       Needs +{post.playersNeeded} Players • ₹{post.costPerPerson}/ea
                     </span>
                   </div>
@@ -202,22 +202,22 @@ export const MatchFinderBoard: React.FC<MatchFinderBoardProps> = ({
 
       {/* Post Match Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-sm overflow-y-auto">
-          <div className="bg-white border border-slate-200 rounded-3xl w-full max-w-lg p-6 sm:p-7 shadow-2xl relative text-xs animate-in fade-in zoom-in-95">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
+          <div className="bg-[#1e2023] border border-white/15 rounded-3xl w-full max-w-lg p-6 sm:p-7 shadow-2xl relative text-xs animate-in fade-in zoom-in-95 text-white font-body">
             
-            <div className="flex items-center justify-between border-b border-slate-200 pb-4 mb-5">
+            <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-5">
               <div>
-                <h3 className="text-base font-extrabold text-[#111827] uppercase tracking-wider">
+                <h3 className="text-base font-extrabold text-white uppercase tracking-wider font-headline">
                   Post to Players Board
                 </h3>
-                <p className="text-slate-500 text-xs">
+                <p className="text-neutral-400 text-xs">
                   Recruit cricket players or find an opponent squad for a match
                 </p>
               </div>
 
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center border border-slate-200 cursor-pointer"
+                className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-neutral-300 flex items-center justify-center border border-white/10 cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -226,40 +226,40 @@ export const MatchFinderBoard: React.FC<MatchFinderBoardProps> = ({
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="text-slate-700 font-bold block mb-1">Captain Name *</label>
+                  <label className="text-neutral-300 font-bold block mb-1">Captain Name *</label>
                   <input
                     type="text"
                     required
                     value={captainName}
                     onChange={e => setCaptainName(e.target.value)}
                     placeholder="e.g. Rahul Sharma"
-                    className="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 focus:outline-none focus:border-[#FF6A00]"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-neutral-500 focus:outline-none focus:border-[#ff7a00]"
                   />
                 </div>
 
                 <div>
-                  <label className="text-slate-700 font-bold block mb-1">Team / Squad Name</label>
+                  <label className="text-neutral-300 font-bold block mb-1">Team / Squad Name</label>
                   <input
                     type="text"
                     value={teamName}
                     onChange={e => setTeamName(e.target.value)}
                     placeholder="e.g. Gully Blasters CC"
-                    className="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 focus:outline-none focus:border-[#FF6A00]"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-neutral-500 focus:outline-none focus:border-[#ff7a00]"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="text-slate-700 font-bold block mb-1">Match Format</label>
-                  <div className="w-full px-3 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-800 font-semibold">
+                  <label className="text-neutral-300 font-bold block mb-1">Match Format</label>
+                  <div className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-neutral-200 font-semibold">
                     🏏 Box Cricket
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-slate-700 font-bold block mb-1">Turf</label>
-                  <div className="w-full px-3 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-800 font-semibold">
+                  <label className="text-neutral-300 font-bold block mb-1">Turf</label>
+                  <div className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-neutral-200 font-semibold">
                     Box Cricket Turf (120 ft)
                   </div>
                 </div>
@@ -267,60 +267,60 @@ export const MatchFinderBoard: React.FC<MatchFinderBoardProps> = ({
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="text-slate-700 font-bold block mb-1">Match Date</label>
+                  <label className="text-neutral-300 font-bold block mb-1">Match Date</label>
                   <input
                     type="date"
                     required
                     value={date}
                     onChange={e => setDate(e.target.value)}
-                    className="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 focus:outline-none focus:border-[#FF6A00]"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-[#ff7a00]"
                   />
                 </div>
 
                 <div>
-                  <label className="text-slate-700 font-bold block mb-1">Time Slot</label>
+                  <label className="text-neutral-300 font-bold block mb-1">Time Slot</label>
                   <input
                     type="text"
                     required
                     value={timeSlot}
                     onChange={e => setTimeSlot(e.target.value)}
                     placeholder="e.g. 08:00 PM - 09:00 PM"
-                    className="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 focus:outline-none focus:border-[#FF6A00]"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-neutral-500 focus:outline-none focus:border-[#ff7a00]"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="text-slate-700 font-bold block mb-1">Players Needed</label>
+                  <label className="text-neutral-300 font-bold block mb-1">Players Needed</label>
                   <input
                     type="number"
                     min="1"
                     max="10"
                     value={playersNeeded}
                     onChange={e => setPlayersNeeded(Number(e.target.value))}
-                    className="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 focus:outline-none focus:border-[#FF6A00]"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-[#ff7a00]"
                   />
                 </div>
 
                 <div>
-                  <label className="text-slate-700 font-bold block mb-1">Split ₹ / Player</label>
+                  <label className="text-neutral-300 font-bold block mb-1">Split ₹ / Player</label>
                   <input
                     type="number"
                     min="50"
                     step="50"
                     value={costPerPerson}
                     onChange={e => setCostPerPerson(Number(e.target.value))}
-                    className="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 focus:outline-none focus:border-[#FF6A00]"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-[#ff7a00]"
                   />
                 </div>
 
                 <div>
-                  <label className="text-slate-700 font-bold block mb-1">Skill Level</label>
+                  <label className="text-neutral-300 font-bold block mb-1">Skill Level</label>
                   <select
                     value={skillLevel}
                     onChange={e => setSkillLevel(e.target.value as any)}
-                    className="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 focus:outline-none focus:border-[#FF6A00]"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#1e2023] border border-white/10 text-white focus:outline-none focus:border-[#ff7a00]"
                   >
                     <option value="Casual">Casual</option>
                     <option value="Beginner">Beginner</option>
@@ -331,25 +331,25 @@ export const MatchFinderBoard: React.FC<MatchFinderBoardProps> = ({
               </div>
 
               <div>
-                <label className="text-slate-700 font-bold block mb-1">WhatsApp Number *</label>
+                <label className="text-neutral-300 font-bold block mb-1">WhatsApp Number *</label>
                 <input
                   type="tel"
                   required
                   value={whatsappContact}
                   onChange={e => setWhatsappContact(e.target.value)}
                   placeholder="e.g. 98200 12345 (players will contact here)"
-                  className="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 focus:outline-none focus:border-[#FF6A00]"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-neutral-500 focus:outline-none focus:border-[#ff7a00]"
                 />
               </div>
 
               <div>
-                <label className="text-slate-700 font-bold block mb-1">Notes / Player Requirements</label>
+                <label className="text-neutral-300 font-bold block mb-1">Notes / Player Requirements</label>
                 <textarea
                   rows={2}
                   value={notes}
                   onChange={e => setNotes(e.target.value)}
                   placeholder="e.g. Need 1 fast bowler and 1 batsman. Vicky tennis ball provided."
-                  className="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 focus:outline-none focus:border-[#FF6A00]"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-neutral-500 focus:outline-none focus:border-[#ff7a00]"
                 ></textarea>
               </div>
 
@@ -357,14 +357,14 @@ export const MatchFinderBoard: React.FC<MatchFinderBoardProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold cursor-pointer"
+                  className="px-4 py-2.5 rounded-full bg-white/5 hover:bg-white/10 text-neutral-300 font-bold cursor-pointer"
                 >
                   Cancel
                 </button>
 
                 <button
                   type="submit"
-                  className="px-6 py-2.5 rounded-xl bg-[#FF6A00] hover:bg-[#E65F00] text-white font-extrabold uppercase shadow-md cursor-pointer"
+                  className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#ff7a00] to-amber-600 hover:from-amber-600 hover:to-[#ff7a00] text-white font-extrabold uppercase shadow-[0_4px_16px_rgba(255,122,0,0.3)] cursor-pointer"
                 >
                   Publish Request
                 </button>

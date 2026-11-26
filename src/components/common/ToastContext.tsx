@@ -40,10 +40,10 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   return (
     <ToastContext.Provider value={{ showToast, removeToast }}>
       {children}
-      {/* Toast Render Viewport */}
+      {/* Toast Render Viewport (Bottom-Right Non-Intrusive Dark Luxury Pill) */}
       <div 
         aria-live="polite"
-        className="fixed top-4 right-4 z-[9999] flex flex-col gap-2.5 max-w-sm w-full pointer-events-none px-3 sm:px-0"
+        className="fixed bottom-5 right-5 z-[9999] flex flex-col gap-2.5 max-w-sm w-full pointer-events-none px-3 sm:px-0"
       >
         {toasts.map(toast => {
           const isSuccess = toast.type === 'success';
@@ -54,45 +54,45 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             <div
               key={toast.id}
               role="alert"
-              className={`pointer-events-auto p-4 rounded-2xl shadow-2xl bg-white border flex items-start gap-3 transition-all duration-300 animate-in slide-in-from-top-3 fade-in ${
+              className={`pointer-events-auto p-4 rounded-2xl shadow-[0_16px_36px_rgba(0,0,0,0.7)] bg-[#1e2023]/95 backdrop-blur-2xl border flex items-start gap-3.5 transition-all duration-300 animate-in slide-in-from-bottom-3 fade-in ${
                 isSuccess
-                  ? 'border-emerald-300 shadow-emerald-950/10 text-slate-900'
+                  ? 'border-emerald-500/40 text-white'
                   : isWarning
-                  ? 'border-amber-300 shadow-amber-950/10 text-slate-900'
+                  ? 'border-orange-500/40 text-white'
                   : isError
-                  ? 'border-red-300 shadow-red-950/10 text-slate-900'
-                  : 'border-slate-300 shadow-slate-950/10 text-slate-900'
+                  ? 'border-red-500/40 text-white'
+                  : 'border-white/15 text-white'
               }`}
             >
               <div className="shrink-0 mt-0.5">
                 {isSuccess && (
-                  <div className="w-7 h-7 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-200">
+                  <div className="w-7 h-7 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/30">
                     <CheckCircle2 className="w-4 h-4 stroke-[2.5]" />
                   </div>
                 )}
                 {isWarning && (
-                  <div className="w-7 h-7 rounded-xl bg-orange-50 text-[#FF6A00] flex items-center justify-center border border-orange-200">
+                  <div className="w-7 h-7 rounded-xl bg-orange-500/20 text-[#ff7a00] flex items-center justify-center border border-orange-500/30">
                     <Zap className="w-4 h-4 stroke-[2.5]" />
                   </div>
                 )}
                 {isError && (
-                  <div className="w-7 h-7 rounded-xl bg-red-50 text-red-600 flex items-center justify-center border border-red-200">
+                  <div className="w-7 h-7 rounded-xl bg-red-500/20 text-red-400 flex items-center justify-center border border-red-500/30">
                     <AlertCircle className="w-4 h-4 stroke-[2.5]" />
                   </div>
                 )}
                 {!isSuccess && !isWarning && !isError && (
-                  <div className="w-7 h-7 rounded-xl bg-blue-50 text-[#0D6EFD] flex items-center justify-center border border-blue-200">
+                  <div className="w-7 h-7 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center border border-sky-500/30">
                     <Info className="w-4 h-4 stroke-[2.5]" />
                   </div>
                 )}
               </div>
 
-              <div className="flex-1 min-w-0 font-sans">
-                <h4 className="text-xs font-black text-slate-900 uppercase tracking-wide">
+              <div className="flex-1 min-w-0 font-body">
+                <h4 className="text-xs font-black text-white uppercase tracking-wider font-headline">
                   {toast.title}
                 </h4>
                 {toast.message && (
-                  <p className="text-[11px] text-slate-600 mt-0.5 leading-snug">
+                  <p className="text-[11px] text-neutral-300 mt-0.5 leading-snug">
                     {toast.message}
                   </p>
                 )}
@@ -100,7 +100,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
               <button
                 onClick={() => removeToast(toast.id)}
-                className="text-zinc-400 hover:text-white p-1 rounded-lg hover:bg-white/10 transition-colors"
+                className="text-neutral-400 hover:text-white p-1 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
                 aria-label="Close notification"
               >
                 <X className="w-3.5 h-3.5" />

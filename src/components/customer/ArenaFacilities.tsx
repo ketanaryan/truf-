@@ -52,18 +52,18 @@ export const ArenaFacilities: React.FC<ArenaFacilitiesProps> = ({ settings }) =>
   ];
 
   return (
-    <section className="py-16 border-t border-slate-200 bg-[#F2F4F7] font-sans">
+    <section className="py-16 border-t border-white/10 bg-[#16181b] font-body text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
         {/* Section Heading */}
         <div className="max-w-xl space-y-2">
-          <span className="text-xs uppercase tracking-wider text-[#FF6A00] font-bold block">
+          <span className="text-xs uppercase tracking-wider text-[#ff7a00] font-bold block font-headline">
             ARENA INFRASTRUCTURE
           </span>
-          <h2 className="text-3xl sm:text-4xl font-display font-black text-[#111827] uppercase leading-tight">
+          <h2 className="text-3xl sm:text-4xl font-headline font-black text-white uppercase tracking-tight">
             Built for Competitive Matches & Tournaments
           </h2>
-          <p className="text-slate-600 text-sm leading-relaxed">
+          <p className="text-neutral-400 text-sm leading-relaxed">
             Every specification at Sonawane's Multi Sport Turf is built for intense box cricket & football matches, guaranteeing maximum grip and player comfort.
           </p>
         </div>
@@ -73,28 +73,28 @@ export const ArenaFacilities: React.FC<ArenaFacilitiesProps> = ({ settings }) =>
           {specs.map((item, idx) => (
             <div
               key={idx}
-              className="p-6 rounded-3xl bg-white border border-slate-200/90 hover:border-[#FF6A00] shadow-sm hover:shadow-md transition-all space-y-3"
+              className="p-6 rounded-3xl bg-[#1e2023] border border-white/10 hover:border-[#ff7a00]/50 shadow-xl transition-all space-y-3 group"
             >
-              <div className="w-12 h-12 rounded-2xl bg-orange-50 border border-orange-200/80 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:scale-105 transition-transform">
                 {item.icon}
               </div>
-              <h3 className="text-base font-bold text-[#111827] uppercase">{item.title}</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">{item.desc}</p>
+              <h3 className="text-base font-bold text-white uppercase font-headline">{item.title}</h3>
+              <p className="text-xs text-neutral-400 leading-relaxed">{item.desc}</p>
             </div>
           ))}
         </div>
 
-        {/* Location & Directions Banner (Hatrick Grounds Deep Navy + Orange) */}
-        <div className="p-6 sm:p-8 rounded-3xl bg-[#0B1D2D] border border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-2xl text-white">
+        {/* Location & Directions Banner (The Nova Club Deep Obsidian + Orange) */}
+        <div className="p-6 sm:p-8 rounded-3xl bg-[#111317] border border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-2xl text-white">
           <div className="space-y-1.5">
-            <span className="text-xs uppercase tracking-wider text-[#FF6A00] font-bold block">
+            <span className="text-xs uppercase tracking-wider text-[#ff7a00] font-bold block font-headline">
               VISIT SONAWANE'S TURF TODAY • NASHIK
             </span>
-            <h3 className="text-lg sm:text-2xl font-black text-white uppercase font-display tracking-wide">
+            <h3 className="text-lg sm:text-2xl font-black text-white uppercase font-headline tracking-wide">
               {settings.address}
             </h3>
-            <p className="text-xs text-slate-300">
-              Direct Desk: {settings.phone} • WhatsApp Support: {settings.whatsapp}
+            <p className="text-xs text-neutral-400">
+              Direct Desk: <span className="text-white font-bold">{settings.phone}</span> • WhatsApp Support: <span className="text-[#ff7a00] font-bold">{settings.whatsapp}</span>
             </p>
           </div>
 
@@ -103,15 +103,15 @@ export const ArenaFacilities: React.FC<ArenaFacilitiesProps> = ({ settings }) =>
               href={`https://maps.google.com/?q=${encodeURIComponent(settings.address)}`}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-2 px-6 py-3.5 rounded-xl bg-white/10 border border-white/20 hover:bg-white/20 text-white text-xs font-bold uppercase tracking-wider transition-all"
+              className="flex items-center gap-2 px-6 py-3.5 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 text-white text-xs font-bold uppercase tracking-wider transition-all"
             >
-              <Navigation className="w-4 h-4 text-[#FF6A00]" />
+              <Navigation className="w-4 h-4 text-[#ff7a00]" />
               <span>Get Directions</span>
             </a>
 
             <a
               href={`tel:${settings.phone}`}
-              className="flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[#FF6A00] hover:bg-[#E65F00] text-white text-xs font-black uppercase tracking-wider shadow-lg transition-all active:scale-95"
+              className="flex items-center gap-2 px-6 py-3.5 rounded-full bg-gradient-to-r from-[#ff7a00] to-amber-600 hover:from-amber-600 hover:to-[#ff7a00] text-white text-xs font-black uppercase tracking-wider shadow-[0_4px_16px_rgba(255,122,0,0.3)] transition-all active:scale-95"
             >
               <PhoneCall className="w-4 h-4 fill-white" />
               <span>Call Reception</span>

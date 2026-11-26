@@ -46,8 +46,10 @@ export default {
         }
       },
       fontFamily: {
-        display: ['Bebas Neue', 'Impact', 'Space Grotesk', 'system-ui', 'sans-serif'],
-        sans: ['Poppins', 'Plus Jakarta Sans', 'Inter', 'system-ui', 'sans-serif'],
+        headline: ['Space Grotesk', 'Bebas Neue', 'system-ui', 'sans-serif'],
+        body: ['Manrope', 'Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+        display: ['Space Grotesk', 'Bebas Neue', 'Impact', 'system-ui', 'sans-serif'],
+        sans: ['Manrope', 'Plus Jakarta Sans', 'Poppins', 'Inter', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'Fira Code', 'monospace']
       },
       boxShadow: {
